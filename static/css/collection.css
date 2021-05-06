@@ -1,0 +1,52 @@
+
+.collection{
+    margin-top: 50px;
+}
+
+.collection-container{
+}
+
+.collection-content{
+    margin: 10px 10px 20px;
+}
+
+.collection-image{
+    position: relative;
+}
+
+.collection-over{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(139, 139, 139, 0.23);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ;
+}
+
+.collection-content:hover .collection-over{
+    background-color: rgba(29, 29, 29, 0.56);
+}
+
+.collection-over-header{
+    color: #fff;
+    font-weight: 400;
+}
+
+.collection-img{
+    width:100%;
+    height: 500px
+}
+
+.collection-link{
+    font-size: 14px;
+    color: #1b1b1b;
+}
+
+.collection-link:hover{
+    color: #34ca96;
+}

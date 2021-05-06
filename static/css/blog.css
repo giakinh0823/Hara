@@ -1,0 +1,37 @@
+.blog-card{
+    padding: 10px 30px;
+    border: none;
+}
+
+.blog-link{
+     border: none!important;
+}
+
+.blog-content{
+    border: none;
+}
+
+.blog-img{
+
+}
+
+.blog-body{
+
+}
+
+.blog-title{
+    font-size: 1.3rem;
+}
+
+.blog-text{
+
+}
+
+.blog-readMore{
+    text-decoration: none;
+    color: #b61827;
+}
+
+.blog-readMore:hover {
+    color: #34ca96;
+}

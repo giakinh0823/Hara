@@ -1,0 +1,165 @@
+
+.carousel-home {
+
+}
+
+.carousel-home-content {
+
+}
+
+
+.carousel-home-item {
+
+}
+
+.carousel-home-item img {
+    height: 440px;
+}
+
+.carousel-indicators {
+    bottom: -60px;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background-color: #333;
+}
+
+.owl-nav button {
+    display: inline-block;
+    width: 50px;
+    height: 40px;
+    background-color: #f3f3f3 !important;
+    margin-left: 10px;
+    transition: .3s;
+}
+
+.owl-nav button i {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.owl-nav button:hover {
+    background: #b61827 !important;
+    color: white !important;
+}
+
+.owl-nav {
+    position: absolute;
+    right: 0;
+    top: -90px;
+}
+
+.staff-desc {
+    margin-top: 20px;
+}
+
+.home-card {
+
+    margin-bottom: 10px;
+}
+
+.home-card-content {
+    border: 1px solid #c8c8c8;
+    overflow: hidden;
+    min-height: 570px;
+}
+
+.home-card:hover {
+    transform: translateY(-4px);
+    cursor: pointer;
+    transition: all 0.6s ease-out;
+    box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    height: 300px;
+}
+
+
+.card-type {
+    display: flex;
+}
+
+.card-type-header {
+    color: #b61827;
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+
+.card-type-btn {
+    font-size: 1.1rem;
+    color: #b61827;
+}
+
+.card-title-link {
+    text-decoration: none;
+    color: #000;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
+.card-title-link:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+.card-text {
+    font-size: 0.9rem !important;
+    margin-top: auto!important;
+}
+
+.card-category {
+
+}
+
+.card-category-link {
+    text-decoration: none;
+    font-size: 0.85rem;
+    color: #b61827;
+}
+
+.card-category-link:hover {
+    color: rgb(14, 120, 104);
+}
+
+.card-text-caption{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+    margin-bottom: auto;
+    margin-top: 0!important;
+}
+.card-price {
+
+}
+
+.card-price-bold {
+    font-size: 0.9rem;
+}
+
+.card-price-percent {
+    font-size: 0.9rem;
+}
+
+.card-progress {
+    height: 6px;
+}
+
+.card-progress .progress-bar {
+    background-color: #34ca96;
+}
+
+.card-lock-label {
+    font-size: 0.82rem;
+}

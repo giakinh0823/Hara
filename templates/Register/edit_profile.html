@@ -1,0 +1,85 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block body %}
+    <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
+        <div class="container d-flex">
+            <div class="view-profile">
+                <a href="{% url 'register:profile' slug=request.user %}" class="view-profile-link"><span><i
+                        class="bi bi-eye"></i></span><span class="ms-2">View Profile</span></a>
+            </div>
+            <div class="view-profile ms-4">
+                <a href="{% url 'register:edit_profile' slug=request.user %}" class="view-profile-link"><span><i
+                        class="bi bi-pencil-square"></i></span><span class="ms-2">Edit Profile</span></a>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center align-items-center position-relative"
+         style="">
+        <div class="col-10 col-md-8 col-lg-5" style="background-color: #fff; padding: 60px 40px; z-index: 1">
+            <div class="mb-5">
+                <h4 class="display-5">Edit profile</h4>
+                <p style="font-weight: 300;"></p>
+            </div>
+            <form class="w-100" method="post" enctype="multipart/form-data" id="signup-form">
+                {% if error %}
+                    <div class="form-group invalid">
+                        <div class="form-text form-message mb-3 mt-2 ">{{ error }}</div>
+                    </div>
+                {% endif %}
+                {% csrf_token %}
+                <div class="mb-3 form-group">
+                    <label for="id_username" class="form-label">Username</label>
+                    <input type="text" value="{{ user }}" disabled id="id_username" class="form-control">
+                </div>
+
+                <div class="row mt-4">
+                    <div class="mb-3 form-group col">
+                        <label for="id_first_name" class="form-label">First Name</label>
+                        <input class="form-control" value="{{ request.user.first_name }}" type="text" name="first_name" maxlength="30" id="id_first_name">
+                        <div class="form-text form-message mb-3 mt-2"></div>
+                    </div>
+                    <div class="mb-3 form-group col">
+                        <label for="id_last_name" class="form-label">Last Name</label>
+                        <input class="form-control" value="{{ request.user.last_name }}" type="text" name="last_name" maxlength="150" id="id_last_name">
+                        <div class="form-text form-message mb-3 mt-2"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group">
+                    <label for="id_email" class="form-label">Email address</label>
+                    <input class="form-control" value="{{ user.email }}" type="email" name="email" maxlength="254" id="id_email">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+
+                <div class="mb-3 form-group">
+                    <label for="id_birthday" class="form-label">Birthday</label>
+                    <input value="{{ userProfile.birthday|date:"Y-m-d" }}" class="form-control" type="date" name="birthday" required="" id="id_birthday">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+
+                <div class="mb-3 form-group">
+                    <label for="id_address" class="form-label">Address</label>
+                    <input value="{{ userProfile.address }}" class="form-control" type="text" name="address" maxlength="2000" required="" id="id_address">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_certificate" class="form-label">Certificate</label>
+                    <input value="{{ userProfile.certificate }}" class="form-control" type="text" name="certificate" maxlength="20" required="" id="id_certificate">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_phone_number" class="form-label">Phone Number</label>
+                    <input value="{{ userProfile.phone_number }}"  class="form-control" type="text" name="phone_number" maxlength="20" required="" id="id_phone_number">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_phone_number" class="form-label">Avatar</label>
+                    <input class="form-control" type="file" name="image" accept="image/*" id="id_image">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+
+                <button type="submit" class="button-primary w-100 mt-3">Update</button>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

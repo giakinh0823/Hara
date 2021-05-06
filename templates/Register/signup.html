@@ -1,0 +1,91 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block body_not_nav %}
+    <style>
+        .form-group.invalid .form-control {
+            border-color: #f33a58;
+        }
+
+        .form-group.invalid .form-message {
+            color: #f33a58;
+        }
+    </style>
+    <div class="w-100 d-flex justify-content-center align-items-center position-relative"
+         style="min-height: 100vh; padding: 100px 0">
+        <div class="w-100 h-100 position-absolute"
+             style="
+                     background-image: url('{% static "img/macbook.png" %}');
+                     background-size: cover;
+                     ">
+        </div>
+        <div class="col-10 col-md-8 col-lg-5" style="background-color: #fff; padding: 60px 40px; z-index: 1">
+            <div class="mb-5">
+                <h4 class="display-5">Signup</h4>
+                <p style="font-weight: 300;">Sign up to join Dealme.</p>
+            </div>
+            <form class="w-100" method="post" enctype="multipart/form-data" id="signup-form">
+                {% if error %}
+                    <div class="form-group invalid">
+                        <div class="form-text form-message mb-3 mt-2 ">{{ error }}</div>
+                    </div>
+                {% endif %}
+                {% csrf_token %}
+                <div class="mb-3 form-group">
+                    <label for="id_username" class="form-label">Username</label>
+                    <input class="form-control" type="text" name="username" maxlength="150" autofocus="" required=""
+                           id="id_username">
+                    <div class="form-text form-message mb-3 mt-2 "></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_email" class="form-label">Email address</label>
+                    <input class="form-control" type="email" name="email" maxlength="254" required="" id="id_email">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_password1" class="form-label">Password</label>
+                    <input class="form-control" type="password" name="password1" autocomplete="new-password"
+                           required="" id="id_password1">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_password2" class="form-label">Password</label>
+                    <input class="form-control" type="password" name="password2" autocomplete="new-password"
+                           required="" id="id_password2">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_first_name" class="form-label">First Name</label>
+                    <input class="form-control" type="text" name="first_name" maxlength="30" id="id_first_name">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_last_name" class="form-label">Last Name</label>
+                    <input class="form-control" type="text" name="last_name" maxlength="30" id="id_last_name">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <button type="submit" class="button-primary w-100 mt-3">CREATE ACCOUNT</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        Validator({
+            form: '#signup-form',
+            errorElement: '.form-message',
+            formGroupSelector: '.form-group',
+            rules: [
+                Validator.isRequired('#id_username'),
+                Validator.isRequired('#id_email'),
+                Validator.isEmail('#id_email'),
+                Validator.isRequired('#id_password1'),
+                Validator.minLength('#id_password1', 6),
+                Validator.isRequired('#id_password2'),
+                Validator.isConfirmed('#id_password2', () => {
+                    return document.querySelector('#signup-form #id_password1').value
+                }, 'Mật khẩu nhập lại không chính xác'),
+                Validator.isRequired('#id_first_name'),
+                Validator.isRequired('#id_last_name'),
+            ],
+            onSubmit: undefined
+        })
+    </script>
+{% endblock body_not_nav %}

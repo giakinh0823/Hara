@@ -1,0 +1,21 @@
+
+.select-form{
+    background-color: #fff;
+}
+
+.select-form:focus{
+    box-shadow: none;
+    border-color: #34ca96;
+}
+
+.select-form option{
+    font-size: 15px;
+}
+
+.option-select:hover{
+    background-color: #34ca96!important;
+}
+
+.option-select:focus{
+    background-color: #34ca96!important;
+}

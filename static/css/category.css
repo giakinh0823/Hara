@@ -1,0 +1,47 @@
+
+.product-nav-bar {
+
+}
+
+.product-filter {
+
+}
+
+.product-filter-category {
+
+}
+
+.product-category-list {
+
+}
+
+.product-category-item {
+    margin-bottom: 20px;
+
+}
+
+.product-category-item-link {
+    font-size: 16px;
+    font-weight: 300;
+    color: #1b1b1b;
+    text-decoration: none;
+
+}
+
+.product-category-item-link:hover {
+    color: #1b1b1b;
+}
+
+.product-category-icon {
+    margin-left: 20px;
+}
+
+.product-category-item-list{
+    display: none;
+    width: 100%;
+    margin-left: 20px;
+}
+
+.product-category-item-item{
+     margin-top: 10px;
+}

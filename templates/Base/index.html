@@ -1,0 +1,408 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+
+    <script src="{% static 'components/form/validator.js' %}"></script>
+
+    {# font #}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    {# Bootstrap #}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    {# owl #}
+    <link rel="stylesheet" href={% static "owlcaurosel/assets/owl.carousel.min.css" %}>
+    <link rel="stylesheet" href={% static "owlcaurosel/assets/owl.theme.default.min.css" %}>
+
+    {# styles #}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {# blog #}
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    {# nav #}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    {# carosel #}
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+    {# collection #}
+    <link rel="stylesheet" href="{% static 'css/collection.css' %}">
+    {# blog #}
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    {# blog #}
+    <link rel="stylesheet" href="{% static 'css/select.css' %}">
+    {# category #}
+    <link rel="stylesheet" href="{% static 'css/category.css' %}">
+    {# profile #}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <title>Home</title>
+</head>
+<body>
+{% block body_not_nav %}
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home:home' %}">Hara</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <label for="nav-checkbox" onclick="openNav()"
+                               class="nav-link active nav-open font-bold">Explore</label>
+                        <input type="checkbox" id="nav-checkbox">
+                        <label class="nav-close" for="nav-checkbox" onclick="closeNav()"><i
+                                class="bi bi-x nav-close-icon"></i></label>
+                        <div class="nav-menu">
+                            <div class="nav-menu-content">
+                                <ul class="nav-menu-list row">
+                                    <li class="nav-menu-item col">
+                                        <div class="nav-item-content">
+                                            <h3 class="header-3">
+                                                DÀNH CHO WEB
+                                            </h3>
+                                            <div class="nav-item-node">
+                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                            </div>
+                                            <ul class="nav-item-list">
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="nav-menu-item col">
+                                        <div class="nav-item-content">
+                                            <h3 class="header-3">
+                                                DÀNH CHO WEB
+                                            </h3>
+                                            <div class="nav-item-node">
+                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                            </div>
+                                            <ul class="nav-item-list">
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="nav-menu-item col">
+                                        <div class="nav-item-content">
+                                            <h3 class="header-3">
+                                                DÀNH CHO WEB
+                                            </h3>
+                                            <div class="nav-item-node">
+                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                            </div>
+                                            <ul class="nav-item-list">
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="nav-menu-item col">
+                                        <div class="nav-item-content">
+                                            <h3 class="header-3">
+                                                DÀNH CHO WEB
+                                            </h3>
+                                            <div class="nav-item-node">
+                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                            </div>
+                                            <ul class="nav-item-list">
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="nav-menu-item col">
+                                        <div class="nav-item-content">
+                                            <h3 class="header-3">
+                                                DÀNH CHO WEB
+                                            </h3>
+                                            <div class="nav-item-node">
+                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                            </div>
+                                            <ul class="nav-item-list">
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="#">
+                                                        <span class="nav-item-span">1</span>
+                                                        GIA KINH HA</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active font-bold" aria-current="page" href="#">What we do</a>
+                    </li>
+                </ul>
+                <form class="d-flex nav-search">
+                    <input class="form-control nav-search-input" name="search" placeholder="Search" id="search"
+                           aria-label="Search" oninput="onInput(this)" onblur="onBlur(this)">
+                    <button class="nav-search-btn" type="submit"><i class="bi bi-search icon-search"></i></button>
+                    <p class="nav-close-btn" onclick="deleteInput(this)"><i class="bi bi-x"></i></p>
+                </form>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active font-bold" aria-current="page" href="{% url 'product:products' %}">All
+                            Idea</a>
+                    </li>
+                    <li class="nav-item item-separate">
+                        <a class="nav-link active font-bold" aria-current="page" href="#">Start a Campaign</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <button class="nav-link active font-bold" aria-current="page" ><i class="bi bi-bell"></i></button>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active font-bold" aria-current="page" href="{% url 'register:profile' slug=request.user %}">Profile</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link active font-bold" aria-current="page" href="{% url 'register:login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active font-bold" aria-current="page" href="{% url 'register:signup' %}">Signup</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block body %}
+    {% endblock body %}
+    <div class="footer">
+        <div class="footer-container container">
+            <div class="row row-cols-1 row-cols-md-2 footer-content">
+                <div class="col col-md-8 footer-item">
+                    <div class="row mb-5">
+                        <div class="col">
+                            <h4 class="footer-item-header">ABOUT</h4>
+                            <div>
+                                <ul class="footer-item-list">
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">About Us</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">Trust & Safety</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">About Us</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">Trust & Safety</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4 class="footer-item-header">ABOUT</h4>
+                            <div>
+                                <ul class="footer-item-list">
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">About Us</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">Trust & Safety</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">About Us</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">Trust & Safety</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4 class="footer-item-header">ABOUT</h4>
+                            <div>
+                                <ul class="footer-item-list">
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">About Us</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">Trust & Safety</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">About Us</a>
+                                    </li>
+                                    <li class="footer-item-item">
+                                        <a class="footer-item-link" href="">Trust & Safety</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="w-100 text-center">
+                        <div>
+                            <span class="footer-icon" style="font-size: 1.8rem"><i class="bi bi-envelope"></i></span>
+                        </div>
+                        <h5 style="font-weight: 300">Find it first on Dealme</h5>
+                    </div>
+                    <form action="">
+                        <div class="mb-3">
+                            <label for="email" class="form-label" style="font-weight: 300; font-size: 16px">Email
+                                address</label>
+                            <input type="email" class="form-control footer-input" id="email"
+                                   aria-describedby="emailHelp" placeholder="email">
+                        </div>
+                        <div class="d-flex justify-content-start align-items-center mt-4">
+                            <input type="checkbox" id="email-checkbox"><label for="email-checkbox" class="ms-3"
+                                                                              style="font-size: 14px">I agree to the
+                            Terms of Use and have read and understand the Privacy Policy</label>
+                        </div>
+                        <button href="#" class="button-primary mt-3 w-100">SIGN ME UP</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-container-icon mt-5">
+                <div class="mt-5">
+                    <ul class="footer-icon-list d-flex">
+                        <li class="footer-icon-item">
+                            <a href="" class="footer-icon-link"><i class="bi bi-envelope"></i></a>
+                        </li>
+                        <li class="footer-icon-item">
+                            <a href="" class="footer-icon-link"><i class="bi bi-facebook"></i></a>
+                        </li>
+                        <li class="footer-icon-item">
+                            <a href="" class="footer-icon-link"><i class="bi bi-instagram"></i></a>
+                        </li>
+                        <li class="footer-icon-item">
+                            <a href="" class="footer-icon-link"><i class="bi bi-twitter"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-100 mt-5 text-center">
+                <p>&copy; 2021 Hara</p>
+            </div>
+        </div>
+    </div>
+{% endblock body_not_nav %}
+{#Boostrap#}
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script type="text/javascript" src={% static "owlcaurosel/jquery.min.js" %}></script>
+<script type="text/javascript" src={% static "owlcaurosel/owl.carousel.min.js" %}></script>
+<script src="{% static 'components/Navbar/openNav.js' %}"></script>
+<script src="{% static 'components/Input/input.js' %}"></script>
+<script src="{% static 'components/carousel/carousel.js' %}"></script>
+<script src="{% static 'components/select/navbarList.js' %}"></script>
+
+</body>
+</html>

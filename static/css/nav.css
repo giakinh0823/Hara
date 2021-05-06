@@ -1,0 +1,287 @@
+
+.header {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar {
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.header-3 {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    font-size: 20px;
+    margin: 0 0 1rem;
+    color: white;
+    padding: 0;
+    font-weight: 400;
+}
+
+.font-bold {
+    font-weight: 500;
+}
+
+
+#nav-checkbox {
+    position: absolute;
+    z-index: 10000;
+    display: none;
+}
+
+#nav-checkbox:checked ~ .nav-menu {
+    display: block;
+    animation: nav-menu-open 0.4s ease-in-out;
+}
+
+#nav-checkbox:not(:checked) ~ .nav-menu {
+    animation: nav-menu-close 0.4s ease-in-out;
+}
+
+@keyframes nav-menu-open {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes nav-menu-close {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+
+
+#nav-checkbox:checked ~ .nav-close {
+    display: block;
+}
+
+.nav-open {
+    cursor: pointer;
+}
+
+.nav-close {
+    display: none;
+    position: absolute;
+    z-index: 10000;
+    cursor: pointer;
+    right: 2%;
+    top: 0;
+}
+
+
+.nav-close-icon {
+    font-size: 50px;
+    color: #fff;
+}
+
+.nav-menu {
+    display: none;
+    width: 100%;
+    overflow-x: unset;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+    z-index: 9999;
+    background-color: #fff;
+}
+
+
+.nav-item a:hover{
+    color: #b61827!important;
+}
+
+.nav-item label:hover{
+    color: #b61827!important;
+}
+
+
+.nav-menu-content {
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.nav-menu-list {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.nav-menu-item {
+    position: relative;
+    display: flex;
+    width: calc(21% - 1px);
+    z-index: 1;
+    margin: 0 1px 0 0;
+    opacity: 1;
+    padding: 15% 0 0;
+    background: #b61827;
+    transition: all 1000ms cubic-bezier(0.190, 1.000, 0.220, 1.000), opacity 700ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+}
+
+.nav-menu-item:hover {
+    background: #d73446;
+    opacity: 1;
+}
+
+.nav-item-content {
+    position: relative;
+    width: 100%;
+    padding: 1.5rem;
+    color: white;
+}
+
+.nav-item-node {
+    position: relative;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #cacaca;
+    margin: -15px 0 30px;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.nav-item-list {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    display: block;
+    padding: 0;
+    text-align: left;
+}
+
+.nav-item-item {
+    width: 100% !important;
+    height: auto;
+    position: relative;
+    display: block;
+    padding: 0;
+    background: transparent !important;
+    opacity: 1 !important;
+    margin-bottom: 20px;
+}
+
+.nav-item-item::after {
+    content: "";
+    display: none;
+    position: absolute;
+    height: 1.6px;
+    width: 100%;
+    background-color: white;
+    top: 120%;
+    left: 0;
+}
+
+.nav-item-item:hover::after {
+    display: block;
+    animation: nav-item 0.8s ease-in-out;
+}
+
+@keyframes nav-item {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.nav-item-item:hover .nav-item-link {
+    color: white!important;
+}
+
+.nav-item-link {
+    position: relative;
+    width: 100%;
+    height: auto;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    color: white;
+    display: block;
+    transition: 0.3s;
+    text-decoration: none;
+    background-color: transparent;
+
+}
+
+.nav-item-span {
+    color: white;
+    font-size: 20px;
+    overflow: hidden;
+    border-bottom: 0;
+    margin: 0 3px 0 0;
+    line-height: 14px;
+    padding: 0;
+}
+
+.nav-search {
+    position: relative;
+    width: 40% ;
+}
+
+.nav-search-input {
+    margin-left: 10px;
+}
+
+.nav-search-input:hover{
+    border-color:#b61827;
+}
+
+.nav-search-input::placeholder {
+    font-weight:400;
+}
+
+.nav-search-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 12px;
+    font-size: 20px;
+}
+
+
+.nav-close-btn {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    font-size: 25px;
+}
+
+.item-separate{
+    position: relative;
+    margin-right: 15px;
+}
+
+.item-separate::after{
+    content: '';
+    position: absolute;;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+    width: 1px;
+    height: 60%;
+    background-color: rgba(51, 51, 51, 0.6);
+}
+
+

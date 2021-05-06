@@ -1,0 +1,59 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block body_not_nav %}
+    <style>
+        .form-group.invalid .form-control {
+            border-color: #f33a58;
+        }
+
+        .form-group.invalid .form-message {
+            color: #f33a58;
+        }
+    </style>
+    <div class="w-100 d-flex justify-content-center align-items-center position-relative"
+         style="min-height: 100vh; padding: 100px 0">
+        <div class="w-100 h-100 position-absolute"
+             style="
+                     background-image: url('{% static "img/macbook.png" %}');
+                     background-size: cover;
+                     ">
+        </div>
+        <div class="col-10 col-md-6 col-lg-4" style="background-color: #fff; padding: 60px 40px; z-index: 1">
+            <div class="mb-4">
+                <h4 class="display-5">Login</h4>
+                <p style="font-weight: 300;">Login to join Dealme.</p>
+            </div>
+            <form class="w-100" method="post" enctype="multipart/form-data" id="signup-form">
+                {% if error %}
+                    <div class="form-group invalid">
+                        <div class="form-text form-message mb-3 mt-2 ">{{ error }}</div>
+                    </div>
+                {% endif %}
+                {% csrf_token %}
+                <div class="mb-3 form-group">
+                    <label for="id_username" class="form-label">Username</label>
+                    <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+                    <div class="form-text form-message mb-3 mt-2 "></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="id_password" class="form-label">Password</label>
+                    <input class="form-control" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+                    <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <button type="submit" class="button-primary w-100 mt-3">LOGIN</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        Validator({
+            form: '#signup-form',
+            errorElement: '.form-message',
+            formGroupSelector: '.form-group',
+            rules: [
+                Validator.isRequired('#id_username'),
+                Validator.isRequired('#id_password'),
+            ],
+            onSubmit: undefined
+        })
+    </script>
+{% endblock body_not_nav %}

@@ -1,0 +1,185 @@
+{% extends 'Base/index.html' %}
+{% load static %}
+{% block body %}
+    <div class="product-body mb-5">
+        <div class="w-100 mb-5 position-relative" style="height:300px">
+            <div class="collection-over">
+                <div>
+                    <h3 class="display-4 collection-over-header"
+                        style="text-transform: uppercase">{{ category.name }}</h3>
+                </div>
+            </div>
+            <img src="{% static 'img/macbook1.jpg' %}" alt="" style="width:100%; height: 100%">
+        </div>
+        <div class="product-container container">
+            <div class="row">
+                <div class="col-4 col-sm-4 col-md-3">
+                    <div class="product-nav-bar">
+                        <div class="product-filter">
+                            <h6 class="mb-5" style="font-weight: 400; font-size: 18px">Filter results</h6>
+                            <div class="product-filter-category">
+                                <p class="mb-4" style="font-size: 18px; opacity: 0.6">Category</p>
+                                <div>
+                                    <ul class="product-category-list">
+                                    <li class="product-category-item">
+                                            <div class="d-flex align-items-center">
+                                                <a href="{% url 'product:products' %}"
+                                                   class="product-category-item-link">
+                                                    <span>All product</span>
+                                                </a>
+                                            </div>
+                                    </li>
+                                        {% for item_category in group_category %}
+                                            <li class="product-category-item">
+                                            <div class="d-flex align-items-center">
+                                                <a href="{{ item_category.get_absolute_url }}"
+                                                   class="product-category-item-link">
+                                                    <span>{{ item_category.name }}</span>
+                                                </a>
+                                                {% if item_category == category.groupCategory %}
+                                                    <button onclick="navbarListDown(this)" id="icon-down-nav"
+                                                            style="display:none"><i
+                                                            class="bi bi-chevron-down product-category-icon"></i>
+                                                    </button>
+                                                    <button onclick="navbarListUp(this)" id="icon-up-nav"
+                                                            style="display:block"><i
+                                                            class="bi bi-chevron-up product-category-icon"></i></button>
+                                                {% else %}
+                                                    <button onclick="navbarListDown(this)" id="icon-down-nav"><i
+                                                            class="bi bi-chevron-down product-category-icon"></i>
+                                                    </button>
+                                                    <button onclick="navbarListUp(this)" id="icon-up-nav"
+                                                            style="display:none"><i
+                                                            class="bi bi-chevron-up product-category-icon"></i></button>
+
+                                                {% endif %}
+                                            </div>
+                                            {% if item_category == category.groupCategory %}
+                                                <ul class="product-category-item-list" style="display:block">
+                                            {% else %}
+                                                <ul class="product-category-item-list">
+                                            {% endif %}
+
+                                        {% for item in category_list %}
+                                            {% if item.groupCategory.slug == item_category.slug %}
+                                                {% if item == category %}
+                                                    <li class="product-category-item-item">
+                                                        <a href="{{ item.get_absolute_url }}"
+                                                           class="product-category-item-link"
+                                                           style="color:#b61827; font-weight: 400">
+                                                            <span>{{ item.name }}</span>
+                                                        </a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="product-category-item-item">
+                                                        <a href="{{ item.get_absolute_url }}"
+                                                           class="product-category-item-link">
+                                                            <span>{{ item.name }}</span>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        </ul>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 col-sm-8 col-md-9">
+                    <div class="product-input mb-5">
+                        <form class="d-flex nav-search w-100 mb-4">
+                            <input class="form-control nav-search-input" name="search" oninput="onInput(this)"
+                                   placeholder="Search"
+                                   aria-label="Search" onblur="onBlur(this)">
+                            <button class="nav-search-btn" type="submit"><i class="bi bi-search icon-search"></i>
+                            </button>
+                            <p class="nav-close-btn" onclick="deleteInput(this)"><i class="bi bi-x"></i></p>
+                        </form>
+                        <div class="ms-auto w-25">
+                            <select class="form-select select-form" aria-label="Default select example">
+                                <option class="option-select" selected>Sort</option>
+                                <option class="option-select" value="1">Name</option>
+                                <option class="option-select" value="2">Favorite</option>
+                                <option class="option-select" value="3">Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="list-product p-lg-3">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                            {% for product in products %}
+                                <div class="col mb-5 list-products-content" style="display:none">
+                                    <div class="home-card">
+                                        <div class="card w-100 home-card-content" style="width: 18rem;">
+                                            {% if product.img %}
+                                                <img loading="lazy" src="{{ product.img.url }}" class="card-img-top"
+                                                     alt="">
+                                            {% else %}
+                                                <img loading="lazy" src="{% static 'img/iphone-2.jpg' %}"
+                                                     class="card-img-top" alt="">
+                                            {% endif %}
+                                            <div class="card-body d-flex flex-column">
+                                                <div class="card-type mb-2">
+                                                    <div class="card-type-header me-auto">KINH PHI</div>
+                                                    <div class="card-type-icon">
+                                                        <button class="card-type-btn">
+                                                            <i class="bi bi-heart card-type-btn-icon"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <h5 class="card-title"><a href="{{ product.get_absolute_url }}"
+                                                                          class="card-title-link">{{ product.title }}</a>
+                                                </h5>
+                                                <p class="card-text card-text-caption">{{ product.caption }}</p>
+                                                <div class="card-category">
+                                                    <a href="" class="card-category-link">{{ product.category }}</a>
+                                                </div>
+                                                <div class="card-price d-flex">
+                                                    <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                    <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
+                                                </div>
+                                                <div class="mb-2 mt-1">
+                                                    <div class="progress card-progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             style="width: {{ product.percent|floatformat:2 }}%"
+                                                             aria-valuenow="{{ product.percent|floatformat:2 }}"
+                                                             aria-valuemin="0"
+                                                             aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-clock">
+                                            <span class="card-lock-label"><i
+                                                    class="bi bi-clock"></i> 26 ngày còn lại</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if products|length > 9 %}
+                            <div class="row text-center">
+                                <div>
+                                    <button class="button-primary button-load-more">Load more</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#javascript#}
+    <script>
+        $(".list-products-content").slice(0, 9).show();
+        $(".button-load-more").on("click", () => {
+            $(".list-products-content:hidden").slice(0, 9).show();
+            if ($(".list-products-content:hidden").length === 0) {
+                $(".button-load-more").fadeOut()
+            }
+        })
+    </script>
+{% endblock body %}
