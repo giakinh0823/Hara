@@ -28,6 +28,7 @@ a, button, input, select, textarea {
     -webkit-tap-highlight-color: transparent;
 }
 
+
 button, input, select, textarea {
     background-color: transparent;
     border-style: none;
@@ -86,6 +87,16 @@ img {
 .button-primary:hover {
     color: #fff;
     background-color: #ce2c3b;
+}
+
+.button-secondary{
+    border: 1px solid #333!important;
+    padding: 8px 26px;
+}
+
+.button-secondary:hover{
+    background-color: #b61827;
+    color: #fff;
 }
 
 .form-check-input:checked{

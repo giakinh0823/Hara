@@ -112,13 +112,13 @@
                                             <div class="col mb-5 list-products-content" style="display: none">
                                                 <div class="home-card">
                                                     <div class="card w-100 home-card-content" style="width: 18rem;">
-                                                        <{% if product.img %}
-                                                        <img loading="lazy" src="{{ product.img.url }}"
-                                                             class="card-img-top" alt="">
-                                                    {% else %}
-                                                        <img loading="lazy" src="{% static 'img/iphone-2.jpg' %}"
-                                                             class="card-img-top" alt="">
-                                                    {% endif %}
+                                                        {% if product.img %}
+                                                            <img loading="lazy" src="{{ product.img.url }}"
+                                                                 class="card-img-top" alt="">
+                                                        {% else %}
+                                                            <img loading="lazy" src="{% static 'img/iphone-2.jpg' %}"
+                                                                 class="card-img-top" alt="">
+                                                        {% endif %}
                                                         <div class="card-body d-flex flex-column">
                                                             <div class="card-type mb-2">
                                                                 <div class="card-type-header me-auto">KINH PHI</div>

@@ -1,0 +1,36 @@
+
+
+.product_detail-active.active{
+    color: #1b1b1b!important;
+    background-color: #fff!important;
+    border-radius: 0;
+    border-bottom: 3px solid #d73446;
+}
+
+.product_detail-list{
+
+}
+
+.product_detail-item{
+    margin-bottom: 35px;
+}
+
+
+.faq_item-header{
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.comment-user-image{
+
+}
+.comment-user-img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.comment-icon{
+    font-size: 18px;
+    margin-top: -5px;
+}

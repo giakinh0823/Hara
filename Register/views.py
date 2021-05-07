@@ -83,3 +83,7 @@ def edit_profile(request, slug):
             context = {'formUser': formUser, 'formProfile': formProfile,'userProfile': userProfile ,'error': 'Something is wrong'}
             return render(request, 'Register/edit_profile.html', context)
     return render(request,'Register/edit_profile.html', {'formUser': formUser,'formProfile': formProfile, 'userProfile': userProfile })
+
+
+def profileDetail(request, slug):
+    pass
