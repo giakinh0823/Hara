@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from Product.models import Product
@@ -57,6 +58,13 @@ def profile(request, slug):
     except:
         userProfile = None
     products = Product.objects.filter(user=request.user)
+    if request.method == 'GET':
+        try:
+            getProduct = request.GET['search']
+        except:
+            getProduct = None
+        if getProduct:
+            products = products.filter(Q(title__icontains=request.GET['search']))
     return render(request, 'register/profile.html', {'profile': userProfile, 'products': products})
 
 @login_required
@@ -78,7 +86,7 @@ def edit_profile(request, slug):
                 userProfiler.image = request.FILES['image']
             userProfiler.save()
             user.save()
-            return redirect(userProfile.get_absolute_url())
+            return redirect('register:profile', slug=userProfiler.slug)
         else:
             context = {'formUser': formUser, 'formProfile': formProfile,'userProfile': userProfile ,'error': 'Something is wrong'}
             return render(request, 'Register/edit_profile.html', context)

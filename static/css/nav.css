@@ -222,6 +222,11 @@
 
 }
 
+.nav-link-dropdown[data-bs-popper]{
+    left: -160%;
+    padding: 25px 10px;
+}
+
 .nav-item-span {
     color: white;
     font-size: 20px;

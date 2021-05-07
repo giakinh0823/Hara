@@ -76,4 +76,12 @@ class Image(models.Model):
 
 class Video(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    video = models.FileField(upload_to='post_files', blank=True, null=True)
+    video = models.CharField(max_length=2000, null=True)
+
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField()
+
+    def __str__(self) -> str:
+        return self.user.get_full_name()

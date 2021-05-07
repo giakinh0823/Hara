@@ -1,5 +1,7 @@
 {% extends 'Base/index.html' %}
 {% load static %}
+{% load Sum %}
+{% load imageYoutube %}
 {% block body %}
     <div class="product_detail" style="padding: 40px 0">
         <div class="container">
@@ -8,65 +10,96 @@
                     <div class="product_detail-carousel">
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-indicators carousel-indicators-product-details">
-                                <div>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                            data-bs-slide-to="0"
-                                            class="product_detail-button active" aria-current="true"
-                                            aria-label="Slide 1"
-                                            style="background-image: url('http://i3.ytimg.com/vi/tgbNymZ7vqY/maxresdefault.jpg');"
-                                    >
-                                    </button>
-                                </div>
-                                <div>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                            data-bs-slide-to="1"
-                                            class="product_detail-button" aria-current="true" aria-label="Slide 1"
-                                            style="background-image: url('{% static 'img/iphone-2.jpg' %}');"
-                                    >
-                                    </button>
-                                </div>
-                                <div>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                            data-bs-slide-to="2"
-                                            class="product_detail-button" aria-current="true" aria-label="Slide 1"
-                                            style="background-image: url('http://i3.ytimg.com/vi/tgbNymZ7vqY/maxresdefault.jpg');"
-                                    >
-                                    </button>
-                                </div>
-                                <div>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                            data-bs-slide-to="3"
-                                            class="product_detail-button" aria-current="true" aria-label="Slide 1"
-                                            style="background-image: url('{% static 'img/iphone-2.jpg' %}');"
-                                    >
-                                    </button>
-                                </div>
-                                <div>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                            data-bs-slide-to="4"
-                                            class="product_detail-button" aria-current="true" aria-label="Slide 1"
-                                            style="background-image: url('{% static 'img/iphone-2.jpg' %}');"
-                                    >
-                                    </button>
-                                </div>
+                                {% if images or videos %}
+                                    {% for image in images %}
+                                        <div>
+                                            {% if forloop.counter0 == 0 %}
+                                                <button type="button" data-bs-target="#carouselExampleIndicators"
+                                                        data-bs-slide-to="0"
+                                                        class="product_detail-button active" aria-current="true"
+                                                        aria-label="Slide 1"
+                                                        style="background-image: url('{{ image.image.url }}');"
+                                                >
+                                                </button>
+                                            {% else %}
+                                                <button type="button" data-bs-target="#carouselExampleIndicators"
+                                                        data-bs-slide-to="{{ forloop.counter0 }}"
+                                                        class="product_detail-button" aria-current="true"
+                                                        aria-label="Slide 1"
+                                                        style="background-image: url('{{ image.image.url }}');"
+                                                >
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                    {% for video in videos %}
+                                        {% if not images and forloop.counter0 == 0 %}
+                                            <div>
+                                                <button type="button" data-bs-target="#carouselExampleIndicators"
+                                                        data-bs-slide-to="{{ forloop.counter|Sum:images }}"
+                                                        class="product_detail-button active" aria-current="true"
+                                                        aria-label="Slide 1"
+                                                        style="background-image: url('http://i3.ytimg.com/vi/{{ video.video|imageYoutube }}/maxresdefault.jpg');"
+                                                >
+                                                </button>
+                                            </div>
+                                        {% else %}
+                                            <div>
+                                                <button type="button" data-bs-target="#carouselExampleIndicators"
+                                                        data-bs-slide-to="{{ forloop.counter|Sum:images }}"
+                                                        class="product_detail-button" aria-current="true"
+                                                        aria-label="Slide 1"
+                                                        style="background-image: url('http://i3.ytimg.com/vi/{{ video.video|imageYoutube }}/maxresdefault.jpg');"
+                                                >
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <div>
+                                        <button type="button" data-bs-target="#carouselExampleIndicators"
+                                                data-bs-slide-to="1"
+                                                class="product_detail-button" aria-current="true" aria-label="Slide 1"
+                                                style="background-image: url('{% static 'img/blog1.jpg' %}');"
+                                        >
+                                        </button>
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="carousel-inner">
-                                <div class="carousel-item active">
-{#                                    <img src="{% static 'img/iphone-2.jpg' %}" class="d-block w-100" alt="...">#}
-                                    <iframe  class="d-block w-100 h-100" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="{% static 'img/iphone-2.jpg' %}" class="d-block w-100 h-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <iframe  class="d-block w-100 h-100" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="{% static 'img/iphone-2.jpg' %}" class="d-block w-100 h-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="{% static 'img/iphone-2.jpg' %}" class="d-block w-100 h-100" alt="...">
-                                </div>
+                                {% if images or videos %}
+                                    {% for image in images %}
+                                        {% if forloop.counter0 == 0 %}
+                                            <div class="carousel-item active">
+                                                <img src="{{ image.image.url }}" class="d-block w-100 h-100"
+                                                     alt="...">
+                                            </div>
+                                        {% else %}
+                                            <div class="carousel-item">
+                                                <img src="{{ image.image.url }}" class="d-block w-100 h-100"
+                                                     alt="...">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for video in videos %}
+                                        {% if not images and forloop.counter0 == 0 %}
+                                            <div class="carousel-item active">
+                                                <iframe class="d-block w-100 h-100"
+                                                        src="{{ video.video }}"></iframe>
+                                            </div>
+                                        {% else %}
+                                            <div class="carousel-item">
+                                                <iframe class="d-block w-100 h-100"
+                                                        src="{{ video.video }}"></iframe>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="carousel-item active">
+                                        <img src="{% static 'img/blog1.jpg' %}" class="d-block w-100 h-100"
+                                             alt="...">
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -188,948 +221,50 @@
                         <div class="tab-pane fade" id="pills-profile" role="tabpanel"
                              aria-labelledby="pills-profile-tab">
                             <div class="comment">
-                                <form action="" class="form-comment row">
+                                <div class="form-comment row">
                                     <label for="id_comment" class="form-label" style="font-size: 18px; padding: 0">Post
                                         a comment</label>
-                                    <textarea type="area" id='id_comment' class="form-control" rows="4"></textarea>
-                                    <button class="button-secondary mt-3 ms-auto" style="width:fit-content">POST
+                                    <textarea type="area" id='id_comment' required class="form-control"
+                                              rows="4"></textarea>
+                                    <button class="button-secondary mt-3 ms-auto" id="comment-button"
+                                            style="width:fit-content">POST
                                     </button>
-                                </form>
+                                </div>
                             </div>
                             <div class="comment-content">
                                 <div class="col">
                                     <ul class="comment_content-list">
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
+                                        {% if comments %}
+                                            {% for comment in comments %}
+                                                <li class="comment_content-item mb-3" style="display:none">
+                                                    <div class="comment-user d-flex">
+                                                        <div class="comment-user-image">
+                                                            <img src="{{ profile_detail.image.url }}" alt="..."
+                                                                 class="comment-user-img">
                                                         </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
+                                                        <div class="comment-user-content ms-3">
+                                                            <p style="font-weight: 500; margin:0"
+                                                               id="comment_user">{{ comment.user.get_full_name }}</p>
+                                                            <p class="mt-2"
+                                                               id="comment_content_label">{{ comment.comment }}</p>
+                                                            <div class="d-flex">
+                                                                <div>
+                                                                    <button class="comment-icon comment-like"><i
+                                                                            class="bi bi-hand-thumbs-up"></i></button>
+                                                                    <span>9</span>
+                                                                </div>
+                                                                <div class="ms-2">
+                                                                    <button class="comment-icon comment-dislike"><i
+                                                                            class="bi bi-hand-thumbs-down"></i></button>
+                                                                    <span>9</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="comment_content-item mb-3" style="display:none">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="{% static 'img/iphone.jpg' %}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0">Derren Whiteman</p>
-                                                    <p class="mt-2">I have been a big fan of Rolling Square, and a bunch
-                                                        of its previous crowdfunding products, so I jumped all over this
-                                                        one. I always look forward to announcements about new goodies as
-                                                        there is always a high probability that I’m going to want
-                                                        whatever they’ve come up with. I’ve never been let down before
-                                                        and, here they are again, with another great product. Even the
-                                                        logo for the company gives me a smile. Please keep up the great
-                                                        work guys!</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                                </li>
+                                            {% endfor %}
 
+                                        {% endif %}
                                     </ul>
                                     <div class="row text-center">
                                         <div>
@@ -1317,13 +452,93 @@
                                 </div>
                             </div>
                         {% endfor %}
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
+
+        const endpoint = 'ws://127.0.0.1:8000/ws/comment/{{ product_detail.slug }}/'
+        const socket = new WebSocket(endpoint)
+
+        socket.onopen = function (e) {
+            console.log("open", e);
+        }
+        socket.onmessage = function (e) {
+            console.log("message", e)
+            const data = JSON.parse(e.data);
+            console.log(data)
+            document.querySelector(".comment_content-list").innerHTML = (`<li class="comment_content-item mb-3">
+                                            <div class="comment-user d-flex">
+                                                <div class="comment-user-image">
+                                                    <img src="${data.avatar}" alt="..."
+                                                         class="comment-user-img">
+                                                </div>
+                                                <div class="comment-user-content ms-3">
+                                                    <p style="font-weight: 500; margin:0" id="comment_user">${data.username}</p>
+                                                    <p class="mt-2" id="comment_content_label">${data.comment}</p>
+                                                    <div class="d-flex">
+                                                        <div>
+                                                            <button class="comment-icon comment-like"><i
+                                                                    class="bi bi-hand-thumbs-up"></i></button>
+                                                            <span>9</span>
+                                                        </div>
+                                                        <div class="ms-2">
+                                                            <button class="comment-icon comment-dislike"><i
+                                                                    class="bi bi-hand-thumbs-down"></i></button>
+                                                            <span>9</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>`) + document.querySelector(".comment_content-list").innerHTML
+
+        }
+        socket.onerror = function (e) {
+            console.log("error", e)
+        }
+        socket.onclose = function (e) {
+            console.log("close", e)
+        }
+
+        const endpointUserComment = 'ws://127.0.0.1:8000/ws/notify/{{ product_detail.user }}/'
+        const socketUserComment = new WebSocket(endpointUserComment)
+
+
+        document.getElementById("comment-button").onclick = (e) => {
+            const comment = document.querySelector("#id_comment").value;
+
+            if (comment !== '') {
+                {% if product_detail.user == request.user %}
+                {% else %}
+                    socketUserComment.send(JSON.stringify({
+                        'comment': "{{ user.get_full_name }} đã đánh sản phẩm {{ product_detail.title }}",
+                        'username': "{{ product_detail.user }}",
+                        'room': "{{ product_detail.user }}",
+                        'product': "{{ product_detail.get_absolute_url }}",
+                    }))
+                {% endif %}
+
+                socket.send(JSON.stringify({
+                    'comment': comment,
+                    'username': "{{ user }}",
+                    'name': "{{ user.get_full_name }}",
+                    'room': "{{ product_detail.slug }}",
+                    'person': "{{ product_detail.user }}",
+                    'avatar': "{{ profile_detail.image.url }}"
+                }))
+                document.querySelector("#id_comment").value = ''
+            } else {
+
+            }
+
+
+        }
+
+        if ($(".comment_content-item").length < 9) {
+            $(".button-load-more").hide();
+        }
         $(".comment_content-item").slice(0, 7).show();
         $(".button-load-more").on("click", () => {
             $(".comment_content-item:hidden").slice(0, 7).show();
@@ -1331,5 +546,6 @@
                 $(".button-load-more").fadeOut()
             }
         })
+
     </script>
 {% endblock body %}

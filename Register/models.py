@@ -25,3 +25,10 @@ class Profile(models.Model):
         if not self.slug:
             self.slug = slugify(self.user.username)
         return super().save(*args, **kwargs)
+
+
+class Notifications(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    link = models.CharField(max_length=2000)
+    new = models.BooleanField(default=False)

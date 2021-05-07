@@ -252,7 +252,7 @@
                         <a class="nav-link active font-bold" aria-current="page" href="#">What we do</a>
                     </li>
                 </ul>
-                <form class="d-flex nav-search">
+                <form class="d-flex nav-search" action="{% url 'product:products' %}">
                     <input class="form-control nav-search-input" name="search" placeholder="Search" id="search"
                            aria-label="Search" oninput="onInput(this)" onblur="onBlur(this)">
                     <button class="nav-search-btn" type="submit"><i class="bi bi-search icon-search"></i></button>
@@ -264,14 +264,44 @@
                             Idea</a>
                     </li>
                     <li class="nav-item item-separate">
-                        <a class="nav-link active font-bold" aria-current="page" href="#">Start a Campaign</a>
+                        <a class="nav-link active font-bold" aria-current="page"
+                           href="{% url 'product:create_product' %}">Start a Campaign</a>
                     </li>
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <button class="nav-link active font-bold" aria-current="page" ><i class="bi bi-bell"></i></button>
+                            <button class="nav-link active font-bold position-relative button-notify"
+                                    aria-current="page"
+                                    style="font-size: 20px"><i class="bi bi-bell"></i>
+                                {% if not request.session.newNotify %}
+                                    <style>
+                                        #{{ request.user }}{
+                                            display: none;
+                                        }
+                                    </style>
+                                {% endif %}
+                                <span id="{{ request.user }}"
+                                      style="position: absolute;
+                                     background-color: #b61827;
+                                     color: #fff; height: 20px;
+                                     width: 20px;
+                                     border-radius: 50%;
+                                     font-size: 14px; left: 50%; top: 0">{{ request.session.newNotify }}</span>
+                            </button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active font-bold" aria-current="page" href="{% url 'register:profile' slug=request.user %}">Profile</a>
+                        {#<a class="nav-link active font-bold" aria-current="page" href="{% url 'register:profile' slug=request.user %}">Profile</a>#}
+                        <li class="nav-item dropdown ms-2 me-2">
+                            <a class="nav-link dropdown-toggle font-bold" type="button" id="dropdownMenuButton1"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                {{ request.user.last_name }}
+                            </a>
+                            <ul class="dropdown-menu nav-link-dropdown" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'register:profile' slug=request.user %}">Profile</a>
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'register:edit_profile' slug=request.user %}">Edit
+                                    Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'register:logout' %}">Logout</a></li>
+                            </ul>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -406,6 +436,29 @@
 <script src="{% static 'components/Input/input.js' %}"></script>
 <script src="{% static 'components/carousel/carousel.js' %}"></script>
 <script src="{% static 'components/select/navbarList.js' %}"></script>
+<script src="{% static 'components/channels/comment.js' %}"></script>
 
+<script>
+    const endpointUser = 'ws://127.0.0.1:8000/ws/notify/{{ request.user }}/'
+    const socketUser = new WebSocket(endpointUser)
+
+    socketUser.onopen = function (e) {
+        console.log("open", e);
+    }
+    socketUser.onmessage = function (e) {
+        console.log("message", e)
+        const data = JSON.parse(e.data);
+        $("#{{ request.user }}").css('display', 'block')
+        let value = $('#{{ request.user }}').text()
+        $("#{{ request.user }}").text(parseInt(value) + 1)
+        console.log(data)
+    }
+    socketUser.onerror = function (e) {
+        console.log("error", e)
+    }
+    socketUser.onclose = function (e) {
+        console.log("close", e)
+    }
+</script>
 </body>
 </html>
