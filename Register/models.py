@@ -26,9 +26,17 @@ class Profile(models.Model):
             self.slug = slugify(self.user.username)
         return super().save(*args, **kwargs)
 
+    def __str__(self) -> str:
+        return self.user.username
+
 
 class Notifications(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     link = models.CharField(max_length=2000)
+    person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="person")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     new = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.user.username

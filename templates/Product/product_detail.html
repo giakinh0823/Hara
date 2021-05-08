@@ -118,10 +118,17 @@
                                 <img src="{{ profile_detail.image.url }}" alt="" class="product_user-img">
                             </div>
                             <div class="product_user-name ms-3">
-                                <a href="{{ profile_detail.get_absolute_url }}" class="text-decoration-none"
-                                   style="color: #1b1b1b"><p
-                                        style="font-size: 18px;font-weight:600 ;margin: 0">{{ product_detail.user.get_full_name }}</p>
-                                </a>
+                                {% if request.user == profile_detail.user %}
+                                    <a href="{{ profile_detail.get_absolute_url }}" class="text-decoration-none"
+                                       style="color: #1b1b1b"><p
+                                            style="font-size: 18px;font-weight:600 ;margin: 0">{{ product_detail.user.get_full_name }}</p>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ profile_detail.get_absolute_url_detail }}" class="text-decoration-none"
+                                       style="color: #1b1b1b"><p
+                                            style="font-size: 18px;font-weight:600 ;margin: 0">{{ product_detail.user.get_full_name }}</p>
+                                    </a>
+                                {% endif %}
                                 <p>9 Campaigns | {{ profile_detail.address }}</p>
                             </div>
                         </div>
@@ -239,13 +246,22 @@
                                                 <li class="comment_content-item mb-3" style="display:none">
                                                     <div class="comment-user d-flex">
                                                         <div class="comment-user-image">
-                                                            <img src="{{ profile_detail.image.url }}" alt="..."
+                                                            <img src="{{ comment.profile.image.url }}" alt="..."
                                                                  class="comment-user-img">
                                                         </div>
                                                         <div class="comment-user-content ms-3">
-                                                            <p style="font-weight: 500; margin:0"
-                                                               id="comment_user">{{ comment.user.get_full_name }}</p>
-                                                            <p class="mt-2"
+                                                            {% if user == comment.user %}
+                                                                <a class="text-decoration-none"
+                                                                   href="{{ profile_detail.get_absolute_url }}"
+                                                                   style="font-weight: 500; margin:0; color: #1b1b1b"
+                                                                   id="comment_user">{{ comment.user.get_full_name }}</a>
+                                                            {% else %}
+                                                                <a class="text-decoration-none"
+                                                                   href="{{ comment.profile.get_absolute_url_detail }}"
+                                                                   style="font-weight: 500; margin:0; color: #1b1b1b"
+                                                                   id="comment_user">{{ comment.user.get_full_name }}</a>
+                                                            {% endif %}
+                                                            <p class="mt-0"
                                                                id="comment_content_label">{{ comment.comment }}</p>
                                                             <div class="d-flex">
                                                                 <div>
@@ -470,29 +486,32 @@
             const data = JSON.parse(e.data);
             console.log(data)
             document.querySelector(".comment_content-list").innerHTML = (`<li class="comment_content-item mb-3">
-                                            <div class="comment-user d-flex">
-                                                <div class="comment-user-image">
-                                                    <img src="${data.avatar}" alt="..."
-                                                         class="comment-user-img">
-                                                </div>
-                                                <div class="comment-user-content ms-3">
-                                                    <p style="font-weight: 500; margin:0" id="comment_user">${data.username}</p>
-                                                    <p class="mt-2" id="comment_content_label">${data.comment}</p>
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <button class="comment-icon comment-like"><i
-                                                                    class="bi bi-hand-thumbs-up"></i></button>
-                                                            <span>9</span>
+                                                    <div class="comment-user d-flex">
+                                                        <div class="comment-user-image">
+                                                            <img src="${data.avatar}" alt="..."
+                                                                 class="comment-user-img">
                                                         </div>
-                                                        <div class="ms-2">
-                                                            <button class="comment-icon comment-dislike"><i
-                                                                    class="bi bi-hand-thumbs-down"></i></button>
-                                                            <span>9</span>
+                                                        <div class="comment-user-content ms-3">
+                                                             <a class="text-decoration-none" href="${data.url}"
+                                                                   style="font-weight: 500; margin:0; color: #1b1b1b"
+                                                                   id="comment_user">${data.name}</a>
+                                                            <p class="mt-0"
+                                                               id="comment_content_label">${data.comment}</p>
+                                                            <div class="d-flex">
+                                                                <div>
+                                                                    <button class="comment-icon comment-like"><i
+                                                                            class="bi bi-hand-thumbs-up"></i></button>
+                                                                    <span>9</span>
+                                                                </div>
+                                                                <div class="ms-2">
+                                                                    <button class="comment-icon comment-dislike"><i
+                                                                            class="bi bi-hand-thumbs-down"></i></button>
+                                                                    <span>9</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </li>`) + document.querySelector(".comment_content-list").innerHTML
+                                                </li>`) + document.querySelector(".comment_content-list").innerHTML
 
         }
         socket.onerror = function (e) {
@@ -517,6 +536,7 @@
                         'username': "{{ product_detail.user }}",
                         'room': "{{ product_detail.user }}",
                         'product': "{{ product_detail.get_absolute_url }}",
+                        'person': "{{ user }}",
                     }))
                 {% endif %}
 
@@ -526,7 +546,8 @@
                     'name': "{{ user.get_full_name }}",
                     'room': "{{ product_detail.slug }}",
                     'person': "{{ product_detail.user }}",
-                    'avatar': "{{ profile_detail.image.url }}"
+                    'avatar': "{{ profile_user.image.url }}",
+                    "link": "{{ product_detail.get_absolute_url }}",
                 }))
                 document.querySelector("#id_comment").value = ''
             } else {

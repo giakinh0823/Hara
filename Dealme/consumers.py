@@ -57,15 +57,22 @@ class CommentsConsumer(AsyncWebsocketConsumer):
         room = data['room']
         person = data['person']
         avatar = data['avatar']
+        name = data['name']
 
         await self.save_comment(username, room, comment)
+
+        @sync_to_async
+        def get_url():
+            user = User.objects.get(username=username)
+            profile = Profile.objects.get(user=user)
+            return profile.get_absolute_url()
 
         @sync_to_async
         def get_image():
             user = User.objects.get(username=username)
             profile = Profile.objects.get(user=user)
             return profile.image.url
-
+        url = await get_url(),
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_send(
             room_name,
@@ -75,6 +82,8 @@ class CommentsConsumer(AsyncWebsocketConsumer):
                 'username': username,
                 'person': person,
                 'avatar': avatar,
+                'name': name,
+                'url': url,
             }
         )
 
@@ -83,12 +92,16 @@ class CommentsConsumer(AsyncWebsocketConsumer):
         username = event['username']
         person = event['person']
         avatar = event['avatar']
+        url = event['url']
+        name = event['name']
         # Gửi tin nhắn tới WebSocket
         await self.send(text_data=json.dumps({
             'comment': comment,
             'username': username,
             'person': person,
             'avatar': avatar,
+            'url': url,
+            'name': name,
         }))
 
     async def disconnect(self, close_code):
@@ -100,7 +113,8 @@ class CommentsConsumer(AsyncWebsocketConsumer):
     def save_comment(self, username, room, comment):
         product = Product.objects.get(slug=room)
         user = User.objects.get(username=username)
-        Comment.objects.create(product=product, user=user, comment=comment)
+        profile = Profile.objects.get(user=user,)
+        Comment.objects.create(product=product, user=user, comment=comment, profile=profile)
 
 
 class NotifierConsumer(AsyncWebsocketConsumer):
@@ -117,8 +131,9 @@ class NotifierConsumer(AsyncWebsocketConsumer):
         comment = data['comment']
         username = data['username']
         product = data['product']
+        person = data['person']
 
-        await self.save_notify(username, product, comment)
+        await self.save_notify(username, product, comment, person)
         await self.saveSession()
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_send(
@@ -127,25 +142,28 @@ class NotifierConsumer(AsyncWebsocketConsumer):
                 'type': 'notification',
                 'comment': comment,
                 'username': username,
-                'product': product
+                'product': product,
+                'person': person
             }
         )
 
     @sync_to_async
     def saveSession(self):
-        self.scope["session"].save()
         self.scope["session"]["newNotify"] = self.scope["session"]["newNotify"] + 1
+        self.scope["session"].save()
 
 
     async def notification(self, event):
         comment = event['comment']
         username = event['username']
         product = event['product']
+        person = event['person']
         # Gửi tin nhắn tới WebSocket
         await self.send(text_data=json.dumps({
             'comment': comment,
             'username': username,
             'product': product,
+            'person': person
         }))
 
     async def disconnect(self, close_code):
@@ -154,6 +172,8 @@ class NotifierConsumer(AsyncWebsocketConsumer):
         print(f"Remove {self.channel_name} channel from comment's group")
 
     @sync_to_async
-    def save_notify(self, username, product, comment):
+    def save_notify(self, username, product, comment, person):
         user = User.objects.get(username=username)
-        Notifications.objects.create(link=product, content=comment, user=user, new=True)
+        newPerson = User.objects.get(username = person)
+        profile = Profile.objects.get(user = newPerson)
+        Notifications.objects.create(link=product, content=comment, user=user, new=True, person=newPerson, profile=profile)

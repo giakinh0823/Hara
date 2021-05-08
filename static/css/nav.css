@@ -95,12 +95,12 @@
 }
 
 
-.nav-item a:hover{
-    color: #b61827!important;
+.nav-item a:hover {
+    color: #b61827 !important;
 }
 
-.nav-item label:hover{
-    color: #b61827!important;
+.nav-item label:hover {
+    color: #b61827 !important;
 }
 
 
@@ -203,7 +203,7 @@
 }
 
 .nav-item-item:hover .nav-item-link {
-    color: white!important;
+    color: white !important;
 }
 
 .nav-item-link {
@@ -222,7 +222,7 @@
 
 }
 
-.nav-link-dropdown[data-bs-popper]{
+.nav-link-dropdown[data-bs-popper] {
     left: -160%;
     padding: 25px 10px;
 }
@@ -239,19 +239,19 @@
 
 .nav-search {
     position: relative;
-    width: 40% ;
+    width: 40%;
 }
 
 .nav-search-input {
     margin-left: 10px;
 }
 
-.nav-search-input:hover{
-    border-color:#b61827;
+.nav-search-input:hover {
+    border-color: #b61827;
 }
 
 .nav-search-input::placeholder {
-    font-weight:400;
+    font-weight: 400;
 }
 
 .nav-search-btn {
@@ -272,12 +272,12 @@
     font-size: 25px;
 }
 
-.item-separate{
+.item-separate {
     position: relative;
     margin-right: 15px;
 }
 
-.item-separate::after{
+.item-separate::after {
     content: '';
     position: absolute;;
     right: -5px;
@@ -289,4 +289,71 @@
     background-color: rgba(51, 51, 51, 0.6);
 }
 
+.nav-link-dropdown-item:focus{
+    text-decoration: none;
+    background-color: rgba(51, 51, 51, 0.33);
+}
+
+.button-notify {
+    cursor: pointer;
+}
+
+.button-notify::after {
+    display: none;
+
+}
+
+.notification-span {
+    position: absolute;
+    background-color: #b61827;
+    color: #fff;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    font-size: 14px;
+    left: 50%;
+    top: 0;
+}
+
+.notification-drop-menu {
+    position: absolute;
+    top: 100%;
+    left: -900% !important;
+    z-index: 1000;
+    display: none;
+    min-width: 24rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: .9rem .9rem;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 0.25rem;
+}
+
+.notification-drop-menu li .dropdown-item {
+    display: block;
+    width: 100%;
+    min-height: 60px;
+    padding: .8rem 0.8rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: normal;
+    background-color: transparent;
+    border: 0;
+    font-size: 14px;
+    border-radius: 0.4rem;
+}
+
+.notification-drop-menu li .dropdown-item:hover{
+    background-color: rgba(51, 51, 51, 0.13);
+}
 

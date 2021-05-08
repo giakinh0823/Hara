@@ -268,10 +268,10 @@
                            href="{% url 'product:create_product' %}">Start a Campaign</a>
                     </li>
                     {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <button class="nav-link active font-bold position-relative button-notify"
-                                    aria-current="page"
-                                    style="font-size: 20px"><i class="bi bi-bell"></i>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active font-bold position-relative button-notify dropdown-toggle"
+                               id="notification" data-bs-toggle="dropdown" aria-expanded="false"
+                               style="font-size: 20px"><i class="bi bi-bell"></i>
                                 {% if not request.session.newNotify %}
                                     <style>
                                         #{{ request.user }}{
@@ -279,14 +279,46 @@
                                         }
                                     </style>
                                 {% endif %}
-                                <span id="{{ request.user }}"
-                                      style="position: absolute;
-                                     background-color: #b61827;
-                                     color: #fff; height: 20px;
-                                     width: 20px;
-                                     border-radius: 50%;
-                                     font-size: 14px; left: 50%; top: 0">{{ request.session.newNotify }}</span>
-                            </button>
+                                <div id="{{ request.user }}"
+                                     class="notification-span text-center">
+                                    <span>{{ request.session.newNotify }}</span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu notification-drop-menu" aria-labelledby="notification">
+                                {% if newNotify %}
+                                    {% for item in newNotify %}
+                                        <li>
+                                            <a class="dropdown-item" href="{{ item.link }}">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ item.profile.image.url }}" alt=""
+                                                         style="width: 40px; height: 40px; border-radius:50%">
+                                                    <p class="ms-3"
+                                                       style="font-weight:500; margin-bottom: 0">{{ item.content }}</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if notify %}
+                                    {% for item in notify %}
+                                        <li>
+                                            <a class="dropdown-item" href="{{ item.link }}">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ item.profile.image.url }}" alt=""
+                                                         style="width: 40px; height: 40px; border-radius:50%">
+                                                    <p class="ms-3"
+                                                       style="margin-bottom: 0">{{ item.content }}</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if not notify and not newNotify %}
+                                    <li style="padding: 40% 25%">
+                                        Không có thông báo nào
+                                    </li>
+                                {% endif %}
+                            </ul>
                         </li>
                         {#<a class="nav-link active font-bold" aria-current="page" href="{% url 'register:profile' slug=request.user %}">Profile</a>#}
                         <li class="nav-item dropdown ms-2 me-2">
@@ -296,11 +328,14 @@
                                 {{ request.user.last_name }}
                             </a>
                             <ul class="dropdown-menu nav-link-dropdown" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="{% url 'register:profile' slug=request.user %}">Profile</a>
+                                <li><a class="dropdown-item nav-link-dropdown-item"
+                                       href="{% url 'register:profile' slug=request.user %}">Profile</a>
                                 </li>
-                                <li><a class="dropdown-item" href="{% url 'register:edit_profile' slug=request.user %}">Edit
+                                <li><a class="dropdown-item nav-link-dropdown-item"
+                                       href="{% url 'register:edit_profile' slug=request.user %}">Edit
                                     Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'register:logout' %}">Logout</a></li>
+                                <li><a class="dropdown-item nav-link-dropdown-item" href="{% url 'register:logout' %}">Logout</a>
+                                </li>
                             </ul>
                         </li>
                     {% else %}
@@ -459,6 +494,21 @@
     socketUser.onclose = function (e) {
         console.log("close", e)
     }
+
+    $( document ).ready(function(){
+        $('.button-notify').click(()=>{
+            $.ajax({
+                type: "GET",
+                url: " {% url 'home:home' %}",
+                data: "",
+                dataType: 'html',
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data)
+                    $('.notification-drop-menu').html(data)
+                },
+            })
+        });
+    })
 </script>
 </body>
 </html>

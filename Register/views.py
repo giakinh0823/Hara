@@ -12,7 +12,7 @@ from Product.models import Product
 from .forms import SignUpForm, ProfileForm, EditUser
 
 # Create your views here.
-from .models import Profile
+from .models import Profile, Notifications
 
 
 @user_passes_test(lambda u: u.is_anonymous, login_url='home:home')
@@ -65,10 +65,24 @@ def profile(request, slug):
             getProduct = None
         if getProduct:
             products = products.filter(Q(title__icontains=request.GET['search']))
-    return render(request, 'register/profile.html', {'profile': userProfile, 'products': products})
+    notify = Notifications.objects.all()
+    newNotify = Notifications.objects.filter(new=True)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    context = {
+        'profile': userProfile,
+        'products': products,
+        'newNotify': reversed(newNotify),
+        'notify': reversed(notify),
+    }
+    return render(request, 'register/profile.html', context)
 
 @login_required
 def edit_profile(request, slug):
+    notify = Notifications.objects.all()
+    newNotify = Notifications.objects.filter(new=True)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
     try:
         userProfile = Profile.objects.get(user=request.user)
     except:
@@ -88,10 +102,32 @@ def edit_profile(request, slug):
             user.save()
             return redirect('register:profile', slug=userProfiler.slug)
         else:
-            context = {'formUser': formUser, 'formProfile': formProfile,'userProfile': userProfile ,'error': 'Something is wrong'}
+            context = {
+                'formUser': formUser,
+                'formProfile': formProfile,
+                'userProfile': userProfile,
+                'error': 'Something is wrong',
+                'newNotify': reversed(newNotify),
+                'notify': reversed(notify),
+            }
             return render(request, 'Register/edit_profile.html', context)
-    return render(request,'Register/edit_profile.html', {'formUser': formUser,'formProfile': formProfile, 'userProfile': userProfile })
+    context = {
+        'formUser': formUser,
+        'formProfile': formProfile,
+        'userProfile': userProfile,
+        'newNotify': reversed(newNotify),
+        'notify': reversed(notify),
+    }
+    return render(request,'Register/edit_profile.html', )
 
 
 def profileDetail(request, slug):
+    notify = Notifications.objects.all()
+    newNotify = Notifications.objects.filter(new=True)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    context = {
+        'newNotify': reversed(newNotify),
+        'notify': reversed(notify),
+    }
     pass

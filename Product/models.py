@@ -6,6 +6,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 
+from Register.models import Profile
+
 
 def create_slug(title):  # new
     slug = slugify(title)
@@ -81,6 +83,7 @@ class Video(models.Model):
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comment_person", null=True)
     comment = models.TextField()
 
     def __str__(self) -> str:

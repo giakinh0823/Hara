@@ -2,7 +2,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
-from Register.models import Profile
+from Register.models import Profile, Notifications
 from .models import *
 
 from .getdata import data_scrap
@@ -29,13 +29,30 @@ def products(request):
         if getProduct:
             list_product = list_product.filter(Q(title__icontains=request.GET['search']))
 
-    context = {'products': list_product, 'group_category': group_category, 'category_list': list_category}
+    context = {
+        'products': list_product,
+        'group_category': group_category,
+        'category_list': list_category
+    }
+    if request.user.is_authenticated:
+        notify = Notifications.objects.all()
+        newNotify = notify.filter(new=True)
+        request.session['newNotify'] = len(newNotify)
+        newNotify = Notifications.objects.filter(new=True)
+        context = {
+            'products': list_product,
+            'group_category': group_category,
+            'category_list': list_category,
+            'newNotify': reversed(newNotify),
+            'notify': reversed(notify),
+        }
     return render(request, 'product/products.html', context)
 
 
 def productDetail(request, slug):
     product_detail = Product.objects.get(slug=slug)
     profile_detail = Profile.objects.get(user=product_detail.user)
+    profile_user = Profile.objects.get(user=request.user)
     list_products = Product.objects.filter(category=product_detail.category)
     ran = random.randint(0, len(list_products) - 3)
     videos = Video.objects.filter(product=product_detail)
@@ -45,11 +62,32 @@ def productDetail(request, slug):
         'product_detail': product_detail,
         'profile_detail': profile_detail,
         'list_products': list_products[ran:ran + 3],
-        'videos':videos,
-        'images':images,
+        'videos': videos,
+        'images': images,
         'comments': comments,
+        'profile_user': profile_user,
     }
-    return render(request, 'product/product_detail.html',context)
+    if request.user.is_authenticated:
+        notify = Notifications.objects.all()
+        clickNotify = notify.filter(link=product_detail.get_absolute_url())
+        for item in clickNotify:
+            item.new = False
+            item.save()
+        newNotify = Notifications.objects.filter(new=True)
+        notify = notify[:len(notify) - len(newNotify)]
+        request.session['newNotify'] = len(newNotify)
+        context = {
+            'product_detail': product_detail,
+            'profile_detail': profile_detail,
+            'list_products': list_products[ran:ran + 3],
+            'videos': videos,
+            'images': images,
+            'comments': comments,
+            'profile_user': profile_user,
+            'newNotify': reversed(newNotify),
+            'notify': reversed(notify),
+        }
+    return render(request, 'product/product_detail.html', context)
 
 
 def category(request, slug):
@@ -70,6 +108,19 @@ def category(request, slug):
         'group_category': group_category,
         'category_list': list_category
     }
+    if request.user.is_authenticated:
+        notify = Notifications.objects.all()
+        newNotify = Notifications.objects.filter(new=True)
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        context = {
+            'category': categoryDetail,
+            'products': product,
+            'group_category': group_category,
+            'category_list': list_category,
+            'newNotify': reversed(newNotify),
+            'notify': reversed(notify),
+        }
     return render(request, 'Product/category.html', context)
 
 
@@ -85,10 +136,36 @@ def groupCategory(request, slug):
             getProduct = None
         if getProduct:
             product = product.filter(Q(title__icontains=request.GET['search']))
-    context = {'products': product, 'group_category': group_category, 'category_list': list_category,
-               'category_group': category_group}
+    context = {
+        'products': product,
+        'group_category': group_category,
+        'category_list': list_category,
+        'category_group': category_group,
+    }
+    if request.user.is_authenticated:
+        notify = Notifications.objects.all()
+        newNotify = Notifications.objects.filter(new=True)
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        context = {
+            'products': product,
+            'group_category': group_category,
+            'category_list': list_category,
+            'category_group': category_group,
+            'newNotify': reversed(newNotify),
+            'notify': reversed(notify),
+        }
     return render(request, 'Product/group_category.html', context)
 
 
 def create_product(request):
+    if request.user.is_authenticated:
+        notify = Notifications.objects.all()
+        newNotify = Notifications.objects.filter(new=True)
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        context = {
+            'newNotify': reversed(newNotify),
+            'notify': reversed(notify),
+        }
     return render(request, 'product/create_product.html')
