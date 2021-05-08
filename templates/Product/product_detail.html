@@ -161,7 +161,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-3 d-flex">
-                                    <button class="button-primary">ĐẦU TƯ NGAY</button>
+                                    <a id="checkout-button" type="button" class="button-primary">ĐẦU TƯ NGAY</a>
                                     <button class="ms-3 button-secondary d-flex align-items-center">
                                         <span><i class="bi bi-heart"></i></span>
                                         <span class="ms-2">THEO DÕI</span>
@@ -473,8 +473,8 @@
             </div>
         </div>
     </div>
+    {% csrf_token %}
     <script>
-
         const endpoint = 'ws://127.0.0.1:8000/ws/comment/{{ product_detail.slug }}/'
         const socket = new WebSocket(endpoint)
 
@@ -524,7 +524,6 @@
         const endpointUserComment = 'ws://127.0.0.1:8000/ws/notify/{{ product_detail.user }}/'
         const socketUserComment = new WebSocket(endpointUserComment)
 
-
         document.getElementById("comment-button").onclick = (e) => {
             const comment = document.querySelector("#id_comment").value;
 
@@ -553,9 +552,31 @@
             } else {
 
             }
-
-
         }
+
+        const orderClick = (element) => {
+            const point = element.parentElement.querySelector('.item-product-slug').textContent
+
+            const pointOrder = 'ws://127.0.0.1:8000/ws/order/' + point + '/'
+            const socket = new WebSocket(pointOrder)
+
+            socket.onopen = function (e) {
+                console.log("open", e);
+            }
+            socket.onmessage = function (e) {
+                console.log("message", e)
+                const data = JSON.parse(e.data);
+                console.log(data)
+            }
+
+            socket.onerror = function (e) {
+                console.log("error", e)
+            }
+            socket.onclose = function (e) {
+                console.log("close", e)
+            }
+        }
+
 
         if ($(".comment_content-item").length < 9) {
             $(".button-load-more").hide();
@@ -568,5 +589,35 @@
             }
         })
 
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Create an instance of the Stripe object with your publishable API key
+        const stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+        const checkoutButton = document.getElementById("checkout-button");
+        checkoutButton.addEventListener("click", function () {
+            fetch("{% url 'product:checkout' slug=product_detail.slug %}", {
+                method: "POST",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                }
+                })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (session) {
+                    return stripe.redirectToCheckout({sessionId: session.id});
+                })
+                .then(function (result) {
+                    // If redirectToCheckout fails due to a browser or network
+                    // error, you should display the localized error message to your
+                    // customer using error.message.
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        });
     </script>
 {% endblock body %}

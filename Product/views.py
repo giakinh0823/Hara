@@ -1,13 +1,24 @@
+import math
+
+import stripe
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
+from django.views.generic import TemplateView
+
 from Register.models import Profile, Notifications
 from .models import *
-
+from django.views import View
+from django.conf import settings
+from django.http import JsonResponse
 from .getdata import data_scrap
 
 import random
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 
 # Create your views here.
@@ -66,6 +77,7 @@ def productDetail(request, slug):
         'images': images,
         'comments': comments,
         'profile_user': profile_user,
+        'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
     }
     if request.user.is_authenticated:
         notify = Notifications.objects.all()
@@ -84,6 +96,7 @@ def productDetail(request, slug):
             'images': images,
             'comments': comments,
             'profile_user': profile_user,
+            'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
             'newNotify': reversed(newNotify),
             'notify': reversed(notify),
         }
@@ -158,6 +171,7 @@ def groupCategory(request, slug):
     return render(request, 'Product/group_category.html', context)
 
 
+@login_required
 def create_product(request):
     if request.user.is_authenticated:
         notify = Notifications.objects.all()
@@ -169,3 +183,45 @@ def create_product(request):
             'notify': reversed(notify),
         }
     return render(request, 'product/create_product.html')
+
+# 4242 4242 4242 4242
+class CreateCheckoutSessionView(View):
+    def post(self, request, *args,**kwargs):
+        slug = self.kwargs['slug']
+        product = Product.objects.get(slug=slug)
+        YOUR_DOMAIN = "http://127.0.0.1:8000"
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': int(math.ceil(product.price)) * 100,
+                        'product_data': {
+                            'name': product.title,
+                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success/',
+            cancel_url=YOUR_DOMAIN + '/cancel/',
+        )
+        return JsonResponse({
+            'id': checkout_session.id
+        })
+
+
+def success(request):
+    return render(request, "order/success.html")
+
+def error(request):
+    return render(request, "order/error.html")
+
+
+def cancel(request):
+    return render(request,"order/cancel.html")
+
+

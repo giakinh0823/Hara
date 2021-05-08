@@ -118,7 +118,7 @@ def edit_profile(request, slug):
         'newNotify': reversed(newNotify),
         'notify': reversed(notify),
     }
-    return render(request,'Register/edit_profile.html', )
+    return render(request,'Register/edit_profile.html', context)
 
 
 def profileDetail(request, slug):

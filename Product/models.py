@@ -48,6 +48,7 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=2000)
@@ -71,6 +72,9 @@ class Product(models.Model):
         if not self.slug:
             self.slug = create_slug(self.title)
         return super().save(*args, **kwargs)
+
+    def get_display_price(self):
+        return "{0:.2f}".format(self.price/200)
 
 class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

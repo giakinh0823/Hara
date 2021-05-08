@@ -20,18 +20,19 @@
                                 <p class="mb-4" style="font-size: 18px; opacity: 0.6">Category</p>
                                 <div>
                                     <ul class="product-category-list">
-                                     <li class="product-category-item">
+                                        <li class="product-category-item">
                                             <div class="d-flex align-items-center">
                                                 <a href="{% url 'product:products' %}"
                                                    class="product-category-item-link">
                                                     <span>All product</span>
                                                 </a>
                                             </div>
-                                    </li>
+                                        </li>
                                         {% for item_category in group_category %}
                                             <li class="product-category-item">
                                                 <div class="d-flex align-items-center">
-                                                    <a href="{{ item_category.get_absolute_url }}" class="product-category-item-link">
+                                                    <a href="{{ item_category.get_absolute_url }}"
+                                                       class="product-category-item-link">
                                                         <span>{{ item_category.name }}</span>
                                                     </a>
                                                     <button onclick="navbarListDown(this)" id="icon-down-nav"><i
@@ -45,7 +46,8 @@
                                                     {% for category in category_list %}
                                                         {% if category.groupCategory.slug == item_category.slug %}
                                                             <li class="product-category-item-item">
-                                                                <a href="{{ category.get_absolute_url }}" class="product-category-item-link">
+                                                                <a href="{{ category.get_absolute_url }}"
+                                                                   class="product-category-item-link">
                                                                     <span>{{ category.name }}</span>
                                                                 </a>
                                                             </li>
@@ -96,7 +98,8 @@
                                                 <div class="card-type mb-2">
                                                     <div class="card-type-header me-auto">KINH PHI</div>
                                                     <div class="card-type-icon">
-                                                        <button class="card-type-btn">
+{#                                                        <small class="item-product-slug" style="display:none">{{ product.slug }}</small>#}
+                                                        <button class="card-type-btn" id="order_button" onclick="">
                                                             <i class="bi bi-heart card-type-btn-icon"></i>
                                                         </button>
                                                     </div>

@@ -72,6 +72,7 @@ class CommentsConsumer(AsyncWebsocketConsumer):
             user = User.objects.get(username=username)
             profile = Profile.objects.get(user=user)
             return profile.image.url
+
         url = await get_url(),
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_send(
@@ -113,7 +114,7 @@ class CommentsConsumer(AsyncWebsocketConsumer):
     def save_comment(self, username, room, comment):
         product = Product.objects.get(slug=room)
         user = User.objects.get(username=username)
-        profile = Profile.objects.get(user=user,)
+        profile = Profile.objects.get(user=user, )
         Comment.objects.create(product=product, user=user, comment=comment, profile=profile)
 
 
@@ -152,7 +153,6 @@ class NotifierConsumer(AsyncWebsocketConsumer):
         self.scope["session"]["newNotify"] = self.scope["session"]["newNotify"] + 1
         self.scope["session"].save()
 
-
     async def notification(self, event):
         comment = event['comment']
         username = event['username']
@@ -174,6 +174,25 @@ class NotifierConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def save_notify(self, username, product, comment, person):
         user = User.objects.get(username=username)
-        newPerson = User.objects.get(username = person)
-        profile = Profile.objects.get(user = newPerson)
-        Notifications.objects.create(link=product, content=comment, user=user, new=True, person=newPerson, profile=profile)
+        newPerson = User.objects.get(username=person)
+        profile = Profile.objects.get(user=newPerson)
+        Notifications.objects.create(link=product, content=comment, user=user, new=True, person=newPerson,
+                                     profile=profile)
+
+
+class OrderConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        print('connect')
+        await self.accept()
+        room_name = self.scope['url_route']['kwargs']['room_name']
+        await self.channel_layer.group_add(room_name, self.channel_name)
+        print(f"Add {self.channel_name} channel to comment's group")
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        print(data)
+
+    async def disconnect(self, close_code):
+        room_name = self.scope['url_route']['kwargs']['room_name']
+        await self.channel_layer.group_discard(room_name, self.channel_name)
+        print(f"Remove {self.channel_name} channel from comment's group")

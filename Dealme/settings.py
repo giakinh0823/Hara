@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'Home',
     'Product',
     'Register',
+    'Order',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -213,3 +214,7 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLIC_KEY = "pk_test_51IooZkD3DR17DTFHglXsWXOIFxEN9A99JTYMKDuXqHygKHHU53fkWCGZ2w4b9gYT2VK9YGJk89K8hUf2rtjApW6C009KexEsg5"
+STRIPE_SECRET_KEY = "sk_test_51IooZkD3DR17DTFH37S4K8kSHv0PTc6TIUv3QnupVTiQffGMrpH5TG4L91btdZcF6puRbiYh41Fj6rNv8sRnCb3y00LjEIleGe"
+STRIPE_WEBHOOK_SECRET = ""

@@ -16,6 +16,8 @@ from datetime import datetime
 
 from .models import Product, Category
 
+import random
+
 # ignore future warnings
 warnings.filterwarnings("ignore")
 
@@ -182,7 +184,7 @@ def data_scrap(request):
             category=category,
             price=decimal,
             caption=str(list_of_caption[i]),
-            like=60,
+            like=random.randint(50,1000),
             percent=float(percent),
             img=image,
         )
