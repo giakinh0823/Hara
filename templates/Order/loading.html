@@ -1,0 +1,46 @@
+{% extends 'Base/index.html' %}
+{% load static %}
+{% block body_not_nav %}
+    <div class="container d-flex justify-content-center align-items-center" style="height:80vh">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+     <button type="button" id="checkout-button" style="display:none"></button>
+    {% csrf_token %}
+    <script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Create an instance of the Stripe object with your publishable API key
+        const stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+        const checkoutButton = document.getElementById("checkout-button");
+        checkoutButton.addEventListener("click", function () {
+            fetch("{% url 'product:checkout' slug=product.slug %}", {
+                method: "POST",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                }
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (session) {
+                    return stripe.redirectToCheckout({sessionId: session.id});
+                })
+                .then(function (result) {
+                    // If redirectToCheckout fails due to a browser or network
+                    // error, you should display the localized error message to your
+                    // customer using error.message.
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        });
+        setTimeout(() => {
+            checkoutButton.click()
+        }, 2000)
+    </script>
+{% endblock body_not_nav %}

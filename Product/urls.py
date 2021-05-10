@@ -11,7 +11,9 @@ urlpatterns = [
     path('groupCategory/<slug:slug>/', views.groupCategory, name='group_category'),
     path('product/create', views.create_product, name='create_product'),
     path('checkout/<slug:slug>/', views.CreateCheckoutSessionView.as_view(), name="checkout"),
-    path('success/', views.success, name="checkout_success"),
+    path('loading/<slug:slug>/', views.loading, name="checkout_loading"),
+    path('success/<slug:slug>/', views.success, name="checkout_success"),
     path('checkout/error/', views.error, name="checkout_error"),
     path('cancel/', views.cancel, name="checkout_cancel"),
+    path('done/', views.done, name="checkout_done"),
 ]

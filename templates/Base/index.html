@@ -265,16 +265,22 @@
                         <a class="nav-link active font-bold" aria-current="page" href="{% url 'product:products' %}">All
                             Idea</a>
                     </li>
-                    <li class="nav-item item-separate">
-                        <a class="nav-link active font-bold" aria-current="page"
-                           href="{% url 'product:create_product' %}">Start a Campaign</a>
-                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active font-bold" aria-current="page"
+                               href="{% url 'product:create_product' %}">Start a Campaign</a>
+                        </li>
+                        <li class="nav-item item-separate">
+                            <a class="nav-link active font-bold" aria-current="page"
+                               href="{% url 'order:order' %}">Order</a>
+                        </li>
+                    {% endif %}
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link active font-bold position-relative button-notify dropdown-toggle"
                                id="notification" data-bs-toggle="dropdown" aria-expanded="false"
                                style="font-size: 20px"><i class="bi bi-bell"></i>
-                                {% if not request.session.newNotify %}
+                                {% if not newNotify %}
                                     <style>
                                         #{{ request.user }}{
                                             display: none;
@@ -314,8 +320,7 @@
                                             </a>
                                         </li>
                                     {% endfor %}
-                                {% endif %}
-                                {% if not notify and not newNotify %}
+                                {% else %}
                                     <li style="padding: 40% 25%">
                                         Không có thông báo nào
                                     </li>
@@ -474,7 +479,6 @@
 <script src="{% static 'components/carousel/carousel.js' %}"></script>
 <script src="{% static 'components/select/navbarList.js' %}"></script>
 <script src="{% static 'components/channels/comment.js' %}"></script>
-
 <script>
     const endpointUser = 'ws://127.0.0.1:8000/ws/notify/{{ request.user }}/'
     const socketUser = new WebSocket(endpointUser)
@@ -497,8 +501,8 @@
         console.log("close", e)
     }
 
-    $( document ).ready(function(){
-        $('.button-notify').click(()=>{
+    $(document).ready(function () {
+        $('.button-notify').click(() => {
             $.ajax({
                 type: "GET",
                 url: " {% url 'home:home' %}",

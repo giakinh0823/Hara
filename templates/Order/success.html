@@ -1,10 +1,87 @@
 {% extends 'Base/index.html' %}
 {% load static %}
-{% block body %}
-    <div class="container d-flex align-items-center justify-content-center flex-column" style="height: 80vh">
-        <h2 class="display-4">
-           Thanh toán thành công <span><i class="bi bi-check2-circle" style="color: lightgreen"></i></span>
-        </h2>
-        <a class="mt-3" href="{% url 'product:products' %}" style="color: #1b1b1b">Tiếp tục đầu tư</a>
+{% block body_not_nav %}
+    <div class="container d-flex justify-content-center align-items-center" style="height:80vh">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
-{% endblock body %}
+    <button type="button" id="sendOrder" style="display:none"></button>
+    <script>
+
+        const pointOrder = 'ws://127.0.0.1:8000/ws/order/{{ product.slug }}/'
+        const endpointUserOrder = 'ws://127.0.0.1:8000/ws/notify/{{ product.user }}/'
+
+        const promise = new Promise((resolve, reject) => {
+            const socket = new WebSocket(pointOrder)
+            resolve(socket)
+        })
+
+
+        promise
+            .then(function (socket) {
+                socket.onopen = function (e) {
+                    console.log("open", e);
+                }
+                socket.onmessage = function (e) {
+                    console.log("message", e)
+                    const data = JSON.parse(e.data);
+                    console.log(data)
+                }
+
+                socket.onerror = function (e) {
+                    console.log("error", e)
+                }
+
+                socket.onclose = function (e) {
+                    console.log("close", e)
+                }
+
+                return socket
+
+            })
+            .then(async function (socket) {
+                const socketUserOrder = await new WebSocket(endpointUserOrder)
+                socketUserOrder.onopen = function (e) {
+                    console.log("open", e);
+                }
+
+                socketUserOrder.onmessage = function (e) {
+                    console.log("message", e)
+                    const data = JSON.parse(e.data);
+                    console.log(data)
+                }
+
+                socketUserOrder.onerror = function (e) {
+                    console.log("error", e)
+                }
+
+                socketUserOrder.onclose = function (e) {
+                    console.log("close", e)
+                }
+
+                document.querySelector("#sendOrder").addEventListener("click", await function () {
+                    socket.send(JSON.stringify({
+                        'name': "{{ product.title }}",
+                        'room': "{{ product.slug }}",
+                        'person': "{{ user }}",
+                        'state': "pending",
+                    }));
+                    {% if not user == product.user %}
+                        socketUserOrder.send(JSON.stringify({
+                            'comment': "{{ user.get_full_name }} Đã mua sản phẩm {{ product.title }}",
+                            'username': "{{ product.user }}",
+                            'room': "{{ product.user }}",
+                            'link': "{% url 'order:order' %}",
+                            'person': "{{ user }}",
+                        }))
+                    {% endif %}
+                })
+                setTimeout(() => {
+                    const button = document.querySelector("#sendOrder")
+                    button.click()
+                    window.location.replace('{% url 'product:checkout_done' %}')
+                }, 2000)
+            })
+    </script>
+{% endblock body_not_nav %}

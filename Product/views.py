@@ -1,13 +1,17 @@
+import json
 import math
 
 import stripe
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
+from Order.models import Order, State
 from Register.models import Profile, Notifications
 from .models import *
 from django.views import View
@@ -17,8 +21,9 @@ from .getdata import data_scrap
 
 import random
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
+from django.contrib.auth.models import User
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 # Create your views here.
@@ -29,7 +34,7 @@ def getData(request):
 
 
 def products(request):
-    group_category = GroupCategory.objects.all()
+    group_category = CategoryGroup.objects.all()
     list_category = Category.objects.all()
     list_product = Product.objects.all()
     if request.method == 'GET':
@@ -46,16 +51,23 @@ def products(request):
         'category_list': list_category
     }
     if request.user.is_authenticated:
-        notify = Notifications.objects.all()
-        newNotify = notify.filter(new=True)
+        notify = Notifications.objects.filter(user=request.user)
+        newNotify = Notifications.objects.filter(new=True, user=request.user)
         request.session['newNotify'] = len(newNotify)
-        newNotify = Notifications.objects.filter(new=True)
+        if notify or newNotify:
+            request.session['newNotify'] = len(newNotify)
+            notify = notify[:len(notify) - len(newNotify)]
+            notify = reversed(notify)
+            if not newNotify or len(newNotify) == 0:
+                newNotify = None
+            else:
+                newNotify = reversed(newNotify)
         context = {
             'products': list_product,
             'group_category': group_category,
             'category_list': list_category,
-            'newNotify': reversed(newNotify),
-            'notify': reversed(notify),
+            'newNotify': newNotify,
+            'notify': notify,
         }
     return render(request, 'product/products.html', context)
 
@@ -63,7 +75,9 @@ def products(request):
 def productDetail(request, slug):
     product_detail = Product.objects.get(slug=slug)
     profile_detail = Profile.objects.get(user=product_detail.user)
-    profile_user = Profile.objects.get(user=request.user)
+    profile_user = None
+    if request.user.is_authenticated:
+        profile_user = Profile.objects.get(user=request.user)
     list_products = Product.objects.filter(category=product_detail.category)
     ran = random.randint(0, len(list_products) - 3)
     videos = Video.objects.filter(product=product_detail)
@@ -80,14 +94,22 @@ def productDetail(request, slug):
         'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
     }
     if request.user.is_authenticated:
-        notify = Notifications.objects.all()
+        notify = Notifications.objects.filter(user=request.user)
         clickNotify = notify.filter(link=product_detail.get_absolute_url())
         for item in clickNotify:
             item.new = False
             item.save()
-        newNotify = Notifications.objects.filter(new=True)
+        newNotify = Notifications.objects.filter(new=True, user=request.user)
         notify = notify[:len(notify) - len(newNotify)]
         request.session['newNotify'] = len(newNotify)
+        if notify or newNotify:
+            request.session['newNotify'] = len(newNotify)
+            notify = notify[:len(notify) - len(newNotify)]
+            notify = reversed(notify)
+            if not newNotify or len(newNotify) == 0:
+                newNotify = None
+            else:
+                newNotify = reversed(newNotify)
         context = {
             'product_detail': product_detail,
             'profile_detail': profile_detail,
@@ -97,8 +119,8 @@ def productDetail(request, slug):
             'comments': comments,
             'profile_user': profile_user,
             'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
-            'newNotify': reversed(newNotify),
-            'notify': reversed(notify),
+            'newNotify': newNotify,
+            'notify': notify,
         }
     return render(request, 'product/product_detail.html', context)
 
@@ -106,7 +128,7 @@ def productDetail(request, slug):
 def category(request, slug):
     categoryDetail = Category.objects.get(slug=slug)
     product = Product.objects.filter(category=categoryDetail)
-    group_category = GroupCategory.objects.all()
+    group_category = CategoryGroup.objects.all()
     list_category = Category.objects.all()
     if request.method == 'GET':
         try:
@@ -122,23 +144,31 @@ def category(request, slug):
         'category_list': list_category
     }
     if request.user.is_authenticated:
-        notify = Notifications.objects.all()
-        newNotify = Notifications.objects.filter(new=True)
+        notify = Notifications.objects.filter(user=request.user)
+        newNotify = Notifications.objects.filter(new=True, user=request.user)
         request.session['newNotify'] = len(newNotify)
         notify = notify[:len(notify) - len(newNotify)]
+        if notify or newNotify:
+            request.session['newNotify'] = len(newNotify)
+            notify = notify[:len(notify) - len(newNotify)]
+            notify = reversed(notify)
+            if not newNotify or len(newNotify) == 0:
+                newNotify = None
+            else:
+                newNotify = reversed(newNotify)
         context = {
             'category': categoryDetail,
             'products': product,
             'group_category': group_category,
             'category_list': list_category,
-            'newNotify': reversed(newNotify),
-            'notify': reversed(notify),
+            'newNotify': newNotify,
+            'notify': notify,
         }
     return render(request, 'Product/category.html', context)
 
 
 def groupCategory(request, slug):
-    group_category = GroupCategory.objects.all()
+    group_category = CategoryGroup.objects.all()
     list_category = Category.objects.all()
     category_group = group_category.get(slug=slug)
     product = Product.objects.all()
@@ -156,17 +186,25 @@ def groupCategory(request, slug):
         'category_group': category_group,
     }
     if request.user.is_authenticated:
-        notify = Notifications.objects.all()
-        newNotify = Notifications.objects.filter(new=True)
+        notify = Notifications.objects.filter(user=request.user)
+        newNotify = Notifications.objects.filter(new=True, user=request.user)
         request.session['newNotify'] = len(newNotify)
         notify = notify[:len(notify) - len(newNotify)]
+        if notify or newNotify:
+            request.session['newNotify'] = len(newNotify)
+            notify = notify[:len(notify) - len(newNotify)]
+            notify = reversed(notify)
+            if not newNotify or len(newNotify) == 0:
+                newNotify = None
+            else:
+                newNotify = reversed(newNotify)
         context = {
             'products': product,
             'group_category': group_category,
             'category_list': list_category,
             'category_group': category_group,
-            'newNotify': reversed(newNotify),
-            'notify': reversed(notify),
+            'newNotify': newNotify,
+            'notify': notify,
         }
     return render(request, 'Product/group_category.html', context)
 
@@ -174,19 +212,28 @@ def groupCategory(request, slug):
 @login_required
 def create_product(request):
     if request.user.is_authenticated:
-        notify = Notifications.objects.all()
-        newNotify = Notifications.objects.filter(new=True)
+        notify = Notifications.objects.filter(user=request.user)
+        newNotify = Notifications.objects.filter(new=True, user=request.user)
         request.session['newNotify'] = len(newNotify)
         notify = notify[:len(notify) - len(newNotify)]
+        if notify or newNotify:
+            request.session['newNotify'] = len(newNotify)
+            notify = notify[:len(notify) - len(newNotify)]
+            notify = reversed(notify)
+            if not newNotify or len(newNotify) == 0:
+                newNotify = None
+            else:
+                newNotify = reversed(newNotify)
         context = {
-            'newNotify': reversed(newNotify),
-            'notify': reversed(notify),
+            'newNotify': newNotify,
+            'notify': notify,
         }
     return render(request, 'product/create_product.html')
 
+
 # 4242 4242 4242 4242
 class CreateCheckoutSessionView(View):
-    def post(self, request, *args,**kwargs):
+    def post(self, request, *args, **kwargs):
         slug = self.kwargs['slug']
         product = Product.objects.get(slug=slug)
         YOUR_DOMAIN = "http://127.0.0.1:8000"
@@ -196,17 +243,18 @@ class CreateCheckoutSessionView(View):
                 {
                     'price_data': {
                         'currency': 'usd',
-                        'unit_amount': int(math.ceil(product.price)) * 100,
+                        # 'unit_amount': int(math.ceil(product.price)) * 100,
+                        'unit_amount': 1000,
                         'product_data': {
                             'name': product.title,
-                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                            # 'images': product.img.url,
                         },
                     },
                     'quantity': 1,
                 },
             ],
             mode='payment',
-            success_url=YOUR_DOMAIN + '/success/',
+            success_url=YOUR_DOMAIN + '/success/' + slug + '/',
             cancel_url=YOUR_DOMAIN + '/cancel/',
         )
         return JsonResponse({
@@ -214,14 +262,46 @@ class CreateCheckoutSessionView(View):
         })
 
 
-def success(request):
-    return render(request, "order/success.html")
+@login_required
+def loading(request, slug):
+    product = Product.objects.get(slug=slug)
+    return render(request, "order/loading.html",
+                  {'product': product, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY, })
 
+
+@login_required
+def success(request, slug):
+    product = Product.objects.get(slug=slug)
+    return render(request, "order/success.html", {'product': product})
+
+
+@login_required
+def done(request):
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
+
+    context = {
+        'newNotify': newNotify,
+        'notify': notify,
+    }
+    return render(request, "order/done.html", context)
+
+
+@login_required
 def error(request):
     return render(request, "order/error.html")
 
 
+@login_required
 def cancel(request):
-    return render(request,"order/cancel.html")
-
-
+    return render(request, "order/cancel.html")

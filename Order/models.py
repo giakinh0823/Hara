@@ -15,14 +15,20 @@ class State(models.Model):
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+    def __str__(self) -> str:
+        return self.name
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     person = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_person")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    price = models.DecimalField(max_digits=19, decimal_places=9, null=True)
+    price = models.DecimalField(max_digits=19, decimal_places=9)
     state = models.ForeignKey(State,on_delete=models.CASCADE)
-    slug = models.SlugField(max_length=2000, null=True, blank=True)
+    slug = models.SlugField(max_length=2000)
+
+    def __str__(self) -> str:
+        return self.product.title
 
     def save(self, *args, **kwargs):  # new
         if not self.slug:

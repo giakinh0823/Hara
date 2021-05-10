@@ -20,14 +20,13 @@
                     <img src="{{ item.profile.image.url }}" alt=""
                          style="width: 40px; height: 40px; border-radius:50%">
                     <p class="ms-3"
-                       style=" margin-bottom: 0">{{ item.content }}</p>
+                       style="margin-bottom: 0">{{ item.content }}</p>
                 </div>
             </a>
         </li>
     {% endfor %}
-{% endif %}
-{% if not notify and not newNotify %}
-    <li style="padding: 40% 25%">
+{% else %}
+    <li style="padding: 40% 25%" id="not-notify">
         Không có thông báo nào
     </li>
 {% endif %}

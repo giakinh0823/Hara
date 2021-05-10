@@ -168,7 +168,10 @@ def data_scrap(request):
         if len(text_price) >= 8:
             text_price = text_price.replace('.', '', 1)
 
-        decimal = float(text_price)
+        try:
+            decimal = float(text_price)
+        except:
+            decimal = float(10)
         print(text_price)
 
         try:

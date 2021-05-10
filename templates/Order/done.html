@@ -1,0 +1,10 @@
+{% extends 'Base/index.html' %}
+{% load static %}
+{% block body %}
+    <div class="container d-flex align-items-center justify-content-center flex-column" style="height: 80vh">
+        <h2 class="display-4">
+           Thanh toán thành công <span><i class="bi bi-check2-circle" style="color: lightgreen"></i></span>
+        </h2>
+        <a class="mt-3" href="{% url 'product:products' %}" style="color: #1b1b1b">Tiếp tục đầu tư</a>
+    </div>
+{% endblock body %}

@@ -1,4 +1,5 @@
 import json
+import math
 from decimal import Decimal
 from time import sleep
 
@@ -6,6 +7,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 
+from Order.models import State, Order
 from Product.models import *
 from Register.models import *
 
@@ -124,17 +126,17 @@ class NotifierConsumer(AsyncWebsocketConsumer):
         await self.accept()
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_add(room_name, self.channel_name)
-        print(f"Add {self.channel_name} channel to comment's group")
+        print(f"Add {self.channel_name} channel to Notifier's group")
 
     async def receive(self, text_data):
         data = json.loads(text_data)
         print(data)
         comment = data['comment']
         username = data['username']
-        product = data['product']
+        link = data['link']
         person = data['person']
 
-        await self.save_notify(username, product, comment, person)
+        await self.save_notify(username, link, comment, person)
         await self.saveSession()
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_send(
@@ -143,7 +145,7 @@ class NotifierConsumer(AsyncWebsocketConsumer):
                 'type': 'notification',
                 'comment': comment,
                 'username': username,
-                'product': product,
+                'link': link,
                 'person': person
             }
         )
@@ -156,27 +158,27 @@ class NotifierConsumer(AsyncWebsocketConsumer):
     async def notification(self, event):
         comment = event['comment']
         username = event['username']
-        product = event['product']
         person = event['person']
+        link = event['link']
         # Gửi tin nhắn tới WebSocket
         await self.send(text_data=json.dumps({
             'comment': comment,
             'username': username,
-            'product': product,
-            'person': person
+            'person': person,
+            'link': link
         }))
 
     async def disconnect(self, close_code):
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_discard(room_name, self.channel_name)
-        print(f"Remove {self.channel_name} channel from comment's group")
+        print(f"Remove {self.channel_name} channel from Notifier's group")
 
     @sync_to_async
-    def save_notify(self, username, product, comment, person):
+    def save_notify(self, username, link, comment, person):
         user = User.objects.get(username=username)
         newPerson = User.objects.get(username=person)
         profile = Profile.objects.get(user=newPerson)
-        Notifications.objects.create(link=product, content=comment, user=user, new=True, person=newPerson,
+        Notifications.objects.create(link=link, content=comment, user=user, new=True, person=newPerson,
                                      profile=profile)
 
 
@@ -186,13 +188,52 @@ class OrderConsumer(AsyncWebsocketConsumer):
         await self.accept()
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_add(room_name, self.channel_name)
-        print(f"Add {self.channel_name} channel to comment's group")
+        print(f"Add {self.channel_name} channel to Order's group")
 
     async def receive(self, text_data):
         data = json.loads(text_data)
         print(data)
+        name = data['name']
+        room = data['room']
+        person = data['person']
+        state = data['state']
+        await self.save_order(room, state, person)
+        room_name = self.scope['url_route']['kwargs']['room_name']
+        await self.channel_layer.group_send(
+            room_name,
+            {
+                'type': 'sendData',
+                'name': name,
+                'room': room,
+                'state': state,
+                'person': person
+            }
+        )
+
+    async def sendData(self, event):
+        name = event['name']
+        room = event['room']
+        state = event['state']
+        person = event['person']
+        # Gửi tin nhắn tới WebSocket
+        await self.send(text_data=json.dumps({
+            'name': name,
+            'room': room,
+            'state': state,
+            'person': person
+        }))
 
     async def disconnect(self, close_code):
         room_name = self.scope['url_route']['kwargs']['room_name']
         await self.channel_layer.group_discard(room_name, self.channel_name)
-        print(f"Remove {self.channel_name} channel from comment's group")
+        print(f"Remove {self.channel_name} channel from Order's group")
+
+    @sync_to_async
+    def save_order(self, room, state, person):
+        product = Product.objects.get(slug=room)
+        user = User.objects.get(username=product.user)
+        state = State.objects.get(slug=state)
+        person = User.objects.get(username=person)
+        quantity = 1
+        price = int(math.ceil(product.price))
+        Order.objects.create(product=product, state=state, person=person, quantity=quantity, price=price, user=user)

@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+import psycopg2.extensions
+
+
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,7 +83,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_QUERY_EMAIL = True
 
-SITE = 2
+SITE = 1
 
 # Use on server when deployment
 
@@ -152,8 +155,33 @@ DATABASES = {
     },
 }
 
-DATABASE_CONNECTION_POOLING = False
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "djongo",
+#         "NAME": "Hara",
+#         "CLIENT": {
+#             "host": "mongodb+srv://giakinh0823:giakinh0823@mycluster.mlos1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+#             "username": "giakinh0823",
+#             "password": "giakinh0823",
+#             "authMechanism": "SCRAM-SHA-1",
+#         },
+#         'LOGGING': {
+#             'version': 1,
+#             'loggers': {
+#                 'djongo': {
+#                     'level': 'DEBUG',
+#                     'propagate': False,
+#                 }
+#             },
+#         },
+#     },
+#     'OPTIONS': {
+#         'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
+#     },
+# }
+
+DATABASE_CONNECTION_POOLING = False
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

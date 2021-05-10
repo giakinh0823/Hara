@@ -65,24 +65,40 @@ def profile(request, slug):
             getProduct = None
         if getProduct:
             products = products.filter(Q(title__icontains=request.GET['search']))
-    notify = Notifications.objects.all()
-    newNotify = Notifications.objects.filter(new=True)
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
     request.session['newNotify'] = len(newNotify)
     notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
     context = {
         'profile': userProfile,
         'products': products,
-        'newNotify': reversed(newNotify),
-        'notify': reversed(notify),
+        'newNotify': newNotify,
+        'notify': notify,
     }
     return render(request, 'register/profile.html', context)
 
 @login_required
 def edit_profile(request, slug):
-    notify = Notifications.objects.all()
-    newNotify = Notifications.objects.filter(new=True)
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(user=request.user, new=True)
     request.session['newNotify'] = len(newNotify)
     notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
     try:
         userProfile = Profile.objects.get(user=request.user)
     except:
@@ -107,27 +123,35 @@ def edit_profile(request, slug):
                 'formProfile': formProfile,
                 'userProfile': userProfile,
                 'error': 'Something is wrong',
-                'newNotify': reversed(newNotify),
-                'notify': reversed(notify),
+                'newNotify': newNotify,
+                'notify': notify,
             }
             return render(request, 'Register/edit_profile.html', context)
     context = {
         'formUser': formUser,
         'formProfile': formProfile,
         'userProfile': userProfile,
-        'newNotify': reversed(newNotify),
-        'notify': reversed(notify),
+        'newNotify': newNotify,
+        'notify': notify,
     }
     return render(request,'Register/edit_profile.html', context)
 
 
 def profileDetail(request, slug):
-    notify = Notifications.objects.all()
-    newNotify = Notifications.objects.filter(new=True)
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
     request.session['newNotify'] = len(newNotify)
     notify = notify[:len(notify) - len(newNotify)]
+    if notify:
+        notify = reversed(notify)
+    else:
+        notify = None
+    if not newNotify or len(newNotify) == 0:
+        newNotify = None
+    else:
+        newNotify = reversed(newNotify)
     context = {
-        'newNotify': reversed(newNotify),
-        'notify': reversed(notify),
+        'newNotify': newNotify,
+        'notify':notify ,
     }
     pass

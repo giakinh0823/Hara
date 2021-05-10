@@ -19,7 +19,7 @@ def create_slug(title):  # new
     return slug
 
 
-class GroupCategory(models.Model):
+class CategoryGroup(models.Model):
     name = models.CharField(max_length=2000)
     slug = models.SlugField(max_length=2000)
     def get_absolute_url(self):
@@ -34,7 +34,7 @@ class GroupCategory(models.Model):
         return self.name
 
 class Category(models.Model):
-    groupCategory = models.ForeignKey(GroupCategory, on_delete=models.CASCADE, null=True)
+    groupCategory = models.ForeignKey(CategoryGroup, on_delete=models.CASCADE)
     name = models.CharField(max_length=2000)
     slug = models.SlugField(max_length=2000)
     def __str__(self) -> str:
@@ -56,8 +56,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=9)
     caption = models.TextField(max_length=2000)
     like = models.IntegerField()
-    percent = models.DecimalField(max_digits=19, decimal_places=9, null=True)
-    slug = models.SlugField(max_length=2000, null=True, blank=True)
+    percent = models.DecimalField(max_digits=19, decimal_places=9)
+    slug = models.SlugField(max_length=2000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     img = models.ImageField(upload_to='product/products', blank=True, null=True)
@@ -87,7 +87,7 @@ class Video(models.Model):
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comment_person", null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comment_person")
     comment = models.TextField()
 
     def __str__(self) -> str:
