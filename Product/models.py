@@ -34,7 +34,7 @@ class CategoryGroup(models.Model):
         return self.name
 
 class Category(models.Model):
-    groupCategory = models.ForeignKey(CategoryGroup, on_delete=models.CASCADE)
+    groupCategory = models.ForeignKey(CategoryGroup, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=2000)
     slug = models.SlugField(max_length=2000)
     def __str__(self) -> str:
@@ -60,7 +60,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=2000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    img = models.ImageField(upload_to='product/products', blank=True, null=True)
+    img = models.ImageField(upload_to='product/products', blank=True, null=True, max_length=2000)
 
     def __str__(self) -> str:
         return self.title
