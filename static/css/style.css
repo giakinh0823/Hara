@@ -96,6 +96,14 @@ img {
     box-shadow: none;
 }
 
+.form-select:focus{
+    color: #212529;
+    background-color: #fff;
+    border-color: #b61827;
+    outline: 0;
+    box-shadow: none;
+}
+
 
 .button-primary {
     text-decoration: none;
@@ -132,7 +140,9 @@ img {
     box-shadow: none;
 }
 
+.product-selector option{
 
+}
 
 
 

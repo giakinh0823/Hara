@@ -1,0 +1,65 @@
+{% extends 'Base/index.html' %}
+{% load static %}
+{% block body %}
+    <div>
+        <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
+            <div class="container d-flex">
+                <div class="view-profile">
+                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
+                            class="bi bi-eye"></i></span><span class="ms-2">Basic</span></a>
+                </div>
+                <div class="view-profile ms-4">
+                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
+                            class="bi bi-pencil-square"></i></span><span class="ms-2">Add information</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <header class="mt-5">
+                <h3 class="ms-5 display-4">Create Product</h3>
+            </header>
+            <div class="p-5">
+                <div class="product-form-container">
+                    <div class="product-content">
+                        <form class="w-50" method="post" enctype="multipart/form-data" id="create-product">
+                            <div class="mb-3 form-group">
+                                <label for="id_title" class="form-label">Campaign Title*</label>
+                                <input class="form-control" type="text" name="title" maxlength="150" autofocus=""
+                                       required=""
+                                       id="id_title">
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="id_caption" class="form-label">Campaign Caption*</label>
+                                <textarea class="form-control" type="text" name="caption" maxlength="150" autofocus=""
+                                          required=""
+                                          id="id_title" rows="6"></textarea>
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="id_price" class="form-label">Campaign Price*</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" required=""
+                                           aria-label="Dollar amount (with dot and two decimal places)" id="id_price">
+                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">0.00</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_img" class="form-label">Image</label>
+                                <input class="form-control" type="file" id="id_img">
+                            </div>
+                            <div class="mb-3 mt-5">
+                                <select class="form-select product-selector" aria-label="Default select example">
+                                    <option selected>Category</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <button class="button-primary mt-5" type="submit">Create</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

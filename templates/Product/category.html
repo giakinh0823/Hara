@@ -7,7 +7,8 @@
                 <div>
                     <h3 class="display-4 collection-over-header"
                         style="text-transform: uppercase">{{ category.name }}</h3>
-                </div>s
+                </div>
+                s
             </div>
             <img src="{% static 'img/blog9.png' %}" alt="" style="width:100%; height: 100%">
         </div>
@@ -21,67 +22,69 @@
                                 <p class="mb-4" style="font-size: 18px; opacity: 0.6">Category</p>
                                 <div>
                                     <ul class="product-category-list">
-                                    <li class="product-category-item">
+                                        <li class="product-category-item">
                                             <div class="d-flex align-items-center">
                                                 <a href="{% url 'product:products' %}"
                                                    class="product-category-item-link">
                                                     <span>All product</span>
                                                 </a>
                                             </div>
-                                    </li>
+                                        </li>
                                         {% for item_category in group_category %}
                                             <li class="product-category-item">
-                                            <div class="d-flex align-items-center">
-                                                <a href="{{ item_category.get_absolute_url }}"
-                                                   class="product-category-item-link">
-                                                    <span>{{ item_category.name }}</span>
-                                                </a>
+                                                <div class="d-flex align-items-center">
+                                                    <a href="{{ item_category.get_absolute_url }}"
+                                                       class="product-category-item-link">
+                                                        <span>{{ item_category.name }}</span>
+                                                    </a>
+                                                    {% if item_category == category.groupCategory %}
+                                                        <button onclick="navbarListDown(this)" id="icon-down-nav"
+                                                                style="display:none"><i
+                                                                class="bi bi-chevron-down product-category-icon"></i>
+                                                        </button>
+                                                        <button onclick="navbarListUp(this)" id="icon-up-nav"
+                                                                style="display:block"><i
+                                                                class="bi bi-chevron-up product-category-icon"></i>
+                                                        </button>
+                                                    {% else %}
+                                                        <button onclick="navbarListDown(this)" id="icon-down-nav"><i
+                                                                class="bi bi-chevron-down product-category-icon"></i>
+                                                        </button>
+                                                        <button onclick="navbarListUp(this)" id="icon-up-nav"
+                                                                style="display:none"><i
+                                                                class="bi bi-chevron-up product-category-icon"></i>
+                                                        </button>
+
+                                                    {% endif %}
+                                                </div>
                                                 {% if item_category == category.groupCategory %}
-                                                    <button onclick="navbarListDown(this)" id="icon-down-nav"
-                                                            style="display:none"><i
-                                                            class="bi bi-chevron-down product-category-icon"></i>
-                                                    </button>
-                                                    <button onclick="navbarListUp(this)" id="icon-up-nav"
-                                                            style="display:block"><i
-                                                            class="bi bi-chevron-up product-category-icon"></i></button>
+                                                    <ul class="product-category-item-list" style="display:block">
                                                 {% else %}
-                                                    <button onclick="navbarListDown(this)" id="icon-down-nav"><i
-                                                            class="bi bi-chevron-down product-category-icon"></i>
-                                                    </button>
-                                                    <button onclick="navbarListUp(this)" id="icon-up-nav"
-                                                            style="display:none"><i
-                                                            class="bi bi-chevron-up product-category-icon"></i></button>
-
+                                                    <ul class="product-category-item-list">
                                                 {% endif %}
-                                            </div>
-                                            {% if item_category == category.groupCategory %}
-                                                <ul class="product-category-item-list" style="display:block">
-                                            {% else %}
-                                                <ul class="product-category-item-list">
-                                            {% endif %}
 
-                                        {% for item in category_list %}
-                                            {% if item.groupCategory.slug == item_category.slug %}
-                                                {% if item == category %}
-                                                    <li class="product-category-item-item">
-                                                        <a href="{{ item.get_absolute_url }}"
-                                                           class="product-category-item-link"
-                                                           style="color:#b61827; font-weight: 400">
-                                                            <span>{{ item.name }}</span>
-                                                        </a>
-                                                    </li>
-                                                {% else %}
-                                                    <li class="product-category-item-item">
-                                                        <a href="{{ item.get_absolute_url }}"
-                                                           class="product-category-item-link">
-                                                            <span>{{ item.name }}</span>
-                                                        </a>
-                                                    </li>
+                                            {% for item in category_list %}
+                                                {% if item.groupCategory.slug == item_category.slug %}
+                                                    {% if item == category %}
+                                                        <li class="product-category-item-item">
+                                                            <a href="{{ item.get_absolute_url }}"
+                                                               class="product-category-item-link"
+                                                               style="color:#b61827; font-weight: 400">
+                                                                <span>{{ item.name }}</span>
+                                                            </a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="product-category-item-item">
+                                                            <a href="{{ item.get_absolute_url }}"
+                                                               class="product-category-item-link">
+                                                                <span>{{ item.name }}</span>
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
                                                 {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        </ul>
-                                            </li>
+                                            {% endfor %}
+                                                </ul>
+                                            </ul>
                                         {% endfor %}
                                         </ul>
                                 </div>
@@ -100,7 +103,8 @@
                             <p class="nav-close-btn" onclick="deleteInput(this)"><i class="bi bi-x"></i></p>
                         </form>
                         <div class="ms-auto w-25">
-                            <select class="form-select select-form" aria-label="Default select example" onchange="sort(this.value)">
+                            <select class="form-select select-form" aria-label="Default select example"
+                                    onchange="sort(this.value)">
                                 <option class="option-select" selected value="0">Sort</option>
                                 <option class="option-select" value="1">Name</option>
                                 <option class="option-select" value="2">Favorite</option>

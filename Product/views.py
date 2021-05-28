@@ -13,6 +13,7 @@ from django.views.generic import TemplateView
 
 from Order.models import Order, State
 from Register.models import Profile, Notifications
+from .forms import ProductForm
 from .models import *
 from django.views import View
 from django.conf import settings
@@ -308,6 +309,9 @@ def groupCategory(request, slug):
 
 @login_required
 def create_product(request):
+    context = {
+        'form': ProductForm,
+    }
     if request.user.is_authenticated:
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
@@ -324,8 +328,9 @@ def create_product(request):
         context = {
             'newNotify': newNotify,
             'notify': notify,
+            'form': ProductForm,
         }
-    return render(request, 'product/create_product.html')
+    return render(request, 'product/create_product.html', context)
 
 
 # 4242 4242 4242 4242

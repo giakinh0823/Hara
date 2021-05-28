@@ -32,7 +32,7 @@
 
 .table-container .table tbody tr td {
     border: none;
-    padding: 30px;
+    padding: 30px 5px;
     font-weight: 400;
     font-size: 14px;
     background: #fff;
