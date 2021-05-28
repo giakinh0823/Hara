@@ -65,7 +65,7 @@
                         'name': "{{ product.title }}",
                         'room': "{{ product.slug }}",
                         'person': "{{ user }}",
-                        'state': "pending",
+                        'state': "waiting",
                     }));
                     {% if not user == product.user %}
                         socketUserOrder.send(JSON.stringify({

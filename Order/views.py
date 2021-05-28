@@ -95,3 +95,7 @@ def accept_order(request):
             "link": my_order.product.get_absolute_url(),
             "text": my_order.product.title,
         })
+
+def invest(request):
+    orders = Order.objects.filter(person=request.user)
+    return render(request, 'Order/invest.html', {"orders": orders})
