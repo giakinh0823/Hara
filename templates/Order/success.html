@@ -12,7 +12,7 @@
         const pointOrder = 'ws://127.0.0.1:8000/ws/order/{{ product.slug }}/'
         const endpointUserOrder = 'ws://127.0.0.1:8000/ws/notify/{{ product.user }}/'
 
-        const promise = new Promise((resolve, reject) => {
+        let promise = new Promise((resolve, reject) => {
             const socket = new WebSocket(pointOrder)
             resolve(socket)
         })

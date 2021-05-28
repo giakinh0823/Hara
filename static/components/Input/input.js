@@ -1,5 +1,6 @@
 
 
+
 onInput = (element) => {
     element.parentNode.querySelector('.nav-search-btn').style.display = "none";
     element.parentNode.querySelector('.nav-close-btn').style.display = "block";

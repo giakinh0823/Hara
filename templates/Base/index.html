@@ -43,6 +43,8 @@
     {# product_details #}
     <link rel="stylesheet" href="{% static 'css/carousel_detail.css' %}">
     <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+    {# order #}
+    <link rel="stylesheet" href="{% static 'css/order.css' %}">
     <title>Home</title>
 </head>
 <body>
@@ -64,36 +66,36 @@
                                     <li class="nav-menu-item col">
                                         <div class="nav-item-content">
                                             <h3 class="header-3">
-                                                DÀNH CHO WEB
+                                                TECH & INNOVATION
                                             </h3>
                                             <div class="nav-item-node">
-                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                                Mastering technology and innovation
                                             </div>
                                             <ul class="nav-item-list">
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="energy-green-tech" %}">
                                                         <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        Energy & Green Tech</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="travel-outdoors" %}">
+                                                        <span class="nav-item-span">2</span>
+                                                        Travel & Outdoors</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="productivity" %}">
+                                                        <span class="nav-item-span">3</span>
+                                                        Productivity</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="home" %}">
+                                                        <span class="nav-item-span">4</span>
+                                                        Home</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="audio" %}">
+                                                        <span class="nav-item-span">5</span>
+                                                        Audio</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -101,36 +103,36 @@
                                     <li class="nav-menu-item col">
                                         <div class="nav-item-content">
                                             <h3 class="header-3">
-                                                DÀNH CHO WEB
+                                                CREATIVE WORKS
                                             </h3>
                                             <div class="nav-item-node">
-                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                                Unleash your creativity
                                             </div>
                                             <ul class="nav-item-list">
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="comics" %}">
                                                         <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        Comics</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="music" %}">
+                                                        <span class="nav-item-span">2</span>
+                                                        Music</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="film" %}">
+                                                        <span class="nav-item-span">3</span>
+                                                        Film</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="writing-publishing" %}">
+                                                        <span class="nav-item-span">4</span>
+                                                        Writing & Publishing</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="art" %}">
+                                                        <span class="nav-item-span">5</span>
+                                                        Art</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -138,36 +140,36 @@
                                     <li class="nav-menu-item col">
                                         <div class="nav-item-content">
                                             <h3 class="header-3">
-                                                DÀNH CHO WEB
+                                                COMMUNITY PROJECTS
                                             </h3>
                                             <div class="nav-item-node">
-                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                                Come up with an idea for your project
                                             </div>
                                             <ul class="nav-item-list">
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
+                                                    <a class="nav-item-link" href="{% url 'product:group_category' slug="community-projects" %}">
                                                         <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        Community Projects</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="wellness" %}">
+                                                        <span class="nav-item-span">2</span>
+                                                        Wellness</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="local-businesses" %}">
+                                                        <span class="nav-item-span">3</span>
+                                                        Local Businesses</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="culture" %}">
+                                                        <span class="nav-item-span">4</span>
+                                                        Culture</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:category' slug="environment" %}">
+                                                        <span class="nav-item-span">5</span>
+                                                        Environment</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -175,36 +177,36 @@
                                     <li class="nav-menu-item col">
                                         <div class="nav-item-content">
                                             <h3 class="header-3">
-                                                DÀNH CHO WEB
+                                                LOGIN AND SIGNUP
                                             </h3>
                                             <div class="nav-item-node">
-                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                                Come with us too
                                             </div>
                                             <ul class="nav-item-list">
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
+                                                    <a class="nav-item-link" href="{% url 'register:login' %}">
                                                         <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        Login</a>
+                                                </li>
+                                                <li class="nav-item-item">
+                                                    <a class="nav-item-link" href="{% url 'register:signup' %}">
+                                                        <span class="nav-item-span">2</span>
+                                                        Signup</a>
                                                 </li>
                                                 <li class="nav-item-item">
                                                     <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        <span class="nav-item-span">3</span>
+                                                        Login with Google</a>
                                                 </li>
                                                 <li class="nav-item-item">
                                                     <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        <span class="nav-item-span">4</span>
+                                                        Login with Facebook</a>
                                                 </li>
                                                 <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
-                                                </li>
-                                                <li class="nav-item-item">
-                                                    <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                    <a class="nav-item-link" href="{% url 'product:create_product' %}">
+                                                        <span class="nav-item-span">5</span>
+                                                        Create Project</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -212,36 +214,36 @@
                                     <li class="nav-menu-item col">
                                         <div class="nav-item-content">
                                             <h3 class="header-3">
-                                                DÀNH CHO WEB
+                                                ABOUT US
                                             </h3>
                                             <div class="nav-item-node">
-                                                Những tò mò về "SAO" được lưu trữ tại đây
+                                                Learn about us
                                             </div>
                                             <ul class="nav-item-list">
                                                 <li class="nav-item-item">
                                                     <a class="nav-item-link" href="#">
                                                         <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        Blog</a>
                                                 </li>
                                                 <li class="nav-item-item">
                                                     <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        <span class="nav-item-span">2</span>
+                                                        Article</a>
                                                 </li>
                                                 <li class="nav-item-item">
                                                     <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        <span class="nav-item-span">3</span>
+                                                        information</a>
                                                 </li>
                                                 <li class="nav-item-item">
                                                     <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        <span class="nav-item-span">4</span>
+                                                        tax</a>
                                                 </li>
                                                 <li class="nav-item-item">
                                                     <a class="nav-item-link" href="#">
-                                                        <span class="nav-item-span">1</span>
-                                                        GIA KINH HA</a>
+                                                        <span class="nav-item-span">5</span>
+                                                        certificate</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -272,7 +274,7 @@
                         </li>
                         <li class="nav-item item-separate">
                             <a class="nav-link active font-bold" aria-current="page"
-                               href="{% url 'order:order' %}">Order</a>
+                               href="{% url 'order:order' %}">Order Controller</a>
                         </li>
                     {% endif %}
                     {% if user.is_authenticated %}
@@ -479,6 +481,9 @@
 <script src="{% static 'components/carousel/carousel.js' %}"></script>
 <script src="{% static 'components/select/navbarList.js' %}"></script>
 <script src="{% static 'components/channels/comment.js' %}"></script>
+<script src="{% static 'components/Ajax/sort.js' %}"></script>
+<script src="{% static 'components/Ajax/order.js' %}"></script>
+
 <script>
     const endpointUser = 'ws://127.0.0.1:8000/ws/notify/{{ request.user }}/'
     const socketUser = new WebSocket(endpointUser)

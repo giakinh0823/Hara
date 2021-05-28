@@ -179,7 +179,7 @@ def data_scrap(request):
         except:
             image = None
 
-        percent = str(list_of_percent[i]).replace(',','.')
+        percent = str(list_of_percent[i]).replace(',', '.')
         print(percent)
         product = Product.objects.create(
             user=request.user,
@@ -187,7 +187,7 @@ def data_scrap(request):
             category=category,
             price=decimal,
             caption=str(list_of_caption[i]),
-            like=random.randint(50,1000),
+            like=random.randint(50, 1000),
             percent=float(percent),
             img=image,
         )
@@ -224,7 +224,6 @@ def data_scrap(request):
     print("-----------------------------------------------")
     print("PROCESS ENDED.")
     input("Press Enter to continue...")
-
 
 # value = ""
 

@@ -73,15 +73,15 @@
                             <p class="nav-close-btn" onclick="deleteInput(this)"><i class="bi bi-x"></i></p>
                         </form>
                         <div class="ms-auto w-25">
-                            <select class="form-select select-form" aria-label="Default select example">
-                                <option class="option-select" selected>Sort</option>
+                            <select class="form-select select-form" aria-label="Default select example" onchange="sort(this.value)">
+                                <option class="option-select" selected value="0">Sort</option>
                                 <option class="option-select" value="1">Name</option>
                                 <option class="option-select" value="2">Favorite</option>
                                 <option class="option-select" value="3">Date</option>
                             </select>
                         </div>
                     </div>
-                    <div class="list-product p-lg-3">
+                    <div class="list-product p-lg-3" id="list-product-container">
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                             {% for product in products %}
                                 <div class="col mb-5 list-products-content" style="display:none">

@@ -83,7 +83,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_QUERY_EMAIL = True
 
-SITE = 1
+SITE = 2
 
 # Use on server when deployment
 
@@ -155,7 +155,7 @@ DATABASES = {
     },
 }
 
-
+#
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "djongo",

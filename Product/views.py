@@ -69,6 +69,36 @@ def products(request):
             'newNotify': newNotify,
             'notify': notify,
         }
+        if request.is_ajax():
+            value = int(request.GET["value"])
+            if value == 1:
+                list_product = Product.objects.all().order_by('-title')
+            elif value == 2:
+                list_product = Product.objects.all().order_by('-like')
+            elif value == 3:
+                list_product = Product.objects.all().order_by('-updated_at')
+            context = {
+                'products': list_product,
+                'group_category': group_category,
+                'category_list': list_category,
+                'newNotify': newNotify,
+                'notify': notify,
+            }
+            return render(request, 'Product/sort_product.html', context)
+    if request.is_ajax():
+        value = int(request.GET["value"])
+        if value == 1:
+            list_product = Product.objects.all().order_by('-title')
+        elif value == 2:
+            list_product = Product.objects.all().order_by('-like')
+        elif value == 3:
+            list_product = Product.objects.all().order_by('-updated_at')
+        context = {
+            'products': list_product,
+            'group_category': group_category,
+            'category_list': list_category,
+        }
+        return render(request, 'Product/sort_product.html', context)
     return render(request, 'product/products.html', context)
 
 
@@ -143,6 +173,7 @@ def category(request, slug):
         'group_category': group_category,
         'category_list': list_category
     }
+
     if request.user.is_authenticated:
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
@@ -164,6 +195,39 @@ def category(request, slug):
             'newNotify': newNotify,
             'notify': notify,
         }
+        if request.is_ajax():
+            value = int(request.GET["value"])
+            if value == 1:
+                product = Product.objects.filter(category=categoryDetail).order_by('-title')
+            elif value == 2:
+                product = Product.objects.filter(category=categoryDetail).order_by('-like')
+            elif value == 3:
+                product = Product.objects.filter(category=categoryDetail).order_by('-updated_at')
+            context = {
+                'category': categoryDetail,
+                'products': product,
+                'group_category': group_category,
+                'category_list': list_category,
+                'newNotify': newNotify,
+                'notify': notify,
+            }
+            return render(request, 'Product/sort_product.html', context)
+    if request.is_ajax():
+        value = int(request.GET["value"])
+        if value == 1:
+            product = Product.objects.filter(category=categoryDetail).order_by('-title')
+        elif value == 2:
+            product = Product.objects.filter(category=categoryDetail).order_by('-like')
+        elif value == 3:
+            product = Product.objects.filter(category=categoryDetail).order_by('-updated_at')
+        context = {
+            'category': categoryDetail,
+            'products': product,
+            'group_category': group_category,
+            'category_list': list_category,
+        }
+        return render(request, 'Product/sort_product.html', context )
+
     return render(request, 'Product/category.html', context)
 
 
@@ -171,7 +235,10 @@ def groupCategory(request, slug):
     group_category = CategoryGroup.objects.all()
     list_category = Category.objects.all()
     category_group = group_category.get(slug=slug)
-    product = Product.objects.all()
+    list_category = Category.objects.filter(groupCategory=category_group)
+    product = []
+    for item in list_category:
+        product += Product.objects.filter(category=item)
     if request.method == 'GET':
         try:
             getProduct = request.GET['search']
@@ -206,6 +273,36 @@ def groupCategory(request, slug):
             'newNotify': newNotify,
             'notify': notify,
         }
+        if request.is_ajax():
+            value = int(request.GET["value"])
+            if value == 1:
+                product.sort(key=lambda x: x.title, reverse=True)
+            elif value == 2:
+                product.sort(key=lambda x: x.like, reverse=True)
+            elif value == 3:
+                product.sort(key=lambda x: x.updated_at, reverse=True)
+            context = {
+                'products': product,
+                'group_category': group_category,
+                'category_list': list_category,
+                'newNotify': newNotify,
+                'notify': notify,
+            }
+            return render(request, 'Product/sort_product.html', context)
+    if request.is_ajax():
+        value = int(request.GET["value"])
+        if value == 1:
+            product.sort(key=lambda x: x.title, reverse=True)
+        elif value == 2:
+            product.sort(key=lambda x: x.like, reverse=True)
+        elif value == 3:
+            product.sort(key=lambda x: x.updated_at, reverse=True)
+        context = {
+            'products': product,
+            'group_category': group_category,
+            'category_list': list_category,
+        }
+        return render(request, 'Product/sort_product.html', context)
     return render(request, 'Product/group_category.html', context)
 
 

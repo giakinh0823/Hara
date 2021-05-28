@@ -114,6 +114,10 @@ img {
     padding: 8px 26px;
 }
 
+.button-success:focus{
+    box-shadow: none!important;
+}
+
 .button-secondary:hover {
     background-color: #b61827;
     color: #fff;
@@ -127,6 +131,8 @@ img {
 .form-check-input:focus {
     box-shadow: none;
 }
+
+
 
 
 

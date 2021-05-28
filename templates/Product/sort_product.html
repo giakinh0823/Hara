@@ -1,0 +1,68 @@
+{% load static %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        {% for product in products %}
+            <div class="col mb-5 list-products-content" style="display:none">
+                <div class="home-card">
+                    <div class="card w-100 home-card-content" style="width: 18rem;">
+                        {% if product.img %}
+                            <img loading="lazy" src="{{ product.img.url }}" class="card-img-top"
+                                 alt="">
+                        {% else %}
+                            <img loading="lazy" src="{% static 'img/iphone-2.jpg' %}"
+                                 class="card-img-top" alt="">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <div class="card-type mb-2">
+                                <div class="card-type-header me-auto">KINH PHI</div>
+                                <div class="card-type-icon">
+                                    {#                                                        <small class="item-product-slug" style="display:none">{{ product.slug }}</small>#}
+                                    <button class="card-type-btn" id="order_button" onclick="">
+                                        <i class="bi bi-heart card-type-btn-icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <h5 class="card-title"><a href="{{ product.get_absolute_url }}"
+                                                      class="card-title-link">{{ product.title }}</a>
+                            </h5>
+                            <p class="card-text card-text-caption">{{ product.caption }}</p>
+                            <div class="card-category">
+                                <a href="" class="card-category-link">{{ product.category }}</a>
+                            </div>
+                            <div class="card-price d-flex">
+                                <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <div class="progress card-progress">
+                                    <div class="progress-bar" role="progressbar"
+                                         style="width: {{ product.percent|floatformat:2 }}%"
+                                         aria-valuenow="{{ product.percent|floatformat:2 }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="card-clock">
+                                            <span class="card-lock-label"><i
+                                                    class="bi bi-clock"></i> 26 ngày còn lại</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row text-center">
+        <div>
+            <button class="button-primary button-load-more">Load more</button>
+        </div>
+    </div>
+
+    <script>
+        $(".list-products-content").slice(0, 9).show();
+        $(".button-load-more").on("click", () => {
+            $(".list-products-content:hidden").slice(0, 9).show();
+            if ($(".list-products-content:hidden").length === 0) {
+                $(".button-load-more").fadeOut()
+            }
+        })
+    </script>

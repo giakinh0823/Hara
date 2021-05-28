@@ -26,6 +26,10 @@ class Order(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=9)
     state = models.ForeignKey(State,on_delete=models.CASCADE)
     slug = models.SlugField(max_length=2000)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True,  null=True)
+    is_active = models.BooleanField(default=False, null=True)
+    is_complete = models.BooleanField(default=False, null=True)
 
     def __str__(self) -> str:
         return self.product.title
