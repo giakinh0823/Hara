@@ -3,7 +3,7 @@
 {% load Sum %}
 {% load imageYoutube %}
 {% block body %}
-    <div>
+    <div class="mb-5">
         <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
             <div class="container d-flex">
                 <div class="view-profile">
@@ -28,61 +28,128 @@
                     </header>
                     <div class="p-5">
                         <div class="product-form-container">
-                            <div class="product-content">
-                                <form method="post" enctype="multipart/form-data" id="edit-product-form"
-                                      onsubmit="submitFormEdit(event)">
-                                    {% csrf_token %}
-                                    <div class="mb-3 form-group">
-                                        <label for="id_title" class="form-label">Campaign Title*</label>
-                                        <input class="form-control" type="text" name="title" maxlength="2000"
-                                               required="" value="{{ product_detail.title }}"
-                                               id="id_title">
-                                    </div>
-                                    <div class="mb-3 form-group">
-                                        <label for="id_caption" class="form-label">Campaign Caption*</label>
-                                        <textarea class="form-control" name="caption" rows="6" maxlength="2000"
-                                                  required=""
-                                                  id="id_caption">{{ product_detail.caption }}</textarea>
-                                    </div>
-                                    <div class="mb-3 form-group">
-                                        <label for="id_price" class="form-label">Campaign Price*</label>
-                                        <div class="input-group">
-                                            <input type="number" name="price" class="form-control"
-                                                   aria-label="Dollar amount (with dot and two decimal places)"
-                                                   required="" value="{{ product_detail.price|floatformat:2 }}"
-                                                   id="id_price">
-                                            <span class="input-group-text">$</span>
-                                            <span class="input-group-text">0.00</span>
+                            <div>
+                                <header class="mb-2">
+                                    <h3 class="display-6">Image</h3>
+                                </header>
+                                <ul>
+                                    {% if images %}
+                                        {% for image in images %}
+                                            <li>
+                                                <div class="product-content">
+                                                    <form method="post" enctype="multipart/form-data"
+                                                          id="info-product-form-{{ image.id }}"
+                                                          onsubmit="submitFormImageAndVideo(event,{{ image.id }} )">
+                                                        {% csrf_token %}
+                                                        <div class="mb-3">
+                                                            <label for="id_img" class="form-label">Image</label>
+                                                            <a href="{{ image.image.url }}"
+                                                               style="color: #821717"
+                                                               target="_blank">{{ image.image }}</a>
+                                                        </div>
+                                                        <div class="d-flex">
+                                                            <div class="mb-3">
+                                                                <input class="form-control" type="file" name="img"
+                                                                       accept="image/*"
+                                                                       id="id_img">
+                                                            </div>
+                                                            <div>
+                                                                <button class="button-secondary ms-4" type="submit">
+                                                                    <span><i class="bi bi-pencil-square"></i></span>
+                                                                    Submit
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <li>
+                                        <div class="product-content">
+                                            <form method="post" enctype="multipart/form-data" id="info-product-form-0"
+                                                  onsubmit="submitFormImageAndVideo(event, 0)">
+                                                {% csrf_token %}
+                                                <div class="mb-3">
+                                                    <label for="id_img" class="form-label">Image</label>
+                                                    <a href="{{ image.url }}">{{ image }}</a>
+                                                    <input class="form-control" type="file" name="img" accept="image/*"
+                                                           id="id_img">
+                                                </div>
+                                                <button class="button-primary" type="submit"><span><i
+                                                        class="bi bi-plus-circle"></i></span> Add New Image
+                                                </button>
+                                            </form>
                                         </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="id_img" class="form-label">Image</label>
-                                        <input class="form-control" type="file" name="img" accept="image/*"
-                                               id="id_img">
-                                    </div>
-                                    <div class="mb-3 mt-5">
-                                        <select class="form-select product-selector" id="id_category" name="category"
-                                                required=""
-                                                aria-label="Default select example">
-                                            <option>Category</option>
-                                            {% for foo in category %}
-                                                {% if foo.name == product_detail.category.name %}
-                                                    <option value="{{ foo.id }}" selected>{{ foo.name }}</option>
-                                                {% else %}
-                                                    <option value="{{ foo.id }}">{{ foo.name }}</option>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <button class="button-primary mt-5" type="submit">Submit</button>
-                                </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mt-5">
+                                <header class="mb-2">
+                                    <h3 class="display-6">Video</h3>
+                                </header>
+                                <ul>
+                                    {% if videos %}
+                                        {% for video in videos %}
+                                            <li>
+                                                <div class="product-content">
+                                                    <form method="post" enctype="multipart/form-data"
+                                                          id="info-product-video-{{ video.id }}"
+                                                          onsubmit="submitFormVideo(event,{{ video.id }} )">
+                                                        {% csrf_token %}
+                                                        <div class="mb-3">
+                                                            <label for="id_video" class="form-label">Video</label>
+                                                            <a href="{{ video.video }}"
+                                                               style="color: #821717"
+                                                               target="_blank">{{ video.video }}</a>
+                                                        </div>
+                                                        <div class="d-flex">
+                                                            <div class="mb-3">
+                                                                <input class="form-control" name="video"
+                                                                       type="text"
+                                                                       id="id_video">
+                                                            </div>
+                                                            <div>
+                                                                <button class="button-secondary ms-4" type="submit">
+                                                                    <span><i class="bi bi-pencil-square"></i></span>
+                                                                    Submit
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <li>
+                                        <div class="product-content">
+                                            <form method="post" enctype="multipart/form-data" id="info-product-video-0"
+                                                  onsubmit="submitFormVideo(event, 0)">
+                                                {% csrf_token %}
+                                                <div class="mb-3">
+                                                    <label for="id_video" class="form-label">Video</label>
+                                                    <input class="form-control" name="video"
+                                                                       type="text"
+                                                                       id="id_video">
+                                                </div>
+                                                <button class="button-primary" type="submit"><span><i
+                                                        class="bi bi-plus-circle"></i></span> Add New Video
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <a class="button-secondary mt-2" href=""
+                           style="text-decoration: none; color: #000">Add Image or Video</a>
                     </div>
                 </div>
                 <div class="col col-lg-6 pt-5">
                     <div class="w-100">
-                        <div id="edit-product-preview">
+                        <div id="info-product-preview">
                             <div class="d-flex justify-content-center align-items-center">
                                 <div class="w-100 pb-5" style="max-height: 100vh; overflow-y: auto;">
                                     <div class="container">
