@@ -148,7 +148,9 @@ def data_scrap(request):
             list_of_percent.append(percent_text.replace("%", ""))
         for image in item.findAll("div", {"class": "discoverableCard-image lazyloaded"}):
             img = image.find("source", attrs={"data-srcset": True})
-            list_of_image.append(str(img.get('data-srcset')))
+            imgStr = str(img.get('data-srcset')).replace("h_273", "h_2000")
+            imgStr = imgStr.replace("w_273", "h_2000")
+            list_of_image.append(imgStr)
 
     # Set rational sleep time
     time.sleep(2)

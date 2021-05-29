@@ -227,7 +227,7 @@ def category(request, slug):
             'group_category': group_category,
             'category_list': list_category,
         }
-        return render(request, 'Product/sort_product.html', context )
+        return render(request, 'Product/sort_product.html', context)
 
     return render(request, 'Product/category.html', context)
 
@@ -309,10 +309,8 @@ def groupCategory(request, slug):
 
 @login_required
 def create_product(request):
-    context = {
-        'form': ProductForm,
-    }
     if request.user.is_authenticated:
+        list_category = Category.objects.all()
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
         request.session['newNotify'] = len(newNotify)
@@ -329,8 +327,38 @@ def create_product(request):
             'newNotify': newNotify,
             'notify': notify,
             'form': ProductForm,
+            'category': list_category,
         }
-    return render(request, 'product/create_product.html', context)
+        if request.is_ajax():
+            fromProduct = ProductForm(request.POST)
+            if fromProduct.is_valid():
+                product = fromProduct.save(commit=False)
+                product.user = request.user
+                if 'img' in request.FILES:
+                    product.img = request.FILES['img']
+                product.save()
+                product_detail = Product.objects.get(slug=product.slug)
+                profile_detail = Profile.objects.get(user=request.user)
+                profile_user = None
+                if request.user.is_authenticated:
+                    profile_user = Profile.objects.get(user=request.user)
+                list_products = Product.objects.filter(category=product_detail.category)
+                ran = random.randint(0, len(list_products) - 3)
+                videos = Video.objects.filter(product=product_detail)
+                images = Image.objects.filter(product=product_detail)
+                comments = Comment.objects.filter(product=product_detail)
+                context = {
+                    'product_detail': product_detail,
+                    'profile_detail': profile_detail,
+                    'list_products': list_products[ran:ran + 3],
+                    'videos': videos,
+                    'images': images,
+                    'comments': comments,
+                    'profile_user': profile_user,
+                    'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
+                }
+                return render(request, 'product/product_preview.html', context)
+        return render(request, 'product/create_product.html', context)
 
 
 # 4242 4242 4242 4242
