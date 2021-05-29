@@ -8,11 +8,15 @@
             <div class="container d-flex">
                 <div class="view-profile">
                     <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-eye"></i></span><span class="ms-2">Create</span></a>
+                            class="bi bi-plus-circle"></i></span><span class="ms-2">Create</span></a>
                 </div>
                 <div class="view-profile ms-4">
                     <a href="{% url 'product:edit_product' %}" class="view-profile-link"><span><i
                             class="bi bi-pencil-square"></i></span><span class="ms-2">Edit</span></a>
+                </div>
+                <div class="view-profile ms-4">
+                    <a href="{% url 'product:info_product' %}" class="view-profile-link"><span><i
+                            class="bi bi-app-indicator"></i></span><span class="ms-2">Image and Video</span></a>
                 </div>
             </div>
         </div>
@@ -53,7 +57,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="id_img" class="form-label">Image</label>
-                                        <input class="form-control" type="file" name="img"  accept="image/*"
+                                        <input class="form-control" type="file" name="img" accept="image/*"
                                                id="id_img">
                                     </div>
                                     <div class="mb-3 mt-5">
@@ -62,11 +66,11 @@
                                                 aria-label="Default select example">
                                             <option>Category</option>
                                             {% for foo in category %}
-                                               {% if foo.name == product_detail.category.name %}
-                                                 <option value="{{ foo.id }}" selected>{{ foo.name }}</option>
-                                               {% else %}
-                                                   <option value="{{ foo.id }}">{{ foo.name }}</option>
-                                               {% endif %}
+                                                {% if foo.name == product_detail.category.name %}
+                                                    <option value="{{ foo.id }}" selected>{{ foo.name }}</option>
+                                                {% else %}
+                                                    <option value="{{ foo.id }}">{{ foo.name }}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>

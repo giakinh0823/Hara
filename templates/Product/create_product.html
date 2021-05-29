@@ -5,12 +5,15 @@
         <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
             <div class="container d-flex">
                 <div class="view-profile">
-                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-eye"></i></span><span class="ms-2">Create</span></a>
+                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i class="bi bi-plus-circle"></i></span><span class="ms-2">Create</span></a>
                 </div>
                 <div class="view-profile ms-4">
                     <a href="{% url 'product:edit_product' %}" class="view-profile-link"><span><i
                             class="bi bi-pencil-square"></i></span><span class="ms-2">Edit</span></a>
+                </div>
+                 <div class="view-profile ms-4">
+                    <a href="{% url 'product:info_product' %}" class="view-profile-link"><span><i
+                            class="bi bi-app-indicator"></i></span><span class="ms-2">Image and Video</span></a>
                 </div>
             </div>
         </div>

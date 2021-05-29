@@ -469,6 +469,37 @@ def edit_product_detail(request, slug):
             return render(request, 'product/product_preview.html', context)
     return render(request, 'product/edit_product_detail.html', context)
 
+@login_required
+def info_product(request):
+    product = Product.objects.filter(user=request.user)
+    list_category = Category.objects.all()
+    if request.method == 'GET':
+        try:
+            getProduct = request.GET['search']
+        except:
+            getProduct = None
+        if getProduct:
+            product = product.filter(Q(title__icontains=request.GET['search']))
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
+    context = {
+        'newNotify': newNotify,
+        'notify': notify,
+        'form': ProductForm,
+        'category': list_category,
+        'products': product
+    }
+    return render(request, 'product/info_product.html', context)
 
 # 4242 4242 4242 4242
 class CreateCheckoutSessionView(View):
