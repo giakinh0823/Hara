@@ -1,0 +1,32 @@
+
+.product-container {
+    padding: 50px;
+}
+
+.edit-product-list {
+    list-style: none;
+}
+
+.edit-product-item {
+    display: none;
+}
+
+
+.edit-product-image {
+    width: 18rem;
+}
+
+.edit-product-body {
+    margin-left: 20px;
+    height: 220px;
+}
+
+.edit-product-title {
+    font-weight: 400;
+}
+
+.edit-product-caption {
+    margin-top: 10px;
+    margin-bottom: auto !important;
+}
+

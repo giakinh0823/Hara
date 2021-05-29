@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
@@ -356,9 +356,118 @@ def create_product(request):
                     'comments': comments,
                     'profile_user': profile_user,
                     'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
+                    'form': ProductForm,
                 }
                 return render(request, 'product/product_preview.html', context)
         return render(request, 'product/create_product.html', context)
+
+
+@login_required
+def edit_product(request):
+    product = Product.objects.filter(user=request.user)
+    list_category = Category.objects.all()
+    if request.method == 'GET':
+        try:
+            getProduct = request.GET['search']
+        except:
+            getProduct = None
+        if getProduct:
+            product = product.filter(Q(title__icontains=request.GET['search']))
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
+    context = {
+        'newNotify': newNotify,
+        'notify': notify,
+        'form': ProductForm,
+        'category': list_category,
+        'products': product
+    }
+    return render(request, 'product/edit_product.html', context)
+
+
+@login_required
+def edit_product_detail(request, slug):
+    product_detail = Product.objects.get(slug=slug)
+    list_category = Category.objects.all()
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
+    profile_detail = Profile.objects.get(user=request.user)
+    profile_user = None
+    if request.user.is_authenticated:
+        profile_user = Profile.objects.get(user=request.user)
+    list_products = Product.objects.filter(category=product_detail.category)
+    ran = random.randint(0, len(list_products) - 3)
+    videos = Video.objects.filter(product=product_detail)
+    images = Image.objects.filter(product=product_detail)
+    comments = Comment.objects.filter(product=product_detail)
+    context = {
+        'newNotify': newNotify,
+        'notify': notify,
+        'form': ProductForm(instance=product_detail),
+        'category': list_category,
+        'product_detail': product_detail,
+        'profile_detail': profile_detail,
+        'list_products': list_products[ran:ran + 3],
+        'videos': videos,
+        'images': images,
+        'comments': comments,
+        'profile_user': profile_user,
+        'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
+    }
+    if request.is_ajax():
+        formProduct = ProductForm(request.POST, instance=product_detail)
+        if formProduct.is_valid():
+            print("oke")
+            product = formProduct.save(commit=False)
+            if 'img' in request.FILES:
+                product.img = request.FILES['img']
+            product.save()
+            product_detail = Product.objects.get(slug=product.slug)
+            profile_detail = Profile.objects.get(user=request.user)
+            profile_user = None
+            if request.user.is_authenticated:
+                profile_user = Profile.objects.get(user=request.user)
+            list_products = Product.objects.filter(category=product_detail.category)
+            ran = random.randint(0, len(list_products) - 3)
+            videos = Video.objects.filter(product=product_detail)
+            images = Image.objects.filter(product=product_detail)
+            comments = Comment.objects.filter(product=product_detail)
+            context = {
+                'product_detail': product_detail,
+                'profile_detail': profile_detail,
+                'list_products': list_products[ran:ran + 3],
+                'videos': videos,
+                'images': images,
+                'comments': comments,
+                'profile_user': profile_user,
+                'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
+                'form': ProductForm(instance=product_detail),
+            }
+            return render(request, 'product/product_preview.html', context)
+        else:
+            print("not ok")
+            return render(request, 'product/product_preview.html', context)
+    return render(request, 'product/edit_product_detail.html', context)
 
 
 # 4242 4242 4242 4242

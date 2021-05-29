@@ -1,0 +1,617 @@
+{% extends 'Base/index.html' %}
+{% load static %}
+{% load Sum %}
+{% load imageYoutube %}
+{% block body %}
+    <div>
+        <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
+            <div class="container d-flex">
+                <div class="view-profile">
+                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
+                            class="bi bi-eye"></i></span><span class="ms-2">Create</span></a>
+                </div>
+                <div class="view-profile ms-4">
+                    <a href="{% url 'product:edit_product' %}" class="view-profile-link"><span><i
+                            class="bi bi-pencil-square"></i></span><span class="ms-2">Edit</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-lg-2">
+                <div class="col col-lg-6">
+                    <header class="mt-5">
+                        <h3 class="ms-5 display-4">Edit Product</h3>
+                    </header>
+                    <div class="p-5">
+                        <div class="product-form-container">
+                            <div class="product-content">
+                                <form method="post" enctype="multipart/form-data" id="edit-product-form"
+                                      onsubmit="submitFormEdit(event)">
+                                    {% csrf_token %}
+                                    <div class="mb-3 form-group">
+                                        <label for="id_title" class="form-label">Campaign Title*</label>
+                                        <input class="form-control" type="text" name="title" maxlength="2000"
+                                               required="" value="{{ product_detail.title }}"
+                                               id="id_title">
+                                    </div>
+                                    <div class="mb-3 form-group">
+                                        <label for="id_caption" class="form-label">Campaign Caption*</label>
+                                        <textarea class="form-control" name="caption" rows="6" maxlength="2000"
+                                                  required=""
+                                                  id="id_caption">{{ product_detail.caption }}</textarea>
+                                    </div>
+                                    <div class="mb-3 form-group">
+                                        <label for="id_price" class="form-label">Campaign Price*</label>
+                                        <div class="input-group">
+                                            <input type="number" name="price" class="form-control"
+                                                   aria-label="Dollar amount (with dot and two decimal places)"
+                                                   required="" value="{{ product_detail.price|floatformat:2 }}"
+                                                   id="id_price">
+                                            <span class="input-group-text">$</span>
+                                            <span class="input-group-text">0.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="id_img" class="form-label">Image</label>
+                                        <input class="form-control" type="file" name="img"  accept="image/*"
+                                               id="id_img">
+                                    </div>
+                                    <div class="mb-3 mt-5">
+                                        <select class="form-select product-selector" id="id_category" name="category"
+                                                required=""
+                                                aria-label="Default select example">
+                                            <option>Category</option>
+                                            {% for foo in category %}
+                                               {% if foo.name == product_detail.category.name %}
+                                                 <option value="{{ foo.id }}" selected>{{ foo.name }}</option>
+                                               {% else %}
+                                                   <option value="{{ foo.id }}">{{ foo.name }}</option>
+                                               {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button class="button-primary mt-5" type="submit">Create</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-lg-6 pt-5">
+                    <div class="w-100">
+                        <div id="edit-product-preview">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="w-100 pb-5" style="max-height: 100vh; overflow-y: auto;">
+                                    <div class="container">
+                                        <div class="row row-cols-1">
+                                            <div class="col">
+                                                <div class="product_detail-carousel">
+                                                    <div id="carouselExampleIndicators" class="carousel slide"
+                                                         data-bs-ride="carousel">
+                                                        <div class="carousel-indicators carousel-indicators-product-details">
+                                                            {% if images or videos %}
+                                                                {% for image in images %}
+                                                                    <div>
+                                                                        {% if forloop.counter0 == 0 %}
+                                                                            <button type="button"
+                                                                                    data-bs-target="#carouselExampleIndicators"
+                                                                                    data-bs-slide-to="0"
+                                                                                    class="product_detail-button active"
+                                                                                    aria-current="true"
+                                                                                    aria-label="Slide 1"
+                                                                                    style="background-image: url('{{ image.image.url }}');"
+                                                                            >
+                                                                            </button>
+                                                                        {% else %}
+                                                                            <button type="button"
+                                                                                    data-bs-target="#carouselExampleIndicators"
+                                                                                    data-bs-slide-to="{{ forloop.counter0 }}"
+                                                                                    class="product_detail-button"
+                                                                                    aria-current="true"
+                                                                                    aria-label="Slide 1"
+                                                                                    style="background-image: url('{{ image.image.url }}');"
+                                                                            >
+                                                                            </button>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                {% endfor %}
+                                                                {% for video in videos %}
+                                                                    {% if not images and forloop.counter0 == 0 %}
+                                                                        <div>
+                                                                            <button type="button"
+                                                                                    data-bs-target="#carouselExampleIndicators"
+                                                                                    data-bs-slide-to="{{ forloop.counter|Sum:images }}"
+                                                                                    class="product_detail-button active"
+                                                                                    aria-current="true"
+                                                                                    aria-label="Slide 1"
+                                                                                    style="background-image: url('http://i3.ytimg.com/vi/{{ video.video|imageYoutube }}/maxresdefault.jpg');"
+                                                                            >
+                                                                            </button>
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div>
+                                                                            <button type="button"
+                                                                                    data-bs-target="#carouselExampleIndicators"
+                                                                                    data-bs-slide-to="{{ forloop.counter|Sum:images }}"
+                                                                                    class="product_detail-button"
+                                                                                    aria-current="true"
+                                                                                    aria-label="Slide 1"
+                                                                                    style="background-image: url('http://i3.ytimg.com/vi/{{ video.video|imageYoutube }}/maxresdefault.jpg');"
+                                                                            >
+                                                                            </button>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <div>
+                                                                    <button type="button"
+                                                                            data-bs-target="#carouselExampleIndicators"
+                                                                            data-bs-slide-to="1"
+                                                                            class="product_detail-button"
+                                                                            aria-current="true" aria-label="Slide 1"
+                                                                            style="background-image: url('{{ product_detail.img.url }}');"
+                                                                    >
+                                                                    </button>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="carousel-inner">
+                                                            {% if images or videos %}
+                                                                {% for image in images %}
+                                                                    {% if forloop.counter0 == 0 %}
+                                                                        <div class="carousel-item active">
+                                                                            <img src="{{ image.image.url }}"
+                                                                                 class="d-block w-100 h-100"
+                                                                                 alt="...">
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div class="carousel-item">
+                                                                            <img src="{{ image.image.url }}"
+                                                                                 class="d-block w-100 h-100"
+                                                                                 alt="...">
+                                                                        </div>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                                {% for video in videos %}
+                                                                    {% if not images and forloop.counter0 == 0 %}
+                                                                        <div class="carousel-item active">
+                                                                            <iframe class="d-block w-100 h-100"
+                                                                                    src="{{ video.video }}"></iframe>
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div class="carousel-item">
+                                                                            <iframe class="d-block w-100 h-100"
+                                                                                    src="{{ video.video }}"></iframe>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <div class="carousel-item active">
+                                                                    <img src="{{ product_detail.img.url }}"
+                                                                         class="d-block w-100 h-100"
+                                                                         alt="...">
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="d-flex flex-column">
+                                                    <div class="mt-2" style="color: #34ca96">KINH PHI</div>
+                                                    <div class="product_detail-header mt-3">
+                                                        <h3>{{ product_detail.title }}</h3>
+                                                    </div>
+                                                    <div class="product_detail-caption">
+                                                        <p>{{ product_detail.caption }}</p>
+                                                    </div>
+                                                    <div class="product_user mt-3 d-flex">
+                                                        <div class="product_user-image">
+                                                            <img src="{{ profile_detail.image.url }}" alt=""
+                                                                 class="product_user-img">
+                                                        </div>
+                                                        <div class="product_user-name ms-3">
+                                                            {% if request.user == profile_detail.user %}
+                                                                <a href="{{ profile_detail.get_absolute_url }}"
+                                                                   class="text-decoration-none"
+                                                                   style="color: #1b1b1b"><p
+                                                                        style="font-size: 18px;font-weight:600 ;margin: 0">{{ product_detail.user.get_full_name }}</p>
+                                                                </a>
+                                                            {% else %}
+                                                                <a href="{{ profile_detail.get_absolute_url_detail }}"
+                                                                   class="text-decoration-none"
+                                                                   style="color: #1b1b1b"><p
+                                                                        style="font-size: 18px;font-weight:600 ;margin: 0">{{ product_detail.user.get_full_name }}</p>
+                                                                </a>
+                                                            {% endif %}
+                                                            <p>9 Campaigns | {{ profile_detail.address }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div style="padding: 0 10px">
+                                                        <div class="mt-3">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="product_detail-price">
+                                                                    <p style="font-size:20px; font-weight: 600">
+                                                                        ${{ product_detail.price|floatformat:2 }}</p>
+                                                                </div>
+                                                                <div class="product_detail-backers ms-auto">
+                                                                    <p style="font-size:16px; font-weight: 300">1.678
+                                                                        người ủng hộ</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="">
+                                                                <div class="progress card-progress">
+                                                                    <div class="progress-bar" role="progressbar"
+                                                                         style="width: {{ product_detail.percent|floatformat:2 }}%"
+                                                                         aria-valuenow="{{ product_detail.percent|floatformat:2 }}"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"></div>
+                                                                </div>
+                                                                <div class="d-flex mt-2">
+                                                                    <div>
+                                                                        <p>{{ product_detail.percent|floatformat:2 }}%</p>
+                                                                    </div>
+                                                                    <div class="ms-auto">
+                                                                        <p>28 days left</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mt-3 d-flex">
+                                                                <a href="{% url 'product:checkout_loading' slug=product_detail.slug %}"
+                                                                   type="button"
+                                                                   class="button-primary">ĐẦU TƯ NGAY</a>
+                                                                <button class="ms-3 button-secondary d-flex align-items-center">
+                                                                    <span><i class="bi bi-heart"></i></span>
+                                                                    <span class="ms-2">THEO DÕI</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <ul class="nav nav-pills mb-5" id="pills-tab" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link product_detail-active active"
+                                                                id="pills-home-tab"
+                                                                data-bs-toggle="pill"
+                                                                data-bs-target="#pills-home" type="button" role="tab"
+                                                                aria-controls="pills-home"
+                                                                aria-selected="true">STORY
+                                                        </button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link product_detail-active"
+                                                                id="pills-profile-tab" data-bs-toggle="pill"
+                                                                data-bs-target="#pills-profile" type="button" role="tab"
+                                                                aria-controls="pills-profile"
+                                                                aria-selected="false">COMMENT
+                                                        </button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link product_detail-active"
+                                                                id="pills-contact-tab" data-bs-toggle="pill"
+                                                                data-bs-target="#pills-contact" type="button" role="tab"
+                                                                aria-controls="pills-contact"
+                                                                aria-selected="false">FAQ
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content" id="pills-tabContent">
+                                                    <div class="tab-pane fade show active" id="pills-home"
+                                                         role="tabpanel"
+                                                         aria-labelledby="pills-home-tab">
+                                                        <div>
+                                                            <div class="col">
+                                                                <ul class="product_detail-list">
+                                                                    <li class="product_detail-item">
+                                                                        <img src="{% static 'img/banner3.jpg' %}" alt=""
+                                                                             style="width: 100%">
+                                                                    </li>
+                                                                    <li class="product_detail-item">
+                                                                        <img src="{% static 'img/banner4.jpg' %}" alt=""
+                                                                             style="width: 100%">
+                                                                    </li>
+                                                                    <li class="product_detail-item">
+                                                                        <img src="{% static 'img/banner5.jpg' %}" alt=""
+                                                                             style="width: 100%">
+                                                                    </li>
+                                                                    <li class="product_detail-item">
+                                                                        <img src="{% static 'img/blog1.jpg' %}" alt=""
+                                                                             style="width: 100%">
+                                                                    </li>
+                                                                    <li class="product_detail-item">
+                                                                        <img src="{% static 'img/blog2.jpg' %}" alt=""
+                                                                             style="width: 100%">
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                                         aria-labelledby="pills-profile-tab">
+                                                        <div class="comment">
+                                                            <div class="form-comment row">
+                                                                <label for="id_comment" class="form-label"
+                                                                       style="font-size: 18px; padding: 0">Post
+                                                                    a comment</label>
+                                                                <textarea type="area" id='id_comment' required
+                                                                          class="form-control"
+                                                                          rows="4"></textarea>
+                                                                <button class="button-secondary mt-3 ms-auto"
+                                                                        id="comment-button"
+                                                                        style="width:fit-content">POST
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="comment-content">
+                                                            <div class="col">
+                                                                <ul class="comment_content-list">
+                                                                    {% if comments %}
+                                                                        {% for comment in comments %}
+                                                                            <li class="comment_content-item mb-3"
+                                                                                style="display:none">
+                                                                                <div class="comment-user d-flex">
+                                                                                    <div class="comment-user-image">
+                                                                                        <img src="{{ comment.profile.image.url }}"
+                                                                                             alt="..."
+                                                                                             class="comment-user-img">
+                                                                                    </div>
+                                                                                    <div class="comment-user-content ms-3">
+                                                                                        {% if user == comment.user %}
+                                                                                            <a class="text-decoration-none"
+                                                                                               href="{{ profile_detail.get_absolute_url }}"
+                                                                                               style="font-weight: 500; margin:0; color: #1b1b1b"
+                                                                                               id="comment_user">{{ comment.user.get_full_name }}</a>
+                                                                                        {% else %}
+                                                                                            <a class="text-decoration-none"
+                                                                                               href="{{ comment.profile.get_absolute_url_detail }}"
+                                                                                               style="font-weight: 500; margin:0; color: #1b1b1b"
+                                                                                               id="comment_user">{{ comment.user.get_full_name }}</a>
+                                                                                        {% endif %}
+                                                                                        <p class="mt-0"
+                                                                                           id="comment_content_label">{{ comment.comment }}</p>
+                                                                                        <div class="d-flex">
+                                                                                            <div>
+                                                                                                <button class="comment-icon comment-like">
+                                                                                                    <i
+                                                                                                            class="bi bi-hand-thumbs-up"></i>
+                                                                                                </button>
+                                                                                                <span>9</span>
+                                                                                            </div>
+                                                                                            <div class="ms-2">
+                                                                                                <button class="comment-icon comment-dislike">
+                                                                                                    <i
+                                                                                                            class="bi bi-hand-thumbs-down"></i>
+                                                                                                </button>
+                                                                                                <span>9</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        {% endfor %}
+
+                                                                    {% endif %}
+                                                                </ul>
+                                                                <div class="row text-center">
+                                                                    <div>
+                                                                        <button class="button-primary button-load-more">
+                                                                            Load more
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="pills-contact" role="tabpanel"
+                                                         aria-labelledby="pills-contact-tab">
+                                                        <div class="faq col ps-3">
+                                                            <div class="faq-header">
+                                                                <h5 class="display-6" style="font-size: 24px">Frequently
+                                                                    Asked Questions</h5>
+                                                            </div>
+                                                            <div class="faq-content mt-4">
+                                                                <ul class="faq_list">
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Is delivery
+                                                                            guaranteed?</p>
+                                                                        <p class="faq_item-caption">Yes, absolutely!
+                                                                            While Indiegogo doesn't
+                                                                            guarantee delivery of products, we, as
+                                                                            Rolling Square do. If you
+                                                                            contribute to one of our perks you will
+                                                                            receive the product. Simple as
+                                                                            that. This is our eighth campaign and we
+                                                                            have already delivered to
+                                                                            hundreds of thousands of backers, so you can
+                                                                            count on our
+                                                                            experience.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">What's your support
+                                                                            email
+                                                                            address?</p>
+                                                                        <p class="faq_item-caption">You can reach us at
+                                                                            support@rollingsqua.re! We
+                                                                            receive a lot of emails but usually we will
+                                                                            reply within 24 working
+                                                                            hours. Make sure to avoid sending followup
+                                                                            emails, as they will bring
+                                                                            your ticket back to the end of the "pile",
+                                                                            and each and every email is
+                                                                            replied to anyway. Thank you :)</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">I pledged to multiple
+                                                                            perks, will I save on shipping costs?</p>
+                                                                        <p class="faq_item-caption">If you pledge to
+                                                                            multiple perks, we will combine
+                                                                            them in a single shipment, so it's possible
+                                                                            that you will save on
+                                                                            shipping costs. The difference will be
+                                                                            calculated precisely towards the
+                                                                            end of the campaign and you will receive a
+                                                                            credit for the amount.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Can I invest and are
+                                                                            you
+                                                                            looking for agents and distributors?</p>
+                                                                        <p class="faq_item-caption">We are always
+                                                                            excited to speak with anyone that
+                                                                            believes in our products. If you are
+                                                                            interested in getting involved as
+                                                                            an investor, agent, or distributor, email us
+                                                                            at info@ferrarisgroup.ch
+                                                                            and let’s start talking!</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Is shipping
+                                                                            tracked?</p>
+                                                                        <p class="faq_item-caption">Yes, all shipping
+                                                                            methods are tracked!</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">I moved. Can I change
+                                                                            my
+                                                                            address?</p>
+                                                                        <p class="faq_item-caption">Yes, you can change
+                                                                            your address if your
+                                                                            contribution status is "Placed". If your
+                                                                            status is "Locked", there's
+                                                                            still a chance that you can change it, since
+                                                                            any update is possible
+                                                                            until we ship your order out. To change it,
+                                                                            please visit your orders's
+                                                                            page by logging in at
+                                                                            https://backer.tools/login. If it shows that
+                                                                            your
+                                                                            order is either "Exported" or "Shipped",
+                                                                            it's unfortunately too
+                                                                            late.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Is it possible to
+                                                                            request
+                                                                            a refund?</p>
+                                                                        <p class="faq_item-caption">If you have changed
+                                                                            your mind, you can request a
+                                                                            refund if your order status is "Placed". If
+                                                                            your order is "Locked",
+                                                                            please contact support@rollingsqua.re and we
+                                                                            will try to intercept your
+                                                                            package. If it's "Shipped", you will need to
+                                                                            wait until you receive the
+                                                                            package, then you can ship the package back
+                                                                            to us. Once received, we
+                                                                            will send you the refund.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">After I received the
+                                                                            product, can I return it for a refund?</p>
+                                                                        <p class="faq_item-caption">Yes, you will have
+                                                                            30 days after the day your
+                                                                            package has been delivered to contact
+                                                                            support@rollingsqua.re and
+                                                                            initiate the return process.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Will I need to pay
+                                                                            VAT?</p>
+                                                                        <p class="faq_item-caption">In general, no.
+                                                                            Although, due to the many
+                                                                            countries and regulations, we can't
+                                                                            guarantee it, to be sure, you should
+                                                                            check with the local customs. Orders larger
+                                                                            than 5 units are more likely
+                                                                            to incur in importation expenses. The
+                                                                            shipments will come from one of
+                                                                            our warehouses, either in China, US or
+                                                                            EU.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Can I buy a larger
+                                                                            quantity?</p>
+                                                                        <p class="faq_item-caption">If you are
+                                                                            interested in making a bulk order
+                                                                            (min. 100 units), please contact
+                                                                            info@ferrarisgroup.ch and we will send
+                                                                            you a quotation right away.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Is EDGE covered by a
+                                                                            warranty?</p>
+                                                                        <p class="faq_item-caption"></p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px"></p>
+                                                                        <p class="faq_item-caption">Absolutely! Our
+                                                                            warranty lasts for 2 years, and
+                                                                            is valid worldwide.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Does the EDGE Light
+                                                                            need
+                                                                            a cable to work?</p>
+                                                                        <p class="faq_item-caption">The EDGE Light also
+                                                                            has a battery, so a cable
+                                                                            isn't needed all the time. However, it will
+                                                                            need to be charged, and it
+                                                                            can reach a higher brightness if used while
+                                                                            plugged in.</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">What's the charging
+                                                                            speed
+                                                                            of the EDGE Wireless Charger?</p>
+                                                                        <p class="faq_item-caption">The EDGE Wireless
+                                                                            Charger can charge at 15W max.
+                                                                            Please note that iPhone is limited by Apple
+                                                                            to charge at 7.5W on third
+                                                                            party wireless chargers</p>
+                                                                    </li>
+                                                                    <li class="faq_item mb-3">
+                                                                        <p class="faq_item-header"
+                                                                           style="font-size: 18px">Can I use my own
+                                                                            MagSafe
+                                                                            charger with the EDGE Mount?</p>
+                                                                        <p class="faq_item-caption">Absolutely, you will
+                                                                            just need to add a metal
+                                                                            plate to the back of the MagSafe.</p>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
