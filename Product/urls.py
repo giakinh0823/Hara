@@ -9,6 +9,7 @@ urlpatterns = [
     path('getdata/', views.getData, name='getData'),
     path('category/<slug:slug>/', views.category, name='category'),
     path('groupCategory/<slug:slug>/', views.groupCategory, name='group_category'),
+    path('product/favorite/<int:id>/', views.favorite_product, name='favorite_product'),
     path('product/create/', views.create_product, name='create_product'),
     path('product/edit/', views.edit_product, name='edit_product'),
     path('product/edit/deleteProduct/<int:id>/', views.delete_product, name='delete_product'),

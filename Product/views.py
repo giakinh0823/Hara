@@ -54,6 +54,14 @@ def products(request):
     if request.user.is_authenticated:
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
+        favorites = Favorite.objects.filter(user=request.user)
+        for product in list_product:
+            product.favorite = False
+            for favorite in favorites:
+                if product == favorite.product:
+                    product.favorite = True
+                    break
+
         request.session['newNotify'] = len(newNotify)
         if notify or newNotify:
             request.session['newNotify'] = len(newNotify)
@@ -178,6 +186,13 @@ def category(request, slug):
     if request.user.is_authenticated:
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
+        favorites = Favorite.objects.filter(user=request.user)
+        for item in product:
+            item.favorite = False
+            for favorite in favorites:
+                if item == favorite.product:
+                    item.favorite = True
+                    break
         request.session['newNotify'] = len(newNotify)
         notify = notify[:len(notify) - len(newNotify)]
         if notify or newNotify:
@@ -256,6 +271,13 @@ def groupCategory(request, slug):
     if request.user.is_authenticated:
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
+        favorites = Favorite.objects.filter(user=request.user)
+        for item in product:
+            item.favorite = False
+            for favorite in favorites:
+                if item == favorite.product:
+                    item.favorite = True
+                    break
         request.session['newNotify'] = len(newNotify)
         notify = notify[:len(notify) - len(newNotify)]
         if notify or newNotify:
@@ -634,6 +656,7 @@ def new_info_video(request, id):
         return render(request, 'product/product_preview.html', context)
     return render(request, 'product/product_preview.html')
 
+
 @login_required
 def delete_video_product(request, slug, id):
     if request.is_ajax():
@@ -643,6 +666,7 @@ def delete_video_product(request, slug, id):
         list_video = Video.objects.filter(product=product)
         return render(request, 'Product/video_product_list.html', {"videos": list_video})
 
+
 @login_required
 def delete_image_product(request, slug, id):
     if request.is_ajax():
@@ -651,6 +675,7 @@ def delete_image_product(request, slug, id):
         image.delete()
         list_image = Image.objects.filter(product=product)
         return render(request, 'Product/image_product_list.html', {"images": list_image})
+
 
 # 4242 4242 4242 4242
 class CreateCheckoutSessionView(View):
@@ -681,6 +706,21 @@ class CreateCheckoutSessionView(View):
         return JsonResponse({
             'id': checkout_session.id
         })
+
+
+@login_required
+def favorite_product(request, id):
+    product = Product.objects.get(id=id)
+    try:
+        favorite = Favorite.objects.get(product=product, user=request.user)
+    except:
+        favorite = None
+    if favorite:
+        favorite.delete()
+    else:
+        favorite = Favorite.objects.create(product=product, user=request.user)
+        favorite.save()
+    return JsonResponse({"success": True})
 
 
 @login_required
@@ -717,11 +757,13 @@ def done(request):
     }
     return render(request, "order/done.html", context)
 
+
 @login_required
 def delete_product(request, id):
     product = Product.objects.get(id=id)
     product.delete()
     return render(request, 'Product/list_edit_info_product.html', {"products": Product.objects.all()})
+
 
 @login_required
 def error(request):

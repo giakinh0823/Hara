@@ -61,9 +61,31 @@
                                             <div class="card-type mb-2">
                                                 <div class="card-type-header me-auto">KINH PHI</div>
                                                 <div class="card-type-icon">
-                                                    <button class="card-type-btn">
-                                                        <i class="bi bi-heart card-type-btn-icon"></i>
-                                                    </button>
+                                                     {% if not product.favorite %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% else %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% endif %}
                                                 </div>
                                             </div>
                                             <h5 class="card-title"><a href="{{ product.get_absolute_url }}"
@@ -88,7 +110,7 @@
                                             </div>
                                             <div class="card-clock">
                                             <span class="card-lock-label"><i
-                                                    class="bi bi-clock"></i> 26 ngày còn lại</span>
+                                                    class="bi bi-clock"></i> {{ product.created_at }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -205,9 +227,31 @@
                                             <div class="card-type mb-2">
                                                 <div class="card-type-header me-auto">KINH PHI</div>
                                                 <div class="card-type-icon">
-                                                    <button class="card-type-btn">
-                                                        <i class="bi bi-heart card-type-btn-icon"></i>
-                                                    </button>
+                                                     {% if not product.favorite %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% else %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% endif %}
                                                 </div>
                                             </div>
                                             <h5 class="card-title"><a href="{{ product.get_absolute_url }}"
@@ -232,7 +276,7 @@
                                             </div>
                                             <div class="card-clock">
                                             <span class="card-lock-label"><i
-                                                    class="bi bi-clock"></i> 26 ngày còn lại</span>
+                                                    class="bi bi-clock"></i> {{ product.created_at }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -271,9 +315,31 @@
                                             <div class="card-type mb-2">
                                                 <div class="card-type-header me-auto">KINH PHI</div>
                                                 <div class="card-type-icon">
-                                                    <button class="card-type-btn">
-                                                        <i class="bi bi-heart card-type-btn-icon"></i>
-                                                    </button>
+                                                     {% if not product.favorite %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% else %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% endif %}
                                                 </div>
                                             </div>
                                             <h5 class="card-title"><a href="{{ product.get_absolute_url }}"
@@ -298,7 +364,7 @@
                                             </div>
                                             <div class="card-clock">
                                             <span class="card-lock-label"><i
-                                                    class="bi bi-clock"></i> 26 ngày còn lại</span>
+                                                    class="bi bi-clock"></i> {{ product.created_at }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -310,7 +376,7 @@
             </div>
         </div>
     </div>
-    <div class="blog mt-5 ">
+    <div class="blog mt-5 mb-5">
         <div class="w-100 text-center mb-5">
             <h3 class="display-5">Blog</h3>
         </div>
@@ -361,7 +427,8 @@
             </div>
         </div>
     </div>
-    <div class="mt-5 d-flex mb-5 w-100 justify-content-center flex-column align-items-center text-center">
+    {% if is_authenticated %}
+        <div class="mt-5 d-flex mb-5 w-100 justify-content-center flex-column align-items-center text-center">
         <h4 class="display-6 mb-4">Clever Things For Curious Humans</h4>
         <p class="col-6">There's no better place to start the hunt for something new and special. Begin on Indiegogo to
             find clever and unconventional things that solve everyday problems large and small.
@@ -370,4 +437,5 @@
             <a href="{% url 'register:login' %}" class="text-decoration-none button-primary">Login</a>
         </div>
     </div>
+    {% endif %}
 {% endblock body %}

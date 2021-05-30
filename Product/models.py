@@ -92,3 +92,11 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return self.user.get_full_name()
+
+
+class Favorite(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.product.title

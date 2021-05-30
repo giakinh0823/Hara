@@ -16,6 +16,13 @@ def home(request):
     if request.user.is_authenticated:
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
+        favorites = Favorite.objects.filter(user=request.user)
+        for product in products:
+            product.favorite = False
+            for favorite in favorites:
+                if product == favorite.product:
+                    product.favorite = True
+                    break
         if notify or newNotify:
             request.session['newNotify'] = len(newNotify)
             notify = notify[:len(notify) - len(newNotify)]
