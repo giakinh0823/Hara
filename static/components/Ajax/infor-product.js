@@ -13,7 +13,7 @@ const submitFormImageAndVideo = (e, id) => {
                 $("#info-product-preview").html(data)
             }
         })
-    }else{
+    } else {
         e.preventDefault();
         $.ajax({
             url: `newInfoImage/${id}/`,
@@ -25,11 +25,12 @@ const submitFormImageAndVideo = (e, id) => {
             success: function (data) {
                 console.log(document.getElementById(`info-product-form-${id}`))
                 $("#info-product-preview").html(data)
+                $(`#button-edit-image-${id}`).css("display", "block")
+                $(`.input-edit-image-${id}`).css("display", "none")
             }
         })
     }
 }
-
 
 
 const submitFormVideo = (e, id) => {
@@ -46,7 +47,7 @@ const submitFormVideo = (e, id) => {
                 $("#info-product-preview").html(data)
             }
         })
-    }else{
+    } else {
         e.preventDefault();
         $.ajax({
             url: `newvideo/${id}/`,
@@ -61,4 +62,34 @@ const submitFormVideo = (e, id) => {
             }
         })
     }
+}
+
+const editImage = (id) => {
+    $(`#button-edit-image-${id}`).css("display", "none")
+    $(`.input-edit-image-${id}`).css("display", "block")
+}
+
+
+const deleteVideo = (id) => {
+    console.log(window.location)
+    $.ajax({
+        url: window.location.pathname+`/deleteVideo/${id}/`,
+        data: {"id": id},
+        dataType: 'html',
+        success: function (data) {
+            $('#list_video_product').html(data)
+        }
+    })
+}
+
+const deleteImage = (id) => {
+    console.log(window.location)
+    $.ajax({
+        url: window.location.pathname+`/deleteImage/${id}/`,
+        data: {"id": id},
+        dataType: 'html',
+        success: function (data) {
+            $('#list_image_product').html(data)
+        }
+    })
 }

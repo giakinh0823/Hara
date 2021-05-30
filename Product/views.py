@@ -634,6 +634,23 @@ def new_info_video(request, id):
         return render(request, 'product/product_preview.html', context)
     return render(request, 'product/product_preview.html')
 
+@login_required
+def delete_video_product(request, slug, id):
+    if request.is_ajax():
+        product = Product.objects.get(slug=slug)
+        video = Video.objects.get(product=product, id=id)
+        video.delete()
+        list_video = Video.objects.filter(product=product)
+        return render(request, 'Product/video_product_list.html', {"videos": list_video})
+
+@login_required
+def delete_image_product(request, slug, id):
+    if request.is_ajax():
+        product = Product.objects.get(slug=slug)
+        image = Image.objects.get(product=product, id=id)
+        image.delete()
+        list_image = Image.objects.filter(product=product)
+        return render(request, 'Product/image_product_list.html', {"images": list_image})
 
 # 4242 4242 4242 4242
 class CreateCheckoutSessionView(View):

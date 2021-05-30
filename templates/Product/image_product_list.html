@@ -1,0 +1,74 @@
+ {% if images %}
+                                        {% for image in images %}
+                                            <li>
+                                                <div class="product-content">
+                                                    <form method="post" enctype="multipart/form-data"
+                                                          id="info-product-form-{{ image.id }}"
+                                                          onsubmit="submitFormImageAndVideo(event,{{ image.id }} )">
+                                                        {% csrf_token %}
+                                                        <div class="mb-3 d-flex">
+                                                            <label for="id_img-{{ image.id }}" class="form-label ms-2">Image</label>
+                                                            <a href="{{ image.image.url }}"
+                                                               style="color: #821717"
+                                                               target="_blank">Image-{{ image.id }}</a>
+                                                            <div>
+                                                                <div class="ms-4" id="button-edit-image-{{ image.id }}"
+                                                                     onclick="editImage({{ image.id }})">
+                                                                    <span><i class="bi bi-pencil-square"></i></span>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="ms-4" id="button-delete-image-{{ image.id }}"
+                                                                     onclick="deleteImage({{ image.id }})">
+                                                                    <span><i class="bi bi-x-circle"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="mb-3 input-edit-image-{{ image.id }}"
+                                                                 style="display: none">
+                                                                <input class="form-control" type="file" name="img"
+                                                                       accept="image/*"
+                                                                       id="id_img-{{ image.id }}">
+                                                            </div>
+                                                            <div class="">
+                                                                <button class="ms-4 pb-3 input-edit-image-{{ image.id }}"
+                                                                        type="submit" style="display: none;">
+                                                                    <span style="font-size: 20px"><i
+                                                                            class="bi bi-check2-circle"></i></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+<li>
+                                        <div class="product-content">
+                                            <form method="post" enctype="multipart/form-data" id="info-product-form-0"
+                                                  onsubmit="submitFormImageAndVideo(event, 0)">
+                                                {% csrf_token %}
+                                                <div class="d-flex">
+                                                    <div class="mb-3 input-edit-image-0" style="display: none;">
+                                                        <a href="{{ image.url }}">{{ image }}</a>
+                                                        <input class="form-control" type="file" name="img"
+                                                               accept="image/*"
+                                                               id="id_img">
+                                                    </div>
+                                                    <div class="">
+                                                        <button class="ms-4 pb-3 input-edit-image-0"
+                                                                type="submit" style="display: none;">
+                                                        <span style="font-size: 20px"><i
+                                                                class="bi bi-check2-circle"></i></span>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                                <div class="button-secondary text-center"
+                                                     onclick="editImage(0)"><span><i
+                                                        class="bi bi-plus-circle"></i></span> Add New Image
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </li>

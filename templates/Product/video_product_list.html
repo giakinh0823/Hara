@@ -1,0 +1,75 @@
+{% if videos %}
+    {% for video in videos %}
+        <li>
+            <div class="product-content">
+                <form method="post" enctype="multipart/form-data"
+                      id="info-product-video-{{ video.id }}"
+                      onsubmit="submitFormVideo(event,{{ video.id }} )">
+                    {% csrf_token %}
+                    <div class="mb-3 d-flex">
+                        <label for="id_video-{{ video.id }}"
+                               class="form-label me-2">Video</label>
+                        <a href="{{ video.video }}"
+                           style="color: #821717"
+                           target="_blank">Youtube-{{ video.id }}</a>
+                        <div>
+                            <div class="ms-4" id="button-edit-image-{{ video.id }}"
+                                 onclick="editImage({{ video.id }})">
+                                <span><i class="bi bi-pencil-square"></i></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="ms-4" id="button-delete-{{ video.id }}"
+                                 onclick="deleteVideo({{ video.id }})">
+                                <span><i class="bi bi-x-circle"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="mb-3">
+                            <input class="form-control input-edit-image-{{ video.id }}"
+                                   name="video"
+                                   type="text"
+                                   id="id_video-{{ video.id }}"
+                                   style="display: none">
+                        </div>
+                        <div class="">
+                            <button class="ms-4 pb-3 input-edit-image-{{ video.id }}"
+                                    type="submit" style="display: none;">
+                                                                    <span style="font-size: 20px"><i
+                                                                            class="bi bi-check2-circle"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+    {% endfor %}
+{% endif %}
+<li>
+    <div class="product-content">
+        <form method="post" enctype="multipart/form-data" id="info-product-video-0"
+              onsubmit="submitFormVideo(event, 0)">
+            {% csrf_token %}
+            <div class="d-flex">
+                <div class="mb-3 input-edit-image--1" style="display: none;">
+                    <label>
+                        <input class="form-control" name="video"
+                               type="text">
+                    </label>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="ms-4 pb-3 input-edit-image--1"
+                            type="submit" style="display: none;">
+                                                        <span style="font-size: 20px"><i
+                                                                class="bi bi-check2-circle"></i></span>
+                    </button>
+                </div>
+            </div>
+            <div class="button-secondary text-center"
+                 onclick="editImage(-1)"><span><i
+                    class="bi bi-plus-circle"></i></span> Add New Image
+            </div>
+        </form>
+    </div>
+</li>

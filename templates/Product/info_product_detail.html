@@ -32,7 +32,7 @@
                                 <header class="mb-2">
                                     <h3 class="display-6">Image</h3>
                                 </header>
-                                <ul>
+                                <ul id="list_image_product">
                                     {% if images %}
                                         {% for image in images %}
                                             <li>
@@ -41,22 +41,36 @@
                                                           id="info-product-form-{{ image.id }}"
                                                           onsubmit="submitFormImageAndVideo(event,{{ image.id }} )">
                                                         {% csrf_token %}
-                                                        <div class="mb-3">
-                                                            <label for="id_img" class="form-label">Image</label>
+                                                        <div class="mb-3 d-flex">
+                                                            <label for="id_img-{{ image.id }}" class="form-label ms-2">Image</label>
                                                             <a href="{{ image.image.url }}"
                                                                style="color: #821717"
-                                                               target="_blank">{{ image.image }}</a>
-                                                        </div>
-                                                        <div class="d-flex">
-                                                            <div class="mb-3">
-                                                                <input class="form-control" type="file" name="img"
-                                                                       accept="image/*"
-                                                                       id="id_img">
+                                                               target="_blank">Image-{{ image.id }}</a>
+                                                            <div>
+                                                                <div class="ms-4" id="button-edit-image-{{ image.id }}"
+                                                                     onclick="editImage({{ image.id }})">
+                                                                    <span><i class="bi bi-pencil-square"></i></span>
+                                                                </div>
                                                             </div>
                                                             <div>
-                                                                <button class="button-secondary ms-4" type="submit">
-                                                                    <span><i class="bi bi-pencil-square"></i></span>
-                                                                    Submit
+                                                                <div class="ms-4" id="button-delete-image-{{ image.id }}"
+                                                                     onclick="deleteImage({{ image.id }})">
+                                                                    <span><i class="bi bi-x-circle"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="mb-3 input-edit-image-{{ image.id }}"
+                                                                 style="display: none">
+                                                                <input class="form-control" type="file" name="img"
+                                                                       accept="image/*"
+                                                                       id="id_img-{{ image.id }}">
+                                                            </div>
+                                                            <div class="">
+                                                                <button class="ms-4 pb-3 input-edit-image-{{ image.id }}"
+                                                                        type="submit" style="display: none;">
+                                                                    <span style="font-size: 20px"><i
+                                                                            class="bi bi-check2-circle"></i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -70,15 +84,26 @@
                                             <form method="post" enctype="multipart/form-data" id="info-product-form-0"
                                                   onsubmit="submitFormImageAndVideo(event, 0)">
                                                 {% csrf_token %}
-                                                <div class="mb-3">
-                                                    <label for="id_img" class="form-label">Image</label>
-                                                    <a href="{{ image.url }}">{{ image }}</a>
-                                                    <input class="form-control" type="file" name="img" accept="image/*"
-                                                           id="id_img">
+                                                <div class="d-flex">
+                                                    <div class="mb-3 input-edit-image-0" style="display: none;">
+                                                        <a href="{{ image.url }}">{{ image }}</a>
+                                                        <input class="form-control" type="file" name="img"
+                                                               accept="image/*"
+                                                               id="id_img">
+                                                    </div>
+                                                    <div class="">
+                                                        <button class="ms-4 pb-3 input-edit-image-0"
+                                                                type="submit" style="display: none;">
+                                                        <span style="font-size: 20px"><i
+                                                                class="bi bi-check2-circle"></i></span>
+                                                        </button>
+                                                    </div>
+
                                                 </div>
-                                                <button class="button-primary" type="submit"><span><i
+                                                <div class="button-secondary text-center"
+                                                     onclick="editImage(0)"><span><i
                                                         class="bi bi-plus-circle"></i></span> Add New Image
-                                                </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </li>
@@ -88,7 +113,7 @@
                                 <header class="mb-2">
                                     <h3 class="display-6">Video</h3>
                                 </header>
-                                <ul>
+                                <ul id="list_video_product">
                                     {% if videos %}
                                         {% for video in videos %}
                                             <li>
@@ -97,22 +122,38 @@
                                                           id="info-product-video-{{ video.id }}"
                                                           onsubmit="submitFormVideo(event,{{ video.id }} )">
                                                         {% csrf_token %}
-                                                        <div class="mb-3">
-                                                            <label for="id_video" class="form-label">Video</label>
+                                                        <div class="mb-3 d-flex">
+                                                            <label for="id_video-{{ video.id }}"
+                                                                   class="form-label me-2">Video</label>
                                                             <a href="{{ video.video }}"
                                                                style="color: #821717"
-                                                               target="_blank">{{ video.video }}</a>
+                                                               target="_blank">Youtube-{{ video.id }}</a>
+                                                            <div>
+                                                                <div class="ms-4" id="button-edit-image-{{ video.id }}"
+                                                                     onclick="editImage({{ video.id }})">
+                                                                    <span><i class="bi bi-pencil-square"></i></span>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="ms-4" id="button-delete-{{ video.id }}"
+                                                                     onclick="deleteVideo({{ video.id }})">
+                                                                    <span><i class="bi bi-x-circle"></i></span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="d-flex">
                                                             <div class="mb-3">
-                                                                <input class="form-control" name="video"
+                                                                <input class="form-control input-edit-image-{{ video.id }}"
+                                                                       name="video"
                                                                        type="text"
-                                                                       id="id_video">
+                                                                       id="id_video-{{ video.id }}"
+                                                                       style="display: none">
                                                             </div>
-                                                            <div>
-                                                                <button class="button-secondary ms-4" type="submit">
-                                                                    <span><i class="bi bi-pencil-square"></i></span>
-                                                                    Submit
+                                                            <div class="">
+                                                                <button class="ms-4 pb-3 input-edit-image-{{ video.id }}"
+                                                                        type="submit" style="display: none;">
+                                                                    <span style="font-size: 20px"><i
+                                                                            class="bi bi-check2-circle"></i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -126,15 +167,25 @@
                                             <form method="post" enctype="multipart/form-data" id="info-product-video-0"
                                                   onsubmit="submitFormVideo(event, 0)">
                                                 {% csrf_token %}
-                                                <div class="mb-3">
-                                                    <label for="id_video" class="form-label">Video</label>
-                                                    <input class="form-control" name="video"
-                                                                       type="text"
-                                                                       id="id_video">
+                                                <div class="d-flex">
+                                                    <div class="mb-3 input-edit-image--1" style="display: none;">
+                                                        <label>
+                                                            <input class="form-control" name="video"
+                                                                   type="text">
+                                                        </label>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <button class="ms-4 pb-3 input-edit-image--1"
+                                                                type="submit" style="display: none;">
+                                                        <span style="font-size: 20px"><i
+                                                                class="bi bi-check2-circle"></i></span>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <button class="button-primary" type="submit"><span><i
-                                                        class="bi bi-plus-circle"></i></span> Add New Video
-                                                </button>
+                                                <div class="button-secondary text-center"
+                                                     onclick="editImage(-1)"><span><i
+                                                        class="bi bi-plus-circle"></i></span> Add New Image
+                                                </div>
                                             </form>
                                         </div>
                                     </li>
