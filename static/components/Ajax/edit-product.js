@@ -24,7 +24,7 @@ const deleteProduct = (id) => {
         data: {"id": id},
         dataType: 'html',
         success: function (data) {
-           $(`#edit-product-item-${id}`).css('display', "none")
+           $(`#edit-product-list`).html(data)
         }
     })
 }
