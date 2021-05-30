@@ -39,7 +39,7 @@
                     <div class="product-container">
                         <ul class="edit-product-list">
                             {% for product in products %}
-                                <li class="edit-product-item w-100 mb-5" style="position: relative">
+                                <li class="edit-product-item w-100 mb-5" id="edit-product-item-{{ product.id }}" style="position: relative">
                                     <div class="row">
                                         <div class="col">
                                             <div class="w-100 d-flex mb-2">
@@ -49,6 +49,14 @@
                                                        style="color: #000; font-size: 20px">
                                                         <span><i class="bi bi-pencil-square"></i></span>
                                                         <span class="ms-2">Edit</span>
+                                                    </a>
+                                                </div>
+                                                <div class="view-profile ms-4">
+                                                    <a onclick="deleteProduct({{ product.id }})"
+                                                       class="view-profile-link"
+                                                       style="color: #000; font-size: 20px; cursor: pointer">
+                                                        <span><i class="bi bi-x-circle"></i></span>
+                                                        <span class="ms-2">Delete</span>
                                                     </a>
                                                 </div>
                                             </div>

@@ -16,3 +16,15 @@ const submitFormEdit = (e) => {
         }
     })
 }
+
+
+const deleteProduct = (id) => {
+    $.ajax({
+        url: `deleteProduct/${id}/`,
+        data: {"id": id},
+        dataType: 'html',
+        success: function (data) {
+           $(`#edit-product-item-${id}`).css('display', "none")
+        }
+    })
+}

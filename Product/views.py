@@ -717,6 +717,11 @@ def done(request):
     }
     return render(request, "order/done.html", context)
 
+@login_required
+def delete_product(request, id):
+    product = Product.objects.get(id=id)
+    product.delete()
+    return render(request, 'Product/list_edit_info_product.html', {"products": Product.objects.all()})
 
 @login_required
 def error(request):

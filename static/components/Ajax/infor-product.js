@@ -73,7 +73,7 @@ const editImage = (id) => {
 const deleteVideo = (id) => {
     console.log(window.location)
     $.ajax({
-        url: window.location.pathname+`/deleteVideo/${id}/`,
+        url: window.location.pathname+`deleteVideo/${id}/`,
         data: {"id": id},
         dataType: 'html',
         success: function (data) {
@@ -85,7 +85,7 @@ const deleteVideo = (id) => {
 const deleteImage = (id) => {
     console.log(window.location)
     $.ajax({
-        url: window.location.pathname+`/deleteImage/${id}/`,
+        url: window.location.pathname+`deleteImage/${id}/`,
         data: {"id": id},
         dataType: 'html',
         success: function (data) {
