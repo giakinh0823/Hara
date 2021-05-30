@@ -118,7 +118,10 @@ def productDetail(request, slug):
     if request.user.is_authenticated:
         profile_user = Profile.objects.get(user=request.user)
     list_products = Product.objects.filter(category=product_detail.category)
-    ran = random.randint(0, len(list_products) - 3)
+    if len(list_products) - 3 > 0:
+        ran = random.randint(0, len(list_products) - 3)
+    else:
+        ran = random.randint(0, len(list_products) - 2)
     videos = Video.objects.filter(product=product_detail)
     images = Image.objects.filter(product=product_detail)
     comments = Comment.objects.filter(product=product_detail)
