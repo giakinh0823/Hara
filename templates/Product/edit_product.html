@@ -39,7 +39,7 @@
                     <div class="product-container">
                         <ul class="edit-product-list">
                             {% for product in products %}
-                                <li class="edit-product-item w-100 mb-5" id="edit-product-item-{{ product.id }}" style="position: relative">
+                                <li class="edit-product-item w-100 mb-5" id="edit-product-item-{{ product.id }}" style="position: relative; display: block!important">
                                     <div class="row">
                                         <div class="col">
                                             <div class="w-100 d-flex mb-2">
@@ -120,12 +120,6 @@
         </div>
     </div>
     <script>
-        $(".edit-product-item").slice(0, 8).show();
-        $(".button-load-more").on("click", () => {
-            $(".edit-product-item:hidden").slice(0, 8).show();
-            if ($(".edit-product-item:hidden").length === 0) {
-                $(".button-load-more").fadeOut()
-            }
-        })
+
     </script>
 {% endblock body %}
