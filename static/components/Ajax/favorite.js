@@ -5,7 +5,7 @@ const addFavorite = (id) => {
     $.ajax({
         url: `/product/favorite/${id}`,
         data: {},
-        dataType: 'json',
+        dataType: 'html',
         success: (data) => {
             $(`.favorite-false-${id}`).css("display", "none")
             $(`.favorite-true-${id}`).css("display", "block")
