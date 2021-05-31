@@ -1,5 +1,6 @@
 {% extends 'base/index.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block body_not_nav %}
     <style>
         .form-group.invalid .form-control {
@@ -32,13 +33,20 @@
                 {% csrf_token %}
                 <div class="mb-3 form-group">
                     <label for="id_username" class="form-label">Username</label>
-                    <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+                    <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none"
+                           autocomplete="username" maxlength="150" required="" id="id_username">
                     <div class="form-text form-message mb-3 mt-2 "></div>
                 </div>
                 <div class="mb-3 form-group">
                     <label for="id_password" class="form-label">Password</label>
-                    <input class="form-control" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+                    <input class="form-control" type="password" name="password" autocomplete="current-password"
+                           required="" id="id_password">
                     <div class="form-text form-message mb-3 mt-2"></div>
+                </div>
+                <div class="w-100 mb-2 mt-4">
+                    <a type="button" href="{% provider_login_url 'google' %}" class="button-secondary w-100 mt-3">
+                        <i class="bi bi-google"></i> <span>Google</span>
+                    </a>
                 </div>
                 <button type="submit" class="button-primary w-100 mt-3">LOGIN</button>
             </form>
