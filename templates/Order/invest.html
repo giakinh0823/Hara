@@ -11,6 +11,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Product</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Status</th>
                     </tr>
                     </thead>
@@ -26,6 +27,7 @@
                                     <time class="date">date: {{ order.created_at }}</time>
                                 </td>
                                 <td>{{ order.product.title }}</td>
+                                <td>{{ order.price|floatformat:2 }}$</td>
                                 <td>
                                     <span class="{{ order.state.slug }}" id="order-status-{{ order.id }}">{{ order.state.name }}</span>
                                 </td>

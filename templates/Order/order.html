@@ -5,13 +5,14 @@
         <div class="container">
             <h2 class="display-5 text-center order-header">Order Status</h2>
             <div class="table-container">
-                <table class="table" >
+                <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Product</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Status</th>
                         <th scope="col">&nbsp;</th>
                     </tr>
@@ -40,14 +41,18 @@
                                     <time class="date">date: {{ order.created_at }}</time>
                                 </td>
                                 <td>{{ order.product.title }}</td>
+                                <td>{{ order.price|floatformat:2 }}$</td>
                                 <td>
-                                    <span class="{{ order.state.slug }}" id="order-status-{{ order.id }}">{{ order.state.name }}</span>
+                                    <span class="{{ order.state.slug }}"
+                                          id="order-status-{{ order.id }}">{{ order.state.name }}</span>
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-success button-success"
                                             onclick="orderSuccess({{ order.id }})">Success
                                     </button>
-                                    <button type="button" class="btn btn-warning button-success"  onclick="orderAccept({{ order.id }})">Accept</button>
+                                    <button type="button" class="btn btn-warning button-success"
+                                            onclick="orderAccept({{ order.id }})">Accept
+                                    </button>
                                     <button type="button" class="btn btn-danger button-success"
                                             onclick="orderCancel({{ order.id }})">Cancel
                                     </button>

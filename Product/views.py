@@ -693,7 +693,7 @@ class CreateCheckoutSessionView(View):
                     'price_data': {
                         'currency': 'usd',
                         # 'unit_amount': int(math.ceil(product.price)) * 100,
-                        'unit_amount': 1000,
+                        'unit_amount': int(product.price)*100,
                         'product_data': {
                             'name': product.title,
                             # 'images': product.img.url,
