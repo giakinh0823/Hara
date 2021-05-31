@@ -48,13 +48,18 @@
     {# edit_product #}
     {# order #}
     <link rel="stylesheet" href="{% static 'css/edit-product.css' %}">
+    <link rel="icon"
+        href="{% static 'img/logo.png' %}"
+        type="image/icon type">
     <title>Home</title>
 </head>
 <body>
 {% block body_not_nav %}
     <nav class="navbar navbar-expand-lg navbar-light nav-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home:home' %}">Hara</a>
+            <a class="navbar-brand" href="{% url 'home:home' %}">
+                <img src="{% static 'img/logo.png' %}" alt="" style="width: 50px">
+            </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -379,7 +384,9 @@
     </nav>
     <nav class="navbar navbar-light nav-md" style="position: relative;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home:home' %}">Hara</a>
+            <a class="navbar-brand" href="{% url 'home:home' %}">
+               <img src="{% static 'img/logo.png' %}" alt="" style="width: 50px">
+            </a>
             <div>
                 <button class="button-nav-menu-responsive" id="button-nav-menu-open" onclick="openNavMenu()">
                     <i class="bi bi-list"></i>
