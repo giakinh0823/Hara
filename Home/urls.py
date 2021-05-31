@@ -5,6 +5,7 @@ app_name = 'home'
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('provision/', views.provision, name='provision'),
 ]
 
 from django.conf.urls import handler404, handler500, handler403, handler400

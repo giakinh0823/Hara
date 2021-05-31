@@ -43,9 +43,11 @@ def home(request):
     return render(request, 'Home/home.html', context)
 
 
+def provision(request):
+    return render(request, 'Home/provision.html')
 # components
-def form1(request):
-    return render(request, 'components/form-1.html')
+# def form1(request):
+#     return render(request, 'components/form-1.html')
 
 
 
