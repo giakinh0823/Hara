@@ -98,4 +98,21 @@ def accept_order(request):
 
 def invest(request):
     orders = Order.objects.filter(person=request.user)
-    return render(request, 'Order/invest.html', {"orders": orders})
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
+    context = {
+        'newNotify': newNotify,
+        'notify': notify,
+        "orders": orders,
+    }
+    return render(request, 'Order/invest.html', context)

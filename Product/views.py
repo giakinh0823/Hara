@@ -712,18 +712,41 @@ class CreateCheckoutSessionView(View):
 
 
 @login_required
+def favorite(request):
+    favorites = Favorite.objects.filter(user = request.user)
+    notify = Notifications.objects.filter(user=request.user)
+    newNotify = Notifications.objects.filter(new=True, user=request.user)
+    request.session['newNotify'] = len(newNotify)
+    notify = notify[:len(notify) - len(newNotify)]
+    if notify or newNotify:
+        request.session['newNotify'] = len(newNotify)
+        notify = notify[:len(notify) - len(newNotify)]
+        notify = reversed(notify)
+        if not newNotify or len(newNotify) == 0:
+            newNotify = None
+        else:
+            newNotify = reversed(newNotify)
+    context = {
+        'newNotify': newNotify,
+        'notify': notify,
+        "favorites": favorites,
+    }
+    return render(request, 'Product/favorite.html', context)
+
+@login_required
 def favorite_product(request, id):
     product = Product.objects.get(id=id)
     try:
-        favorite = Favorite.objects.get(product=product, user=request.user)
+        get_favorite = Favorite.objects.get(product=product, user=request.user)
     except:
-        favorite = None
-    if favorite:
-        favorite.delete()
+        get_favorite = None
+    if get_favorite:
+        get_favorite.delete()
     else:
-        favorite = Favorite.objects.create(product=product, user=request.user)
-        favorite.save()
-    return JsonResponse({"success": True})
+        get_favorite = Favorite.objects.create(product=product, user=request.user)
+        get_favorite.save()
+    list_favorite = Favorite.objects.filter(user = request.user)
+    return render(request, 'Product/list_favorite.html', {"favorites": list_favorite})
 
 
 @login_required

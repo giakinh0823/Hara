@@ -2,23 +2,6 @@
 {% load static %}
 {% block body %}
     <div>
-        <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
-            <div class="container d-flex">
-                <div class="view-profile">
-                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-plus-circle"></i></span><span class="ms-2">Create</span></a>
-
-                </div>
-                <div class="view-profile ms-4">
-                    <a href="{% url 'product:edit_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-pencil-square"></i></span><span class="ms-2">Edit</span></a>
-                </div>
-                <div class="view-profile ms-4">
-                    <a href="{% url 'product:info_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-app-indicator"></i></span><span class="ms-2">Image and Video</span></a>
-                </div>
-            </div>
-        </div>
         <div class="container mb-5">
             <div class="row d-flex justify-content-center">
                 <div class="col col-md-6">
@@ -37,22 +20,15 @@
             <div class="row">
                 <div class="col">
                     <div class="product-container">
-                        <ul class="edit-product-list">
-                            {% for product in products %}
-                                <li class="edit-product-item w-100 mb-5" id="edit-product-item-{{ product.id }}" style="position: relative">
+                        <ul class="edit-product-list" id="favourite_list">
+                            {% for favorite in favorites %}
+                                <li class="edit-product-item w-100 mb-5"
+                                    id="edit-product-item-{{ favorite.product.id }}" style="position: relative">
                                     <div class="row">
                                         <div class="col">
                                             <div class="w-100 d-flex mb-2">
                                                 <div class="view-profile ms-auto">
-                                                    <a href="{% url 'product:edit_product_detail' slug=product.slug %}"
-                                                       class="view-profile-link"
-                                                       style="color: #000; font-size: 20px">
-                                                        <span><i class="bi bi-pencil-square"></i></span>
-                                                        <span class="ms-2">Edit</span>
-                                                    </a>
-                                                </div>
-                                                <div class="view-profile ms-4">
-                                                    <a onclick="deleteProduct({{ product.id }})"
+                                                    <a onclick="removeFavoriteInList({{ favorite.product.id }})"
                                                        class="view-profile-link"
                                                        style="color: #000; font-size: 20px; cursor: pointer">
                                                         <span><i class="bi bi-x-circle"></i></span>
@@ -63,8 +39,8 @@
                                             <div class="row row-cols-1 row-cols-lg-2">
                                                 <div class="col col-lg-3">
                                                     <div class="edit-product-image">
-                                                        {% if product.img %}
-                                                            <img src="{{ product.img.url }}" alt=""
+                                                        {% if favorite.product.img %}
+                                                            <img src="{{ favorite.product.img.url }}" alt=""
                                                                  style="width: 100%; height: 100%">
                                                         {% else %}
                                                             <img src="{% static 'img/blog1.jpg' %}" alt=""
@@ -74,32 +50,34 @@
                                                 </div>
                                                 <div class="col col-lg-9">
                                                     <div class="edit-product-body w-100 d-flex flex-column">
-                                                        <h3 class="edit-product-title">{{ product.title }}</h3>
+                                                        <a href="{{ favorite.product.get_absolute_url }}" style="text-decoration:none;color: #000"><h3
+                                                                class="edit-product-title">{{ favorite.product.title }}</h3>
+                                                        </a>
                                                         <div class="edit-product-caption">
                                                             <p>
-                                                                {{ product.caption }}
+                                                                {{ favorite.product.caption }}
                                                             </p>
                                                         </div>
                                                         <div class="card-category">
                                                             <a href=""
-                                                               class="card-category-link">{{ product.category }}</a>
+                                                               class="card-category-link">{{ favorite.product.category }}</a>
                                                         </div>
                                                         <div class="card-price d-flex">
-                                                            <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
-                                                            <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
+                                                            <span class="card-price-bold me-auto font-bold">${{ favorite.product.price|floatformat:2 }}</span>
+                                                            <span class="card-price-percent">{{ favorite.product.percent|floatformat:2 }}%</span>
                                                         </div>
                                                         <div class="mb-2 mt-1">
                                                             <div class="progress card-progress">
                                                                 <div class="progress-bar" role="progressbar"
-                                                                     style="width: {{ product.percent|floatformat:2 }}%"
-                                                                     aria-valuenow="{{ product.percent|floatformat:2 }}"
+                                                                     style="width: {{ favorite.product.percent|floatformat:2 }}%"
+                                                                     aria-valuenow="{{ favorite.product.percent|floatformat:2 }}"
                                                                      aria-valuemin="0"
                                                                      aria-valuemax="100"></div>
                                                             </div>
                                                         </div>
                                                         <div class="card-clock">
                                                         <span class="card-lock-label">
-                                                            <i class="bi bi-clock"></i> {{ product.created_at }}</span>
+                                                            <i class="bi bi-clock"></i> {{ favorite.product.created_at }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
