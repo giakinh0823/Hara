@@ -51,7 +51,7 @@
     <link rel="icon"
         href="{% static 'img/logo.png' %}"
         type="image/icon type">
-    <title>Home</title>
+    <title>Hara</title>
 </head>
 <body>
 {% block body_not_nav %}
@@ -560,6 +560,7 @@
 <script src="{% static 'components/Ajax/edit-product.js' %}"></script>
 <script src="{% static 'components/Ajax/info-product.js' %}"></script>
 <script src="{% static 'components/Ajax/favorite.js' %}"></script>
+<script src="{% static 'components/Ajax/complain.js' %}"></script>
 
 <script>
     const endpointUser = 'ws://127.0.0.1:8000/ws/notify/{{ request.user }}/'

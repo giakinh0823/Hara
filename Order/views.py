@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.core.mail import send_mail
 
 # Create your views here.
 from Order.models import Order, State
@@ -52,6 +53,7 @@ def active_order(request):
         my_order.save()
         return JsonResponse({"data": "Is active"})
 
+
 def success_order(request):
     if request.is_ajax():
         id = request.GET["id"]
@@ -66,6 +68,7 @@ def success_order(request):
             "link": my_order.product.get_absolute_url(),
             "text": my_order.product.title,
         })
+
 
 def cancel_order(request):
     if request.is_ajax():
@@ -82,6 +85,7 @@ def cancel_order(request):
             "text": my_order.product.title,
         })
 
+
 def accept_order(request):
     if request.is_ajax():
         id = request.GET["id"]
@@ -95,6 +99,7 @@ def accept_order(request):
             "link": my_order.product.get_absolute_url(),
             "text": my_order.product.title,
         })
+
 
 def invest(request):
     orders = Order.objects.filter(person=request.user)
@@ -116,3 +121,33 @@ def invest(request):
         "orders": orders,
     }
     return render(request, 'Order/invest.html', context)
+
+
+@login_required
+def complain(request, slug):
+    product = Product.objects.get(slug=slug)
+    if request.is_ajax():
+        email = request.POST["email"]
+        content = request.POST["content"]
+        send_mail("Report product - " + str(product.title), "Sản phẩm của bạn đã bị khiếu nại. "
+                                                            "\nBạn có thể bị đình chỉ vĩnh viễn nếu như chúng tôi xác thực chính xác điều này"
+                                                            "\nĐiều này dẫn đến việc bạn vi phạm chính sách của chúng tôi và chúng tôi sẽ mời các cơ quan tổ chức vào giải quyết."
+                                                            "\nXin liên hệ với chúng tôi để biết thêm chi tiết."
+                                                            "\nChúng tôi sẽ giải quyết mọi vấn đề qua địa chỉ email: giakinhfullstack@gmail.com"
+                                                            "\nXin cảm ơn"
+                                                            "\nDear, Hara",
+                  'giakinhfullstack@gmail.com',
+                  [product.user.email])
+        send_mail("Report product - " + str(product.title), "Chúng tôi đã nhận được đơn khiếu nại của bạn về sản phẩm " + product.title + ""
+                                                            "\nBạn xin vui lòng cung cấp các hình ảnh và thông tin rõ ràng bằng việc trả lời mail này."
+                                                            "\nThông tin bao gồm hóa đơn, tin nhắn, và các thông tin về sản phẩm, lịch sử giao dịch, lịch sử order sản phẩm"
+                                                            "\nChúng tôi sẽ xem xét về thông tin của bạn kỹ lưỡng và giúp bạn hoàn lại số tiền của bạn."
+                                                            "\nXin cảm ơn."
+                                                            "\nDear, Hara",
+                  'giakinhfullstack@gmail.com',
+                  [email])
+        send_mail("Report product - " + str(product.title), str(content + " \nFrom email: " + email),
+                  'giakinhfullstack@gmail.com',
+                  ['giakinhfullstack@gmail.com'])
+        return JsonResponse({"success": "success"})
+    return render(request, 'Order/complain.html', {"product": product})
