@@ -5,78 +5,356 @@
         <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
             <div class="container d-flex">
                 <div class="view-profile">
-                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i class="bi bi-plus-circle"></i></span><span class="ms-2">Create</span></a>
+                    <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
+                            class="bi bi-plus-circle"></i></span><span class="ms-2">Create</span></a>
                 </div>
                 <div class="view-profile ms-4">
                     <a href="{% url 'product:edit_product' %}" class="view-profile-link"><span><i
                             class="bi bi-pencil-square"></i></span><span class="ms-2">Edit</span></a>
                 </div>
-                 <div class="view-profile ms-4">
+                <div class="view-profile ms-4">
                     <a href="{% url 'product:info_product' %}" class="view-profile-link"><span><i
                             class="bi bi-app-indicator"></i></span><span class="ms-2">Image and Video</span></a>
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row row-cols-1 row-cols-lg-2">
-                <div class="col col-lg-6">
-                    <header class="mt-5">
-                        <h3 class="ms-5 display-4">Create Product</h3>
-                    </header>
-                    <div class="p-5">
-                        <div class="product-form-container">
-                            <div class="product-content">
-                                <form method="post" enctype="multipart/form-data" id="create-product" onsubmit="submitFormCreate(event)">
-                                    {% csrf_token %}
-                                    <div class="mb-3 form-group">
-                                        <label for="id_title" class="form-label">Campaign Title*</label>
-                                        <input class="form-control" type="text" name="title" maxlength="2000" required=""
-                                               id="id_title">
-                                    </div>
-                                    <div class="mb-3 form-group">
-                                        <label for="id_caption" class="form-label">Campaign Caption*</label>
-                                        <textarea class="form-control" name="caption" rows="6" maxlength="2000" required=""
-                                                   id="id_caption"></textarea>
-                                    </div>
-                                    <div class="mb-3 form-group">
-                                        <label for="id_price" class="form-label">Campaign Price*</label>
-                                        <div class="input-group">
-                                            <input type="number" name="price" class="form-control"
-                                                   aria-label="Dollar amount (with dot and two decimal places)" required=""
-                                                   id="id_price">
-                                            <span class="input-group-text">$</span>
-                                            <span class="input-group-text">0.00</span>
+        {% if products or provision %}
+            <div class="container">
+                <div class="row row-cols-1 row-cols-lg-2">
+                    <div class="col col-lg-6">
+                        <header class="mt-5">
+                            <h3 class="ms-5 display-4">Create Product</h3>
+                        </header>
+                        <div class="p-5">
+                            <div class="product-form-container">
+                                <div class="product-content">
+                                    <form method="post" enctype="multipart/form-data" id="create-product"
+                                          onsubmit="submitFormCreate(event)">
+                                        {% csrf_token %}
+                                        <div class="mb-3 form-group">
+                                            <label for="id_title" class="form-label">Campaign Title*</label>
+                                            <input class="form-control" type="text" name="title" maxlength="2000"
+                                                   required=""
+                                                   id="id_title">
                                         </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="id_img" class="form-label">Image</label>
-                                        <input class="form-control" type="file" name="img" required="" accept="image/*" id="id_img">
-                                    </div>
-                                    <div class="mb-3 mt-5">
-                                        <select class="form-select product-selector" id="id_category" name="category" required=""
-                                                aria-label="Default select example">
-                                            <option selected>Category</option>
-                                            {% for foo in category %}
-                                                <option value="{{ foo.id }}">{{ foo.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <button class="button-primary mt-5" type="submit">Create</button>
-                                </form>
+                                        <div class="mb-3 form-group">
+                                            <label for="id_caption" class="form-label">Campaign Caption*</label>
+                                            <textarea class="form-control" name="caption" rows="6" maxlength="2000"
+                                                      required=""
+                                                      id="id_caption"></textarea>
+                                        </div>
+                                        <div class="mb-3 form-group">
+                                            <label for="id_price" class="form-label">Campaign Price*</label>
+                                            <div class="input-group">
+                                                <input type="number" name="price" class="form-control"
+                                                       aria-label="Dollar amount (with dot and two decimal places)"
+                                                       required=""
+                                                       id="id_price">
+                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">0.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="id_img" class="form-label">Image</label>
+                                            <input class="form-control" type="file" name="img" required=""
+                                                   accept="image/*" id="id_img">
+                                        </div>
+                                        <div class="mb-3 mt-5">
+                                            <select class="form-select product-selector" id="id_category"
+                                                    name="category" required=""
+                                                    aria-label="Default select example">
+                                                <option selected>Category</option>
+                                                {% for foo in category %}
+                                                    <option value="{{ foo.id }}">{{ foo.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <button class="button-primary mt-5" type="submit">Create</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col col-lg-6 pt-5">
-                    <div class="w-100">
-                        <div id="create-product-preview">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <h2 class="display-5 text-danger" style="margin: 200px 0;">Preview</h2>
+                    <div class="col col-lg-6 pt-5">
+                        <div class="w-100">
+                            <div id="create-product-preview">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <h2 class="display-5 text-danger" style="margin: 200px 0;">Preview</h2>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <div class="" style="margin-bottom: 200px;"></div>
+            <div class="d-flex w-100 justify-content-center mt-5 mb-5">
+                <div class="mt-3 mb-5 d-flex justify-content-center flex-column align-items-center">
+                    <h3 class="display-2 mt-5 mb-3">Please accept provision</h3>
+                    <a class="mb-5" type="button" style=" color: darkred" data-bs-toggle="modal"
+                       data-bs-target="#staticBackdrop">Read Faq</a>
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content ">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">FAQ</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="faq-content mt-4">
+                                        <ul class="faq_list">
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Policy</p>
+                                                <p class="faq_item-caption">Indiegogo has made changes to several of our
+                                                    policies that may affect your account or campaign. Please read below
+                                                    for details.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Minimum Disbursement
+                                                    Amount is 100 (USD/VND) NET</p>
+                                                <p class="faq_item-caption">The minimum disbursement amount for any
+                                                    campaign is a net amount of 100 in your currency after all
+                                                    applicable fees. If your campaign has raised less than 100 in your
+                                                    currency after Indiegogo and payment processing fees, and any
+                                                    applicable transfer fees during your campaign or disbursement
+                                                    period, Indiegogo will not be able to send the funds to you. If you
+                                                    raise less than 100 (after platform fees, payment processing fees
+                                                    and any applicable transfer fees) during your funding period, an
+                                                    automated email will be sent to let you know the funds will not be
+                                                    disbursed, and all funds will be refunded to your backers. Your
+                                                    backers will also receive an email to let them know they've been
+                                                    refunded. You can check on the amount of funds you've raised after
+                                                    fees on the Funds tab of your campaign dashboard.
+
+                                                    Please note that if your campaign is in InDemand, you have a maximum
+                                                    of 6 months to raise the minimum disbursement amount before any of
+                                                    your backers are refunded or any other action is taken on your
+                                                    campaign.
+
+                                                    Also note that if you are raising funds in CAD, GBR, EUR, AUD, or
+                                                    USD and have a bank account located outside of the US, you must
+                                                    raise at least $100 after Indiegogo platform fees, payment
+                                                    processing fees, and the $25 wire transfer fee. For more information
+                                                    about fees, please see this article.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Campaigns That Have
+                                                    Not Received a Contribution in 6 Months Will Be Closed</p>
+                                                <p class="faq_item-caption">If your InDemand campaign hasn't received
+                                                    any contributions within a 6 month period, or if you have not raised
+                                                    the minimum disbursement amount within a 6 month period, Indiegogo
+                                                    will close your page to contributions and your campaign will end. If
+                                                    there are any funds that meet the minimum amount requirement waiting
+                                                    to be disbursed, we'll send you an email prompting you to complete
+                                                    your Secure Bank Account Form so we can disburse your funds to
+                                                    you. </p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Draft Campaigns Will
+                                                    Expire After 6 Months</p>
+                                                <p class="faq_item-caption">If you have a campaign in draft mode for
+                                                    longer than 6 months, it will expire and be removed from your
+                                                    account. We won't be able to recover removed drafts. If your draft
+                                                    campaign is nearing the 6 month mark, we will send you an email to
+                                                    let you know that it will be removed unless you launch it.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Timeline For these
+                                                    Changes: </p>
+                                                <p class="faq_item-caption">Customers were notified of these upcoming
+                                                    changes on December 4, 2017 (PT)</p>
+                                                <p class="faq_item-caption">The Policies went into effect the following
+                                                    week- the week of December 11, 2017</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">My campaign has
+                                                    received a notice that I need to fill out a tax form. What does that
+                                                    mean?</p>
+                                                <p class="faq_item-caption">If your campaign has raised at least $20,000
+                                                    and has at least 200 backers, you will receive a notice that you are
+                                                    required to fill out additional information for a tax form. Please
+                                                    complete the information via your Connect Onboarding form. Please
+                                                    make sure that the form is complete and correct.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">What is a 1099-K
+                                                    form?</p>
+                                                <p class="faq_item-caption">In 2008, the United States Congress passed a
+                                                    law requiring businesses and individuals to report amounts received
+                                                    from third party organizations on a 1099-K form. The 1099-K form is
+                                                    used to report certain payment transactions to improve voluntary tax
+                                                    compliance.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Who receives a
+                                                    1099-K?</p>
+                                                <p class="faq_item-caption">The individual/business listed on the bank
+                                                    form may be liable for any applicable taxes and will receive a
+                                                    1099-K if your campaign qualifies. If your campaign qualifies for a
+                                                    Form 1099-K, the information you provide on your bank form in the
+                                                    Campaign Editor will be used to send Form 1099-Ks.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">How are my funds
+                                                    reported on the 1099-K form?</p>
+                                                <p class="faq_item-caption">The reported number is a gross amount. Gross
+                                                    amount means the total dollar amount of reportable payment
+                                                    transactions for each campaign owner. The amount does not take into
+                                                    account any credits, cash equivalents, discount amounts, fees,
+                                                    refunded amounts, or any other amounts.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Requirements to
+                                                    Receive a 1099-K form</p>
+                                                <p class="faq_item-caption">Either Indiegogo or our payment processor(s)
+                                                    will send a 1099-K form to campaign owners with US bank accounts who
+                                                    have met both the below criteria:
+
+                                                    Your campaign(s) have had contributions that exceeded $20,000 in
+                                                    gross funds raised
+                                                    Your campaign had more than 200 contributions.
+                                                    The 1099-K is a purely informational form that summarizes the
+                                                    activity of your account and is designed to assist you in reporting
+                                                    your taxes. The amount reported on the 1099-K is based on the date
+                                                    of contribution(s).
+
+                                                    Before we can send your 1099-K form, we will ask you to complete a
+                                                    W-9 tax form with your name, address and Tax Identification Number
+                                                    (TIN). Campaign owners who have satisfied both the criteria above
+                                                    will receive a form 1099-K by mail and email, either from Indiegogo,
+                                                    Stripe, or Paypal, depending on the processor of your funds.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Are there any
+                                                    exceptions to receive a 1099-K form?</p>
+                                                <p class="faq_item-caption">Campaign Owners based in the following
+                                                    states are exempt from the 1099-K eligibility threshold:</p>
+                                                <p class="faq_item-caption">Campaign owners based in these states will
+                                                    receive a 1099-K form if they have $600 or more in
+                                                    contributions.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">What is a W-8?</p>
+                                                <p class="faq_item-caption">A W-8 form is for Non-US based campaign
+                                                    owners. It certifies that you are a foreign/non-U.S. person
+                                                    receiving these funds that are not connected with a U.S. trade or
+                                                    business. Please note that the information provided on the W-8 form
+                                                    should be the information of the person/entity that is the account
+                                                    owner listed on the receiving bank account of the campaign.
+
+                                                    What is a W-9?</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">What if my
+                                                    campaign(s) have not reached $20,000 and 200 contributions?
+
+                                                </p>
+                                                <p class="faq_item-caption">If your campaign does not meet these
+                                                    criteria, Indiegogo will not provide any tax documentation. We
+                                                    suggest you seek advice from your tax accountant on how to report
+                                                    your funds as we can not provide tax or legal advice.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">What's the charging
+                                                    speed
+                                                    of the EDGE Wireless Charger?</p>
+                                                <p class="faq_item-caption">The EDGE Wireless Charger can charge at 15W
+                                                    max.
+                                                    Please note that iPhone is limited by Apple to charge at 7.5W on
+                                                    third
+                                                    party wireless chargers</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">What Can I Not Offer
+                                                    as Perks?</p>
+                                                <p class="faq_item-caption">Our Community Guidelines provides a
+                                                    comprehensive list of perks that cannot be offered by campaigners.
+                                                    We asked our experts from our Trust & Safety team to shed some more
+                                                    light on what you as a campaigner have to consider when you set up
+                                                    your campaign and list of perks:
+                                                </p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Can I offer a raffle
+                                                    or lottery?</p>
+                                                <p class="faq_item-caption">Campaign owners are not allowed to offer any
+                                                    form of lottery or gambling. For example, a perk offering a raffle
+                                                    ticket to win a car is not allowed on your campaign. Anything that
+                                                    resembles a game of chance or lottery is prohibited.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Can I offer
+                                                    alcohol?</p>
+                                                <p class="faq_item-caption">Campaign owners are not allowed to offer any
+                                                    alcoholic consumer products for shipping; This includes perks such
+                                                    as wine, beer or hard liquors.
+
+                                                    As an alternative, campaign owners may offer vouchers or memberships
+                                                    in lieu of shipping alcohol, offering in person delivery or in-store
+                                                    pickup of the alcoholic consumer products. Please note that vouchers
+                                                    are only available for alcohol and not any other prohibited
+                                                    perks.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Can I offer my
+                                                    contributors shares in my venture or a return on their investment?
+
+                                                </p>
+                                                <p class="faq_item-caption">Campaign owners are not allowed to offer any
+                                                    form of "security" (as such term is defined in the Securities Act of
+                                                    1933). This means that campaign owners are not allowed to offer
+                                                    perks such as notes, stocks, treasury stocks, security futures,
+                                                    security-based swaps, bonds or debentures. For a comprehensive list,
+                                                    please take a look at the Securities Act of 1933 on the SEC
+                                                    website.</p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Can I offer my contributors a share of future profits?</p>
+                                                <p class="faq_item-caption">Campaign owners are not allowed to offer any form of financial incentive or participation in any profit sharing; financial incentives include items such as prepaid debit cards, bullion, pure cash, bitcoin and other cryptocurrency. Memberships and discounts are all acceptable.
+                                                </p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Can I offer weapons or related items?</p>
+                                                <p class="faq_item-caption">Campaign owners are not allowed to offer any weapons, ammunition and related accessories. This means campaign owners may not offer perks such as firearms, knives, brass knuckles, or other weapons. Related accessories include holsters, scopes, storage cases and gunpowder. Safety-enhancing perks such as bulletproof vests and riot gear are acceptable. Memberships to firing ranges and range time are also acceptable.
+                                                </p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Can I offer vaporizers or pipes?</p>
+                                                <p class="faq_item-caption">Campaign owners are not allowed to offer any controlled substances such as CBD products or drug paraphernalia. Campaign owners cannot offer perks such as hookah pipes, grinders, vaporizers, pipes, bongs, marijuana, cigarette paper, syringes, prescription drugs or any other devices that are intended to be used primarily to enhance or facilitate the consumption of controlled substances.
+                                                </p>
+                                            </li>
+                                            <li class="faq_item mb-3">
+                                                <p class="faq_item-header" style="font-size: 18px">Can I offer my contributors a plane ticket to come visit me and my project?</p>
+                                                <p class="faq_item-caption">It depends. You are more than welcome to offer perks that involve flights provided by authorized airlines. However, campaign owners are not permitted to launch an airline or issue tickets that have not been authorized by the US Department of Transportation.
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="button-secondary" data-bs-dismiss="modal">Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Accept all provision
+                            </label>
+                            <div>
+                                <button type="submit" class="button-primary mt-4">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="" style="margin-bottom: 200px;"></div>
+        {% endif %}
     </div>
 {% endblock body %}

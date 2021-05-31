@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
+from Home.models import Provision
 from Order.models import Order, State
 from Register.models import Profile, Notifications
 from .forms import ProductForm
@@ -334,12 +335,20 @@ def groupCategory(request, slug):
 
 @login_required
 def create_product(request):
+    if request.method == "POST":
+        provision = Provision.objects.create(user=request.user)
+        provision.save()
     if request.user.is_authenticated:
         list_category = Category.objects.all()
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
         request.session['newNotify'] = len(newNotify)
         notify = notify[:len(notify) - len(newNotify)]
+        product = Product.objects.filter(user=request.user)
+        try:
+            provision = Provision.objects.get(user=request.user)
+        except:
+            provision = None
         if notify or newNotify:
             request.session['newNotify'] = len(newNotify)
             notify = notify[:len(notify) - len(newNotify)]
@@ -353,7 +362,10 @@ def create_product(request):
             'notify': notify,
             'form': ProductForm,
             'category': list_category,
+            'products': product,
+            'provision': provision,
         }
+
         if request.is_ajax():
             fromProduct = ProductForm(request.POST)
             if fromProduct.is_valid():
@@ -382,6 +394,8 @@ def create_product(request):
                     'profile_user': profile_user,
                     'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
                     'form': ProductForm,
+                    'products': product,
+                    'provision': provision,
                 }
                 return render(request, 'product/product_preview.html', context)
         return render(request, 'product/create_product.html', context)
