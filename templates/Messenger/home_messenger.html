@@ -6,6 +6,11 @@
             <div class="messenger-box w-100" style="height: 100vh">
                 <div class="row w-100 h-100">
                     <div class="col messenger-list">
+                        <div class="d-flex align-items-center" style="padding: 5px 30px">
+                            <a href="{% url 'home:home' %}" style="color: #000; font-size: 20px; margin-right: 10px">
+                                <i class="bi bi-arrow-left"></i>
+                            </a>
+                        </div>
                         <div class="messenger-list-header">
                             <div class="messenger-list-header-image">
                                 <img src="{{ profile.image.url }}" alt="" class="messenger-list-header-img">
@@ -36,7 +41,8 @@
                                 <ul class="messenger-list-ul">
                                     {% for item in list_room %}
                                         <li class="messenger-list-item">
-                                            <a href="{% url 'messenger:messenger' slug=item.slug %}" type="button" class="messenger-list-item-a">
+                                            <a href="{% url 'messenger:messenger' slug=item.slug %}" type="button"
+                                               class="messenger-list-item-a">
                                                 <div class="messenger-list-item-image">
                                                     <img src="{{ item.image.url }}" alt=""
                                                          class="messenger-list-item-img">
