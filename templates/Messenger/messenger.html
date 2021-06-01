@@ -56,11 +56,11 @@
                         <div class="messenger-header">
                             <div class="d-flex align-items-center">
                                 <div class="messenger-header-image">
-                                    <img src="{{ profile.image.url }}" class="messenger-header-img" alt="">
+                                    <img src="{{ person.image.url }}" class="messenger-header-img" alt="">
                                 </div>
                                 <div class="messenger-header-name ms-3">
-                                    <p class="messenger-header-name-label">{{ request.user.get_full_name }}</p>
-                                    <span style="font-size: 12px;">{{ request.user.email }}</span>
+                                    <p class="messenger-header-name-label">{{ person.user.get_full_name }}</p>
+                                    <span style="font-size: 12px;">{{ person.user.email }}</span>
                                 </div>
                             </div>
                             <div class="messenger-header-circle">
