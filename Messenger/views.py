@@ -34,7 +34,8 @@ def messenger(request, slug):
             room = MessageRoom.objects.get(user=request.user, person=person)
         except:
             room = MessageRoom.objects.create(user=request.user, person=person)
-            room = room.save()
+            room.save()
+            room = MessageRoom.objects.get(user=request.user, person=person)
     list_room = [*MessageRoom.objects.filter(person=request.user), *MessageRoom.objects.filter(user=request.user)]
     messages = Message.objects.filter(room=room)
     for item in list_room:

@@ -70,9 +70,6 @@
                         </div>
                         <div class="messenger-content-message">
                             <div class="messenger-content-message-container">
-                                <ul class="messenger-content-message-list">
-
-                                </ul>
                             </div>
                         </div>
                         <div class="messenger-content-box">
@@ -80,13 +77,6 @@
                                 <form action="" class="d-flex" onsubmit="sendMessage(event, {{ room.slug }})"
                                       id="form-input-messenger">
                                     {% csrf_token %}
-                                    <label class="w-100 d-flex align-items-center">
-                                        <input class="form-control messenger-content-box-input" name="message"
-                                               type="text" placeholder="Aa" id="messenger-content-box-input">
-                                    </label>
-                                    <button class="messenger-content-box-button">
-                                        <i class="bi bi-symmetry-horizontal"></i>
-                                    </button>
                                 </form>
                             </div>
                         </div>
