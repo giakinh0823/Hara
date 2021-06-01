@@ -31,7 +31,10 @@ def messenger(request, slug):
         personSlug = str(slug)[len(request.user.username):]
         person = User.objects.get(username=personSlug)
         try:
-            room = MessageRoom.objects.get(user=request.user, person=person)
+            try:
+                room = MessageRoom.objects.get(user=request.user, person=person)
+            except:
+                room = MessageRoom.objects.get(user=person, person=request.user)
         except:
             room = MessageRoom.objects.create(user=request.user, person=person)
             room.save()
