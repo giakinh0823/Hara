@@ -51,8 +51,8 @@
     {# order #}
     <link rel="stylesheet" href="{% static 'css/edit-product.css' %}">
     <link rel="icon"
-        href="{% static 'img/logo.png' %}"
-        type="image/icon type">
+          href="{% static 'img/logo.png' %}"
+          type="image/icon type">
     <title>Hara</title>
 </head>
 <body>
@@ -277,9 +277,12 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active font-bold" aria-current="page" href="{% url 'messenger:messenger' slug=user.username %}">What we do</a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active font-bold" aria-current="page"
+                               href="{% url 'messenger:home_messenger' slug=user.username %}">What we do</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <form class="d-flex nav-search" action="{% url 'product:products' %}">
                     <input class="form-control nav-search-input" name="search" placeholder="Search" id="search"
@@ -387,7 +390,7 @@
     <nav class="navbar navbar-light nav-md" style="position: relative;">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home:home' %}">
-               <img src="{% static 'img/logo.png' %}" alt="" style="width: 50px">
+                <img src="{% static 'img/logo.png' %}" alt="" style="width: 50px">
             </a>
             <div>
                 <button class="button-nav-menu-responsive" id="button-nav-menu-open" onclick="openNavMenu()">
@@ -405,16 +408,20 @@
                         <a href="{% url 'product:products' %}" class="nav-link-menu-responsive">All Product</a>
                     </li>
                     <li class="nav-item-menu-responsive">
-                        <a href="{% url 'product:group_category' slug="tech-innovation" %}" class="nav-link-menu-responsive">Tech & Innovation</a>
+                        <a href="{% url 'product:group_category' slug="tech-innovation" %}"
+                           class="nav-link-menu-responsive">Tech & Innovation</a>
                     </li>
                     <li class="nav-item-menu-responsive">
-                        <a href="{% url 'product:group_category' slug="creative-works" %}" class="nav-link-menu-responsive">Creative Works</a>
+                        <a href="{% url 'product:group_category' slug="creative-works" %}"
+                           class="nav-link-menu-responsive">Creative Works</a>
                     </li>
                     <li class="nav-item-menu-responsive">
-                        <a href="{% url 'product:group_category' slug="community-projects" %}" class="nav-link-menu-responsive">Community Projects</a>
+                        <a href="{% url 'product:group_category' slug="community-projects" %}"
+                           class="nav-link-menu-responsive">Community Projects</a>
                     </li>
                     <li class="nav-item-menu-responsive">
-                        <a href="{% url 'product:create_product' %}" class="nav-link-menu-responsive">Start a Campaign</a>
+                        <a href="{% url 'product:create_product' %}" class="nav-link-menu-responsive">Start a
+                            Campaign</a>
                     </li>
                     <li class="nav-item-menu-responsive">
                         <a href="{% url 'order:order' %}" class="nav-link-menu-responsive">Order Controller</a>
@@ -433,8 +440,8 @@
         </div>
     </nav>
     <div class="body-container">
-    {% block body %}
-    {% endblock body %}
+        {% block body %}
+        {% endblock body %}
     </div>
     <div class="footer">
         <div class="footer-container container">

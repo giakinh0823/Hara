@@ -15,6 +15,7 @@
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
                         <th scope="col">&nbsp;</th>
+                        <th scope="col">&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,10 +48,13 @@
                                           id="order-status-{{ order.id }}">{{ order.state.name }}</span>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-success button-success"
+                                    <a href="{% url 'messenger:messenger' slug=request.user.username|add:order.person.username %}" style="font-size: 25px; color: #000"><i class="bi bi-chat-dots"></i></a>
+                                </td>
+                                <td class="d-flex flex-column">
+                                    <button type="button" class="btn btn-success button-success mb-2"
                                             onclick="orderSuccess({{ order.id }})">Success
                                     </button>
-                                    <button type="button" class="btn btn-warning button-success"
+                                    <button type="button" class="btn btn-warning button-success mb-2"
                                             onclick="orderAccept({{ order.id }})">Accept
                                     </button>
                                     <button type="button" class="btn btn-danger button-success"
