@@ -107,7 +107,7 @@
                                     {% csrf_token %}
                                     <label class="w-100 d-flex align-items-center">
                                         <input class="form-control messenger-content-box-input" name="message"
-                                               type="text" placeholder="Aa" id="messenger-content-box-input">
+                                               type="text" placeholder="Aa" id="messenger-content-box-input" onkeyup="clearNotifyMessage()" onclick="clearNotifyMessage()">
                                     </label>
                                     <button class="messenger-content-box-button">
                                         <i class="bi bi-symmetry-horizontal"></i>
@@ -152,8 +152,20 @@
             console.log("close", e)
         }
 
+        const endpointUserNotifyMessage = 'ws://127.0.0.1:8000/ws/notify/{{ person.user }}/'
+        const socketUserNotifyMessage = new WebSocket(endpointUserNotifyMessage)
+
         const sendMessage = (e) => {
             e.preventDefault();
+
+            socketUserNotifyMessage.send(JSON.stringify({
+                'comment': "{{ user.get_full_name }} đã đánh gửi một tin nhắn cho bạn",
+                'username': "{{ person.user }}",
+                'room': "{{ person.user }}",
+                'link': "{% url 'messenger:messenger' slug=room.slug %}",
+                'person': "{{ user }}",
+            }))
+
             socketMessageUser.send(JSON.stringify({
                 "content": document.getElementById("messenger-content-box-input").value,
                 "room": "{{ room.slug }}",

@@ -3,6 +3,8 @@ from django.db import models
 
 # Create your models here.
 from django.template.defaultfilters import slugify
+from django.urls import reverse
+
 
 class MessageRoom(models.Model):
     slug = models.SlugField(max_length=2000)
@@ -16,6 +18,8 @@ class MessageRoom(models.Model):
             slug = str(''.join(str(ord(c)) for c in str(self.user.username)) + ''.join(str(ord(c)) for c in str(self.person.username)))
             self.slug = slugify(slug)
         return super().save(*args, **kwargs)
+    def get_absolute_url(self):
+        return reverse('messenger:messenger', kwargs={'slug': self.slug})
 
 class Message(models.Model):
     room = models.ForeignKey(MessageRoom, on_delete=models.CASCADE, null=True)
@@ -25,4 +29,5 @@ class Message(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self) -> str:
         return self.room.slug
+
 

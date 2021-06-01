@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 
-from Register.models import Profile
+from Register.models import Profile, Notifications
 from .models import *
 
 
@@ -41,6 +42,18 @@ def messenger(request, slug):
             room = MessageRoom.objects.get(user=request.user, person=person)
     list_room = [*MessageRoom.objects.filter(person=request.user), *MessageRoom.objects.filter(user=request.user)]
     messages = Message.objects.filter(room=room)
+    if request.is_ajax():
+        notify = Notifications.objects.filter(user=request.user)
+        clickNotify = notify.filter(link=room.get_absolute_url())
+        for item in clickNotify:
+            item.new = False
+            item.save()
+        return JsonResponse({"success": "success"})
+    notify = Notifications.objects.filter(user=request.user)
+    clickNotify = notify.filter(link=room.get_absolute_url())
+    for item in clickNotify:
+        item.new = False
+        item.save()
     for item in list_room:
         if request.user == item.person:
             person = Profile.objects.get(user=item.user)
