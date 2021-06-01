@@ -4,7 +4,6 @@
 }
 
 .messenger-box {
-
 }
 
 .messenger-list {
@@ -64,7 +63,7 @@
 }
 
 .messenger-list-container{
-    height: 80vh;
+    height: 76vh;
     overflow-y: auto;
     padding-bottom: 20px;
 }
