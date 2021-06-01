@@ -48,7 +48,8 @@
                                                          class="messenger-list-item-img">
                                                 </div>
                                                 <div class="messenger-list-item-header">
-                                                    <p class="messenger-list-item-header-p">{{ item.name }}</p>
+                                                    <p class="messenger-list-item-header-p"
+                                                       id="item-{{ item.username }}">{{ item.name }}</p>
                                                 </div>
                                             </a>
                                         </li>
@@ -107,7 +108,8 @@
                                     {% csrf_token %}
                                     <label class="w-100 d-flex align-items-center">
                                         <input class="form-control messenger-content-box-input" name="message"
-                                               type="text" placeholder="Aa" id="messenger-content-box-input" onkeyup="clearNotifyMessage()" onclick="clearNotifyMessage()">
+                                               type="text" placeholder="Aa" id="messenger-content-box-input"
+                                               onkeyup="clearNotifyMessage()" onclick="clearNotifyMessage()">
                                     </label>
                                     <button class="messenger-content-box-button">
                                         <i class="bi bi-symmetry-horizontal"></i>
@@ -143,6 +145,8 @@
                                                                                             </li>`
             }
             document.querySelector('.messenger-content-message').scrollTop = document.querySelector('.messenger-content-message').scrollHeight;
+            document.querySelector(`#item-${data.slug}`).style.fontWeight = "600"
+            document.querySelector(`#item-${data.slug}`).style.color = "red"
             console.log(data)
         }
         socketMessageUser.onerror = function (e) {
@@ -171,6 +175,7 @@
                 "room": "{{ room.slug }}",
                 "user": "{{ user.username }}",
                 "person": "{{ room.person.username }}",
+                'slug': "{{ user.username }}",
             }));
             $("#form-input-messenger")[0].reset()
             document.querySelector('.messenger-content-message').scrollTop = document.querySelector('.messenger-content-message').scrollHeight;

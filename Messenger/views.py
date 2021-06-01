@@ -62,6 +62,7 @@ def messenger(request, slug):
         item.image = person.image
         item.name = person.user.get_full_name()
         item.image = person.image
+        item.username = person.user.username
 
     if request.user == room.person:
         person = Profile.objects.get(user=room.user)

@@ -256,6 +256,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         room = data['room']
         person = data['person']
         user = data['user']
+        slug = data['slug']
         now = datetime.now()
         await self.save_message(room, user, person, content)
         room_name = self.scope['url_route']['kwargs']['room_name']
@@ -268,6 +269,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 'user': user,
                 'person': person,
                 "date": now,
+                'slug': slug,
             }
         )
 
@@ -277,13 +279,15 @@ class MessageConsumer(AsyncWebsocketConsumer):
         user = event['user']
         person = event['person']
         date = event['date']
+        slug = event['slug']
         # Gửi tin nhắn tới WebSocket
         await self.send(text_data=json.dumps({
             'content': content,
             'room': room,
             'user': user,
             'person': person,
-                'date': str(date.strftime("%M:%S")),
+            'date': str(date.strftime("%M:%S")),
+            'slug':slug,
         }))
 
     async def disconnect(self, close_code):
