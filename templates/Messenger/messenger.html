@@ -1,0 +1,155 @@
+{% extends 'Base/index.html' %}
+{% load static %}
+{% block body_not_nav %}
+    <div>
+        <div class="messenger-container w-100">
+            <div class="messenger-box w-100" style="height: 100vh">
+                <div class="row w-100 h-100">
+                    <div class="col messenger-list">
+                        <div class="messenger-list-header">
+                            <div class="messenger-list-header-image">
+                                <img src="{{ profile.image.url }}" alt="" class="messenger-list-header-img">
+                            </div>
+                            <div class="messenger-list-header-header">
+                                <h4 class="messenger-list-header-header-h4">Chat</h4>
+                            </div>
+                            <div class="messenger-list-header-button">
+                                <button class="messenger-list-header-button-edit" type="button">
+                                    <i class="bi bi-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="messenger-list-search">
+                            <form action="" class="messenger-search-form">
+                                <label class="w-100 d-flex align-items-center">
+                                    <input class="form-control messenger-content-box-input input-search-messenger"
+                                           name="message" type="text"
+                                           placeholder="Aa">
+                                    <button class="button-search-messenger" type="submit">
+                                        <i class="bi bi-search icon-search"></i>
+                                    </button>
+                                </label>
+                            </form>
+                        </div>
+                        <div class="messenger-list-container">
+                            <div class="messenger-list-content">
+                                <ul class="messenger-list-ul">
+                                    {% for item in list_room %}
+                                        <li class="messenger-list-item">
+                                            <a href="{% url 'messenger:messenger' slug=item.slug %}" type="button" class="messenger-list-item-a">
+                                                <div class="messenger-list-item-image">
+                                                    <img src="{{ item.image.url }}" alt=""
+                                                         class="messenger-list-item-img">
+                                                </div>
+                                                <div class="messenger-list-item-header">
+                                                    <p class="messenger-list-item-header-p">{{ item.person.get_full_name }}</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-9 messenger-content">
+                        <div class="messenger-header">
+                            <div class="d-flex align-items-center">
+                                <div class="messenger-header-image">
+                                    <img src="{{ profile.image.url }}" class="messenger-header-img" alt="">
+                                </div>
+                                <div class="messenger-header-name ms-3">
+                                    <p class="messenger-header-name-label">{{ request.user.get_full_name }}</p>
+                                    <span style="font-size: 12px;">{{ request.user.email }}</span>
+                                </div>
+                            </div>
+                            <div class="messenger-header-circle">
+                                <button class="messenger-header-circle-button" type="button">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="messenger-content-message">
+                            <div class="messenger-content-message-container">
+                                <ul class="messenger-content-message-list">
+                                    {% for message in messages %}
+                                        {% if message.user.username == request.user.username %}
+                                            <li class="messenger-content-message-item is-blue">
+                                                <time>{{ message.is_date }}</time>
+                                                <span>{{ message.content }}</span>
+                                            </li>
+                                        {% else %}
+                                            <li class="messenger-content-message-item is-gray">
+                                                <span>{{ message.content }}</span>
+                                                <time>{{ message.is_date }}</time>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="messenger-content-box">
+                            <div class="messenger-content-box-container">
+                                <form action="" class="d-flex" onsubmit="sendMessage(event, {{ room.slug }})"
+                                      id="form-input-messenger">
+                                    {% csrf_token %}
+                                    <label class="w-100 d-flex align-items-center">
+                                        <input class="form-control messenger-content-box-input" name="message"
+                                               type="text" placeholder="Aa" id="messenger-content-box-input">
+                                    </label>
+                                    <button class="messenger-content-box-button">
+                                        <i class="bi bi-symmetry-horizontal"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const endpointMessageUser = 'ws://127.0.0.1:8000/ws/message/{{ room.slug }}/'
+        const socketMessageUser = new WebSocket(endpointMessageUser)
+
+        socketMessageUser.onopen = function (e) {
+            console.log("open", e);
+        }
+        socketMessageUser.onmessage = function (e) {
+            console.log("message", e)
+            const data = JSON.parse(e.data);
+            const username = "{{ request.user.username }}"
+            if (data.user === username) {
+                document.querySelector(".messenger-content-message-list").innerHTML += `<li class="messenger-content-message-item is-blue">
+                                                                                                <time>${data.date}</time>
+                                                                                                <span>${data.content}</span>
+                                                                                            </li>`
+            } else {
+                document.querySelector(".messenger-content-message-list").innerHTML += `<li class="messenger-content-message-item is-gray">
+                                                                                                <span>${data.content}</span>
+                                                                                                <time>${data.date}</time>
+                                                                                            </li>`
+            }
+            document.querySelector('.messenger-content-message').scrollTop = document.querySelector('.messenger-content-message').scrollHeight;
+            console.log(data)
+        }
+        socketMessageUser.onerror = function (e) {
+            console.log("error", e)
+        }
+        socketMessageUser.onclose = function (e) {
+            console.log("close", e)
+        }
+
+        const sendMessage = (e) => {
+            e.preventDefault();
+            socketMessageUser.send(JSON.stringify({
+                "content": document.getElementById("messenger-content-box-input").value,
+                "room": "{{ room.slug }}",
+                "user": "{{ user.username }}",
+                "person": "{{ room.person.username }}",
+            }));
+            $("#form-input-messenger")[0].reset()
+            document.querySelector('.messenger-content-message').scrollTop = document.querySelector('.messenger-content-message').scrollHeight;
+        }
+        document.querySelector('.messenger-content-message').scrollTop = document.querySelector('.messenger-content-message').scrollHeight;
+    </script>
+{% endblock body_not_nav %}

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'Product',
     'Register',
     'Order',
+    'Messenger',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

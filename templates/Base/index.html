@@ -45,6 +45,8 @@
     <link rel="stylesheet" href="{% static 'css/comment.css' %}">
     {# order #}
     <link rel="stylesheet" href="{% static 'css/order.css' %}">
+    {# messenger #}
+    <link rel="stylesheet" href="{% static 'css/messenger.css' %}">
     {# edit_product #}
     {# order #}
     <link rel="stylesheet" href="{% static 'css/edit-product.css' %}">
@@ -276,7 +278,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active font-bold" aria-current="page" href="#">What we do</a>
+                        <a class="nav-link active font-bold" aria-current="page" href="{% url 'messenger:messenger' slug=user.username %}">What we do</a>
                     </li>
                 </ul>
                 <form class="d-flex nav-search" action="{% url 'product:products' %}">
@@ -561,6 +563,8 @@
 <script src="{% static 'components/Ajax/info-product.js' %}"></script>
 <script src="{% static 'components/Ajax/favorite.js' %}"></script>
 <script src="{% static 'components/Ajax/complain.js' %}"></script>
+<script src="{% static 'components/Ajax/message.js' %}"></script>
+
 
 <script>
     const endpointUser = 'ws://127.0.0.1:8000/ws/notify/{{ request.user }}/'

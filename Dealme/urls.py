@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('Home.urls')),
     path('', include('Product.urls')),
     path('', include('Order.urls')),
+    path('', include('Messenger.urls')),
     # google
     path('accounts/', include('allauth.urls')),
     path('logout', LogoutView.as_view()),

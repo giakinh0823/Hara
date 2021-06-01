@@ -1,5 +1,6 @@
 import json
 import math
+from datetime import datetime
 from decimal import Decimal
 from time import sleep
 
@@ -7,6 +8,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 
+from Messenger.models import MessageRoom, Message
 from Order.models import State, Order
 from Product.models import *
 from Register.models import *
@@ -237,3 +239,61 @@ class OrderConsumer(AsyncWebsocketConsumer):
         quantity = 1
         price = int(math.ceil(product.price))
         Order.objects.create(product=product, state=state, person=person, quantity=quantity, price=price, user=user)
+
+
+class MessageConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        print('connect')
+        await self.accept()
+        room_name = self.scope['url_route']['kwargs']['room_name']
+        await self.channel_layer.group_add(room_name, self.channel_name)
+        print(f"Add {self.channel_name} channel to Message's group")
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        print(data)
+        content = data['content']
+        room = data['room']
+        person = data['person']
+        user = data['user']
+        now = datetime.now()
+        await self.save_message(room, user, person, content)
+        room_name = self.scope['url_route']['kwargs']['room_name']
+        await self.channel_layer.group_send(
+            room_name,
+            {
+                'type': 'sendData',
+                'content': content,
+                'room': room,
+                'user': user,
+                'person': person,
+                "date": now,
+            }
+        )
+
+    async def sendData(self, event):
+        content = event['content']
+        room = event['room']
+        user = event['user']
+        person = event['person']
+        date = event['date']
+        # Gửi tin nhắn tới WebSocket
+        await self.send(text_data=json.dumps({
+            'content': content,
+            'room': room,
+            'user': user,
+            'person': person,
+                'date': str(date.strftime("%M:%S")),
+        }))
+
+    async def disconnect(self, close_code):
+        room_name = self.scope['url_route']['kwargs']['room_name']
+        await self.channel_layer.group_discard(room_name, self.channel_name)
+        print(f"Remove {self.channel_name} channel from Message's group")
+
+    @sync_to_async
+    def save_message(self, room, user, person, content):
+        roomMessage = MessageRoom.objects.get(slug=room)
+        user = User.objects.get(username=user)
+        message = Message.objects.create(room=roomMessage, content=content, user=user)
+        message.save()
