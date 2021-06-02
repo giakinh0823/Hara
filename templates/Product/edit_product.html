@@ -4,19 +4,20 @@
     <div>
         <div class="w-100" style="padding: 10px 0; background-color: #333; color: #fff">
             <div class="container d-flex">
+                <div class="container d-flex">
                 <div class="view-profile">
                     <a href="{% url 'product:create_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-plus-circle"></i></span><span class="ms-2">Create</span></a>
-
+                            class="bi bi-plus-circle"></i></span><span class="ms-2">Tạo chiến dịch</span></a>
                 </div>
                 <div class="view-profile ms-4">
                     <a href="{% url 'product:edit_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-pencil-square"></i></span><span class="ms-2">Edit</span></a>
+                            class="bi bi-pencil-square"></i></span><span class="ms-2">Chỉnh sửa</span></a>
                 </div>
                 <div class="view-profile ms-4">
                     <a href="{% url 'product:info_product' %}" class="view-profile-link"><span><i
-                            class="bi bi-app-indicator"></i></span><span class="ms-2">Image and Video</span></a>
+                            class="bi bi-app-indicator"></i></span><span class="ms-2">Thêm hình ảnh/video</span></a>
                 </div>
+            </div>
             </div>
         </div>
         <div class="container mb-5">
@@ -48,7 +49,7 @@
                                                        class="view-profile-link"
                                                        style="color: #000; font-size: 20px">
                                                         <span><i class="bi bi-pencil-square"></i></span>
-                                                        <span class="ms-2">Edit</span>
+                                                        <span class="ms-2">Chỉnh sửa</span>
                                                     </a>
                                                 </div>
                                                 <div class="view-profile ms-4">
@@ -56,7 +57,7 @@
                                                        class="view-profile-link"
                                                        style="color: #000; font-size: 20px; cursor: pointer">
                                                         <span><i class="bi bi-x-circle"></i></span>
-                                                        <span class="ms-2">Delete</span>
+                                                        <span class="ms-2">Xóa</span>
                                                     </a>
                                                 </div>
                                             </div>
@@ -85,7 +86,7 @@
                                                                class="card-category-link">{{ product.category }}</a>
                                                         </div>
                                                         <div class="card-price d-flex">
-                                                            <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                            <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                                             <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                                                         </div>
                                                         <div class="mb-2 mt-1">
@@ -99,7 +100,7 @@
                                                         </div>
                                                         <div class="card-clock">
                                                         <span class="card-lock-label">
-                                                            <i class="bi bi-clock"></i> {{ product.created_at }}</span>
+                                                            <i class="bi bi-clock"></i> {{ product.created_at|date:"Y-m-d" }}</span>
                                                         </div>
                                                     </div>
                                                 </div>

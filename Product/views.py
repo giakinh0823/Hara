@@ -115,6 +115,11 @@ def products(request):
 def productDetail(request, slug):
     product_detail = Product.objects.get(slug=slug)
     profile_detail = Profile.objects.get(user=product_detail.user)
+    profile_detail.allProducts = len(Product.objects.filter(user=product_detail.user))
+    try:
+        product_detail.orders = len(Order.objects.filter(product=product_detail))
+    except:
+        product_detail.orders = 0
     profile_user = None
     if request.user.is_authenticated:
         profile_user = Profile.objects.get(user=request.user)
@@ -139,7 +144,7 @@ def productDetail(request, slug):
     }
     if request.user.is_authenticated:
         try:
-            order = Order.objects.get(person = request.user, product=product_detail)
+            order = Order.objects.get(person=request.user, product=product_detail)
         except:
             order = None
         notify = Notifications.objects.filter(user=request.user)
@@ -713,7 +718,7 @@ class CreateCheckoutSessionView(View):
                     'price_data': {
                         'currency': 'usd',
                         # 'unit_amount': int(math.ceil(product.price)) * 100,
-                        'unit_amount': int(product.price)*100,
+                        'unit_amount': int(product.price) * 100,
                         'product_data': {
                             'name': product.title,
                             # 'images': product.img.url,
@@ -733,7 +738,7 @@ class CreateCheckoutSessionView(View):
 
 @login_required
 def favorite(request):
-    favorites = Favorite.objects.filter(user = request.user)
+    favorites = Favorite.objects.filter(user=request.user)
     notify = Notifications.objects.filter(user=request.user)
     newNotify = Notifications.objects.filter(new=True, user=request.user)
     request.session['newNotify'] = len(newNotify)
@@ -753,6 +758,7 @@ def favorite(request):
     }
     return render(request, 'Product/favorite.html', context)
 
+
 @login_required
 def favorite_product(request, id):
     product = Product.objects.get(id=id)
@@ -765,7 +771,7 @@ def favorite_product(request, id):
     else:
         get_favorite = Favorite.objects.create(product=product, user=request.user)
         get_favorite.save()
-    list_favorite = Favorite.objects.filter(user = request.user)
+    list_favorite = Favorite.objects.filter(user=request.user)
     return render(request, 'Product/list_favorite.html', {"favorites": list_favorite})
 
 

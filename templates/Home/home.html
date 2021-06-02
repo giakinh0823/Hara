@@ -96,7 +96,7 @@
                                                 <a href="" class="card-category-link">{{ product.category }}</a>
                                             </div>
                                             <div class="card-price d-flex">
-                                                <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                                 <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                                             </div>
                                             <div class="mb-2 mt-1">
@@ -137,7 +137,7 @@
                         </a>
                         <div class="collection-label d-flex w-100">
                             <div class="ms-auto">
-                                <a href="{% url 'product:group_category' slug="tech-innovation" %}" class="collection-link text-decoration-none">SEE ALL COLLECTION<i
+                                <a href="{% url 'product:group_category' slug="tech-innovation" %}" class="collection-link text-decoration-none">XEM TẤT CẢ BỘ SƯU TẬP<i
                                         class="bi bi-chevron-right"></i></a>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                         </a>
                         <div class="collection-label d-flex w-100">
                             <div class="ms-auto">
-                                <a href="{% url 'product:group_category' slug="creative-works" %}" class="collection-link text-decoration-none">SEE ALL COLLECTION<i
+                                <a href="{% url 'product:group_category' slug="creative-works" %}" class="collection-link text-decoration-none">XEM TẤT CẢ BỘ SƯU TẬP<i
                                         class="bi bi-chevron-right"></i></a>
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                         </a>
                         <div class="collection-label d-flex w-100">
                             <div class="ms-auto">
-                                <a href="{% url 'product:group_category' slug="community-projects" %}" class="collection-link text-decoration-none">SEE ALL COLLECTION<i
+                                <a href="{% url 'product:group_category' slug="community-projects" %}" class="collection-link text-decoration-none">XEM TẤT CẢ BỘ SƯU TẬP<i
                                         class="bi bi-chevron-right"></i></a>
                             </div>
                         </div>
@@ -191,7 +191,7 @@
                         </a>
                         <div class="collection-label d-flex w-100">
                             <div class="ms-auto">
-                                <a href="{% url 'product:group_category' slug="tech-innovation" %}" class="collection-link text-decoration-none">SEE ALL COLLECTION<i
+                                <a href="{% url 'product:group_category' slug="tech-innovation" %}" class="collection-link text-decoration-none">XEM TẤT CẢ BỘ SƯU TẬP<i
                                         class="bi bi-chevron-right"></i></a>
                             </div>
                         </div>
@@ -262,7 +262,7 @@
                                                 <a href="" class="card-category-link">{{ product.category }}</a>
                                             </div>
                                             <div class="card-price d-flex">
-                                                <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                                 <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                                             </div>
                                             <div class="mb-2 mt-1">
@@ -350,7 +350,7 @@
                                                 <a href="" class="card-category-link">{{ product.category }}</a>
                                             </div>
                                             <div class="card-price d-flex">
-                                                <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                                 <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                                             </div>
                                             <div class="mb-2 mt-1">
@@ -388,10 +388,8 @@
                             <img src="{% static 'img/banner2.jpg' %}" class="card-img-top blog-img" alt="...">
                             <div class="card-body blog-body">
                                 <h5 class="display-5 blog-title mb-2">Card title</h5>
-                                <p class="card-text blog-text mb-3">Some quick example text to build on the card title
-                                    and make up the bulk
-                                    of the card's content.</p>
-                                <a href="#" class="blog-readMore">Read more<i class="bi bi-chevron-right"></i></a>
+                                <p class="card-text blog-text mb-3">Một số văn bản ví dụ nhanh để xây dựng trên tiêu đề thẻ và tạo nên số lượng lớn nội dung của thẻ.</p>
+                                <a href="#" class="blog-readMore">Xem thêm<i class="bi bi-chevron-right"></i></a>
                             </div>
                         </div>
                     </a>
@@ -402,10 +400,8 @@
                             <img src="{% static 'img/blog7.png' %}" class="card-img-top blog-img" alt="...">
                             <div class="card-body blog-body">
                                 <h5 class="display-5 blog-title mb-2">Card title</h5>
-                                <p class="card-text blog-text mb-3">Some quick example text to build on the card title
-                                    and make up the bulk
-                                    of the card's content.</p>
-                                <a href="#" class="blog-readMore">Read more<i class="bi bi-chevron-right"></i></a>
+                                <p class="card-text blog-text mb-3">Một số văn bản ví dụ nhanh để xây dựng trên tiêu đề thẻ và tạo nên số lượng lớn nội dung của thẻ.</p>
+                                <a href="#" class="blog-readMore">Xem thêm<i class="bi bi-chevron-right"></i></a>
                             </div>
                         </div>
                     </a>
@@ -416,10 +412,8 @@
                             <img src="{% static 'img/blog8.png' %}" class="card-img-top blog-img" alt="...">
                             <div class="card-body blog-body">
                                 <h5 class="display-5 blog-title mb-2">Card title</h5>
-                                <p class="card-text blog-text mb-3">Some quick example text to build on the card title
-                                    and make up the bulk
-                                    of the card's content.</p>
-                                <a href="#" class="blog-readMore">Read more<i class="bi bi-chevron-right"></i></a>
+                                <p class="card-text blog-text mb-3">Một số văn bản ví dụ nhanh để xây dựng trên tiêu đề thẻ và tạo nên số lượng lớn nội dung của thẻ.</p>
+                                <a href="#" class="blog-readMore">Xem thêm<i class="bi bi-chevron-right"></i></a>
                             </div>
                         </div>
                     </a>
@@ -429,9 +423,8 @@
     </div>
     {% if is_authenticated %}
         <div class="mt-5 d-flex mb-5 w-100 justify-content-center flex-column align-items-center text-center">
-        <h4 class="display-6 mb-4">Clever Things For Curious Humans</h4>
-        <p class="col-6">There's no better place to start the hunt for something new and special. Begin on Indiegogo to
-            find clever and unconventional things that solve everyday problems large and small.
+        <h4 class="display-6 mb-4">Những điều thông minh cho những con người tò mò</h4>
+        <p class="col-6">Không có nơi nào tốt hơn để bắt đầu cuộc săn lùng một cái gì đó mới và đặc biệt. Bắt đầu trên Indiegogo để tìm những thứ thông minh và độc đáo để giải quyết các vấn đề lớn và nhỏ hàng ngày.
         </p>
         <div class="mt-3 mb-5">
             <a href="{% url 'register:login' %}" class="text-decoration-none button-primary">Login</a>

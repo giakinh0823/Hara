@@ -233,6 +233,12 @@ class OrderConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def save_order(self, room, state, person):
         product = Product.objects.get(slug=room)
+        allOrder = Order.objects.filter(product=product)
+        total = 0
+        for item in allOrder:
+            total += item.price
+        product.percent = total/product.goal * 100
+        product.save()
         user = User.objects.get(username=product.user)
         state = State.objects.get(slug=state)
         person = User.objects.get(username=person)

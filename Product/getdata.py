@@ -14,6 +14,8 @@ import pip
 import warnings
 from datetime import datetime
 
+from django.template.defaultfilters import slugify
+
 from .models import Product, Category
 
 import random
@@ -160,7 +162,7 @@ def data_scrap(request):
     # Get product title, category, price, image, caption, percent
     for i in range(len(list_of_title)):
         try:
-            category = Category.objects.get(name=list_of_category[i])
+            category = Category.objects.get(slug=slugify(list_of_category[i]))
         except:
             category = Category.objects.create(name=list_of_category[i])
             category.save()
@@ -187,11 +189,12 @@ def data_scrap(request):
             user=request.user,
             title=str(list_of_title[i]),
             category=category,
-            price=decimal,
+            goal=decimal,
             caption=str(list_of_caption[i]),
             like=random.randint(50, 1000),
             percent=float(percent),
             img=image,
+            price=10.00
         )
         img_url = list_of_image[i]
         name_image = urlparse(img_url).path.split('/')[-1]

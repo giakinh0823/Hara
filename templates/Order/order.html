@@ -3,17 +3,17 @@
 {% block body %}
     <div>
         <div class="container">
-            <h2 class="display-5 text-center order-header">Order Status</h2>
+            <h2 class="display-5 text-center order-header">Tình trạng đặt hàng</h2>
             <div class="table-container">
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">&nbsp;</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">Tên</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Chiến dịch</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Trạng thái</th>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">&nbsp;</th>
                     </tr>
@@ -52,13 +52,13 @@
                                 </td>
                                 <td class="d-flex flex-column">
                                     <button type="button" class="btn btn-success button-success mb-2"
-                                            onclick="orderSuccess({{ order.id }})">Success
+                                            onclick="orderSuccess({{ order.id }})">Hoàn thành
                                     </button>
                                     <button type="button" class="btn btn-warning button-success mb-2"
-                                            onclick="orderAccept({{ order.id }})">Accept
+                                            onclick="orderAccept({{ order.id }})">Chấp nhận
                                     </button>
                                     <button type="button" class="btn btn-danger button-success"
-                                            onclick="orderCancel({{ order.id }})">Cancel
+                                            onclick="orderCancel({{ order.id }})">Hủy bỏ
                                     </button>
                                 </td>
                             </tr>

@@ -9,7 +9,7 @@
                            class="view-profile-link"
                            style="color: #000; font-size: 20px">
                             <span><i class="bi bi-pencil-square"></i></span>
-                            <span class="ms-2">Edit</span>
+                            <span class="ms-2">Chỉnh sửa</span>
                         </a>
                     </div>
                     <div class="view-profile ms-4">
@@ -17,7 +17,7 @@
                            class="view-profile-link"
                            style="color: #000; font-size: 20px; cursor: pointer">
                             <span><i class="bi bi-x-circle"></i></span>
-                            <span class="ms-2">Delete</span>
+                            <span class="ms-2">Xóa</span>
                         </a>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                                    class="card-category-link">{{ product.category }}</a>
                             </div>
                             <div class="card-price d-flex">
-                                <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                 <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                             </div>
                             <div class="mb-2 mt-1">
@@ -60,7 +60,7 @@
                             </div>
                             <div class="card-clock">
                                                         <span class="card-lock-label">
-                                                            <i class="bi bi-clock"></i> 26 ngày còn lại</span>
+                                                            <i class="bi bi-clock"></i> {{ product.created_at|date:"Y-m-d" }}</span>
                             </div>
                         </div>
                     </div>

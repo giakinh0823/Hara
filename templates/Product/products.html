@@ -19,14 +19,14 @@
                                  <img src="{% static 'img/logo.png' %}" alt="" style="width: 70px">
                             </h6>
                             <div class="product-filter-category">
-                                <p class="mb-4" style="font-size: 18px; opacity: 0.6">Category</p>
+                                <p class="mb-4" style="font-size: 18px; opacity: 0.6">Phân loại chiến dịch</p>
                                 <div>
                                     <ul class="product-category-list">
                                         <li class="product-category-item">
                                             <div class="d-flex align-items-center">
                                                 <a href="{% url 'product:products' %}"
                                                    class="product-category-item-link">
-                                                    <span>All product</span>
+                                                    <span>Tất cả chiến dịch</span>
                                                 </a>
                                             </div>
                                         </li>
@@ -77,10 +77,10 @@
                         <div class="ms-auto w-25">
                             <select class="form-select select-form" aria-label="Default select example"
                                     onchange="sort(this.value)">
-                                <option class="option-select" selected value="0">Sort</option>
-                                <option class="option-select" value="1">Name</option>
-                                <option class="option-select" value="2">Favorite</option>
-                                <option class="option-select" value="3">Date</option>
+                                <option class="option-select" selected value="0">Sắp xếp</option>
+                                <option class="option-select" value="1">Tên</option>
+                                <option class="option-select" value="2">Yêu thích</option>
+                                <option class="option-select" value="3">Ngày tháng</option>
                             </select>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                                                     <a href="" class="card-category-link">{{ product.category }}</a>
                                                 </div>
                                                 <div class="card-price d-flex">
-                                                    <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                    <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                                     <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                                                 </div>
                                                 <div class="mb-2 mt-1">
@@ -162,7 +162,7 @@
                         </div>
                         <div class="row text-center">
                             <div>
-                                <button class="button-primary button-load-more">Load more</button>
+                                <button class="button-primary button-load-more">Xem thêm</button>
                             </div>
                         </div>
                     </div>

@@ -129,7 +129,7 @@
                                             style="font-size: 18px;font-weight:600 ;margin: 0">{{ product_detail.user.get_full_name }}</p>
                                     </a>
                                 {% endif %}
-                                <p>9 Campaigns | {{ profile_detail.address }}</p>
+                                <p>{{ profile_detail.allProducts }} chiến dịch | {{ profile_detail.address }}</p>
                             </div>
                         </div>
                         <div style="padding: 0 10px">
@@ -137,10 +137,10 @@
                                 <div class="d-flex align-items-center">
                                     <div class="product_detail-price">
                                         <p style="font-size:20px; font-weight: 600">
-                                            ${{ product_detail.price|floatformat:2 }}</p>
+                                            ${{ product_detail.goal|floatformat:2 }}</p>
                                     </div>
                                     <div class="product_detail-backers ms-auto">
-                                        <p style="font-size:16px; font-weight: 300">1.678 người ủng hộ</p>
+                                        <p style="font-size:16px; font-weight: 300">{{ product_detail.orders }} người theo dõi</p>
                                     </div>
                                 </div>
                                 <div class="">
@@ -156,7 +156,7 @@
                                             <p>{{ product_detail.percent|floatformat:2 }}%</p>
                                         </div>
                                         <div class="ms-auto">
-                                            <p> {{ product_detail.created_at }}</p>
+                                            <p> {{ product_detail.created_at|date:"Y-m-d" }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -185,14 +185,14 @@
                             <button class="nav-link product_detail-active active" id="pills-home-tab"
                                     data-bs-toggle="pill"
                                     data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                    aria-selected="true">STORY
+                                    aria-selected="true">GIỚI THIỆU
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link product_detail-active" id="pills-profile-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-profile" type="button" role="tab"
                                     aria-controls="pills-profile"
-                                    aria-selected="false">COMMENT
+                                    aria-selected="false">BÌNH LUẬN
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -233,8 +233,7 @@
                             {% if order or product_detail.user == request.user %}
                                 <div class="comment">
                                     <div class="form-comment row">
-                                        <label for="id_comment" class="form-label" style="font-size: 18px; padding: 0">Post
-                                            a comment</label>
+                                        <label for="id_comment" class="form-label" style="font-size: 18px; padding: 0">Gửi bình luận</label>
                                         <textarea type="area" id='id_comment' required class="form-control"
                                                   rows="4"></textarea>
                                         <button class="button-secondary mt-3 ms-auto" id="comment-button"
@@ -289,7 +288,7 @@
                                     </ul>
                                     <div class="row text-center">
                                         <div>
-                                            <button class="button-primary button-load-more">Load more</button>
+                                            <button class="button-primary button-load-more">Xem thêm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -299,122 +298,65 @@
                              aria-labelledby="pills-contact-tab">
                             <div class="faq col ps-3">
                                 <div class="faq-header">
-                                    <h5 class="display-6" style="font-size: 24px">Frequently Asked Questions</h5>
+                                    <h5 class="display-6" style="font-size: 24px">Các câu hỏi thường gặp</h5>
                                 </div>
                                 <div class="faq-content mt-4">
                                     <ul class="faq_list">
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Is delivery
-                                                guaranteed?</p>
-                                            <p class="faq_item-caption">Yes, absolutely! While Indiegogo doesn't
-                                                guarantee delivery of products, we, as Rolling Square do. If you
-                                                contribute to one of our perks you will receive the product. Simple as
-                                                that. This is our eighth campaign and we have already delivered to
-                                                hundreds of thousands of backers, so you can count on our
-                                                experience.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Có đảm bảo giao hàng không?</p>
+                                            <p class="faq_item-caption">Chắc chắn rồi! Mặc dù Indiegogo không đảm bảo việc phân phối sản phẩm, nhưng chúng tôi, như Rolling Square thì có. Nếu bạn đóng góp vào một trong những đặc quyền của chúng tôi, bạn sẽ nhận được sản phẩm. Đơn giản như vậy. Đây là chiến dịch thứ tám của chúng tôi và chúng tôi đã giao hàng cho hàng trăm nghìn người ủng hộ, vì vậy bạn có thể tin tưởng vào kinh nghiệm của chúng tôi.</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">What's your support email
-                                                address?</p>
-                                            <p class="faq_item-caption">You can reach us at support@rollingsqua.re! We
-                                                receive a lot of emails but usually we will reply within 24 working
-                                                hours. Make sure to avoid sending followup emails, as they will bring
-                                                your ticket back to the end of the "pile", and each and every email is
-                                                replied to anyway. Thank you :)</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Địa chỉ email hỗ trợ của bạn là gì?</p>
+                                            <p class="faq_item-caption">Bạn có thể liên hệ với chúng tôi tại support@rollingsqua.re! Chúng tôi nhận được rất nhiều email nhưng thường chúng tôi sẽ trả lời trong vòng 24 giờ làm việc. Đảm bảo tránh gửi các email tiếp theo, vì chúng sẽ đưa vé của bạn trở lại cuối "đống" và mọi email đều được trả lời. Cảm ơn bạn :)</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">I pledged to multiple
-                                                perks, will I save on shipping costs?</p>
-                                            <p class="faq_item-caption">If you pledge to multiple perks, we will combine
-                                                them in a single shipment, so it's possible that you will save on
-                                                shipping costs. The difference will be calculated precisely towards the
-                                                end of the campaign and you will receive a credit for the amount.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Tôi đã cam kết nhận nhiều đặc quyền, liệu tôi có tiết kiệm được chi phí vận chuyển không?</p>
+                                            <p class="faq_item-caption">Nếu bạn cam kết nhiều đặc quyền, chúng tôi sẽ kết hợp chúng trong một chuyến hàng, vì vậy có thể bạn sẽ tiết kiệm được chi phí vận chuyển. Sự khác biệt sẽ được tính toán chính xác vào cuối chiến dịch và bạn sẽ nhận được một khoản tín dụng cho số tiền đó.</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Can I invest and are you
-                                                looking for agents and distributors?</p>
-                                            <p class="faq_item-caption">We are always excited to speak with anyone that
-                                                believes in our products. If you are interested in getting involved as
-                                                an investor, agent, or distributor, email us at info@ferrarisgroup.ch
-                                                and let’s start talking!</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Tôi có thể đầu tư và bạn đang tìm kiếm đại lý và nhà phân phối?</p>
+                                            <p class="faq_item-caption">Chúng tôi luôn hào hứng nói chuyện với bất kỳ ai tin tưởng vào sản phẩm của chúng tôi. Nếu bạn muốn tham gia với tư cách là nhà đầu tư, đại lý hoặc nhà phân phối, hãy gửi email cho chúng tôi theo địa chỉ info@ferrarisgroup.ch và hãy bắt đầu nói chuyện!</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Is shipping tracked?</p>
-                                            <p class="faq_item-caption">Yes, all shipping methods are tracked!</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Vận chuyển có được theo dõi không?</p>
+                                            <p class="faq_item-caption">Có, tất cả các phương thức vận chuyển đều được theo dõi!</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">I moved. Can I change my
-                                                address?</p>
-                                            <p class="faq_item-caption">Yes, you can change your address if your
-                                                contribution status is "Placed". If your status is "Locked", there's
-                                                still a chance that you can change it, since any update is possible
-                                                until we ship your order out. To change it, please visit your orders's
-                                                page by logging in at https://backer.tools/login. If it shows that your
-                                                order is either "Exported" or "Shipped", it's unfortunately too
-                                                late.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Tôi đã chuyển đi. Tôi có thể thay đổi địa chỉ của mình không?</p>
+                                            <p class="faq_item-caption">Có, bạn có thể thay đổi địa chỉ của mình nếu trạng thái đóng góp của bạn là "Đã đặt". Nếu trạng thái của bạn là "Đã khóa", bạn vẫn có thể thay đổi trạng thái đó, vì bạn có thể cập nhật bất kỳ thông tin nào cho đến khi chúng tôi giao hàng cho bạn. Để thay đổi nó, vui lòng truy cập trang đơn đặt hàng của bạn bằng cách đăng nhập tại https://backer.tools/login. Nếu nó cho thấy rằng đơn đặt hàng của bạn là "Đã xuất" hoặc "Đã giao" thì rất tiếc là đã quá muộn.</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Is it possible to request
-                                                a refund?</p>
-                                            <p class="faq_item-caption">If you have changed your mind, you can request a
-                                                refund if your order status is "Placed". If your order is "Locked",
-                                                please contact support@rollingsqua.re and we will try to intercept your
-                                                package. If it's "Shipped", you will need to wait until you receive the
-                                                package, then you can ship the package back to us. Once received, we
-                                                will send you the refund.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Có thể yêu cầu hoàn lại tiền không?</p>
+                                            <p class="faq_item-caption">Nếu bạn đã đổi ý, bạn có thể yêu cầu hoàn lại tiền nếu trạng thái đơn hàng của bạn là "Đã đặt". Nếu đơn hàng của bạn bị "Khóa", vui lòng liên hệ với support@rollingsqua.re và chúng tôi sẽ cố gắng chặn gói hàng của bạn. Nếu đó là "Đã giao hàng", bạn sẽ cần phải đợi cho đến khi bạn nhận được gói hàng, sau đó bạn có thể gửi gói hàng lại cho chúng tôi. Sau khi nhận được, chúng tôi sẽ gửi cho bạn tiền hoàn lại.</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">After I received the
-                                                product, can I return it for a refund?</p>
-                                            <p class="faq_item-caption">Yes, you will have 30 days after the day your
-                                                package has been delivered to contact support@rollingsqua.re and
-                                                initiate the return process.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Sau khi tôi nhận được sản phẩm, tôi có thể trả lại để được hoàn lại tiền không?</p>
+                                            <p class="faq_item-caption">Có, bạn sẽ có 30 ngày kể từ ngày gói hàng của bạn được gửi đến địa chỉ contact@rollingsqua.re và bắt đầu quy trình trả hàng.</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Will I need to pay
-                                                VAT?</p>
-                                            <p class="faq_item-caption">In general, no. Although, due to the many
-                                                countries and regulations, we can't guarantee it, to be sure, you should
-                                                check with the local customs. Orders larger than 5 units are more likely
-                                                to incur in importation expenses. The shipments will come from one of
-                                                our warehouses, either in China, US or EU.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Tôi có cần phải trả VAT không?</p>
+                                            <p class="faq_item-caption">Nói chung, không. Mặc dù, do nhiều quốc gia và quy định, chúng tôi không thể đảm bảo điều đó, để chắc chắn, bạn nên kiểm tra với hải quan địa phương. Các đơn hàng lớn hơn 5 đơn vị có nhiều khả năng phát sinh chi phí nhập khẩu. Các lô hàng sẽ đến từ một trong các kho hàng của chúng tôi, ở Trung Quốc, Hoa Kỳ hoặc EU, Việt Nam..</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Can I buy a larger
-                                                quantity?</p>
-                                            <p class="faq_item-caption">If you are interested in making a bulk order
-                                                (min. 100 units), please contact info@ferrarisgroup.ch and we will send
-                                                you a quotation right away.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Tôi có thể mua số lượng lớn hơn không?</p>
+                                            <p class="faq_item-caption">Nếu bạn muốn đặt hàng số lượng lớn (tối thiểu 100 chiếc), vui lòng liên hệ info@ferrarisgroup.ch và chúng tôi sẽ gửi báo giá cho bạn ngay lập tức.</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Is EDGE covered by a
-                                                warranty?</p>
-                                            <p class="faq_item-caption"></p>
+                                            <p class="faq_item-header" style="font-size: 18px">EDGE có được bảo hành không?</p>
+                                            <p class="faq_item-caption">Chắc chắn rồi! Bảo hành của chúng tôi kéo dài trong 2 năm và có giá trị trên toàn thế giới.</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px"></p>
-                                            <p class="faq_item-caption">Absolutely! Our warranty lasts for 2 years, and
-                                                is valid worldwide.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">EDGE Light có cần cáp để hoạt động không?</p>
+                                            <p class="faq_item-caption">EDGE Light cũng có pin, vì vậy không cần dây cáp mọi lúc. Tuy nhiên, nó sẽ cần được sạc và có thể đạt độ sáng cao hơn nếu được sử dụng khi đang cắm điện</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Does the EDGE Light need
-                                                a cable to work?</p>
-                                            <p class="faq_item-caption">The EDGE Light also has a battery, so a cable
-                                                isn't needed all the time. However, it will need to be charged, and it
-                                                can reach a higher brightness if used while plugged in.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Tốc độ sạc của Bộ sạc không dây EDGE là bao nhiêu?</p>
+                                            <p class="faq_item-caption">Bộ sạc không dây EDGE có thể sạc ở mức tối đa 15W. Xin lưu ý rằng iPhone bị Apple giới hạn sạc ở mức 7,5W trên bộ sạc không dây của bên thứ ba</p>
                                         </li>
                                         <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">What's the charging speed
-                                                of the EDGE Wireless Charger?</p>
-                                            <p class="faq_item-caption">The EDGE Wireless Charger can charge at 15W max.
-                                                Please note that iPhone is limited by Apple to charge at 7.5W on third
-                                                party wireless chargers</p>
-                                        </li>
-                                        <li class="faq_item mb-3">
-                                            <p class="faq_item-header" style="font-size: 18px">Can I use my own MagSafe
-                                                charger with the EDGE Mount?</p>
-                                            <p class="faq_item-caption">Absolutely, you will just need to add a metal
-                                                plate to the back of the MagSafe.</p>
+                                            <p class="faq_item-header" style="font-size: 18px">Tôi có thể sử dụng bộ sạc MagSafe của riêng mình với Giá đỡ EDGE không?</p>
+                                            <p class="faq_item-caption">Tất nhiên, bạn sẽ chỉ cần thêm một tấm kim loại vào mặt sau của MagSafe.</p>
                                         </li>
                                     </ul>
                                 </div>
@@ -439,9 +381,31 @@
                                             <div class="card-type mb-2">
                                                 <div class="card-type-header me-auto">KINH PHI</div>
                                                 <div class="card-type-icon">
-                                                    <button class="card-type-btn">
-                                                        <i class="bi bi-heart card-type-btn-icon"></i>
-                                                    </button>
+                                                      {% if not product.favorite %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% else %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% endif %}
                                                 </div>
                                             </div>
                                             <h5 class="card-title"><a href="{{ product.get_absolute_url }}"
@@ -452,7 +416,7 @@
                                                 <a href="" class="card-category-link">{{ product.category }}</a>
                                             </div>
                                             <div class="card-price d-flex">
-                                                <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                                 <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                                             </div>
                                             <div class="mb-2 mt-1">
@@ -466,7 +430,7 @@
                                             </div>
                                             <div class="card-clock">
                                             <span class="card-lock-label"><i
-                                                    class="bi bi-clock"></i> 26 ngày còn lại</span>
+                                                    class="bi bi-clock"></i> {{ product.created_at|date:"Y-m-d" }}</span>
                                             </div>
                                         </div>
                                     </div>

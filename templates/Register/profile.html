@@ -5,11 +5,11 @@
         <div class="container d-flex">
             <div class="view-profile">
                 <a href="{% url 'register:profile' slug=request.user %}" class="view-profile-link"><span><i
-                        class="bi bi-eye"></i></span><span class="ms-2">View Profile</span></a>
+                        class="bi bi-eye"></i></span><span class="ms-2">Xem hồ sơ</span></a>
             </div>
             <div class="view-profile ms-4">
                 <a href="{% url 'register:edit_profile' slug=request.user %}" class="view-profile-link"><span><i
-                        class="bi bi-pencil-square"></i></span><span class="ms-2">Edit Profile</span></a>
+                        class="bi bi-pencil-square"></i></span><span class="ms-2">Chỉnh sửa hồ sơ</span></a>
             </div>
         </div>
     </div>
@@ -22,13 +22,13 @@
                 <div class="profile-nav mb-5">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link font-bold active-profile" href="#">Profile</a>
+                            <a class="nav-link font-bold active-profile" href="#">Hồ sơ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link font-bold" href="{% url 'product:favorite' %}">Các chiến dịch</a>
+                            <a class="nav-link font-bold" href="{% url 'product:favorite' %}">Đang theo dõi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link font-bold" href="{% url 'order:invest' %}">Đầu tư</a>
+                            <a class="nav-link font-bold" href="{% url 'order:invest' %}">Các chiến dịch đầu tư</a>
                         </li>
                     </ul>
                 </div>
@@ -128,9 +128,31 @@
                                                             <div class="card-type mb-2">
                                                                 <div class="card-type-header me-auto">KINH PHI</div>
                                                                 <div class="card-type-icon">
-                                                                    <button class="card-type-btn">
-                                                                        <i class="bi bi-heart card-type-btn-icon"></i>
-                                                                    </button>
+                                                                      {% if not product.favorite %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% else %}
+                                                            <button class="card-type-btn favorite-false-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="addFavorite({{ product.id }})"
+                                                                    style="display:none">
+                                                                <i class="bi bi-heart card-type-btn-icon"></i>
+                                                            </button>
+                                                            <button class="card-type-btn favorite-true-{{ product.id }}"
+                                                                    id="order_button"
+                                                                    onclick="removeFavorite({{ product.id }})">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                        {% endif %}
                                                                 </div>
                                                             </div>
                                                             <h5 class="card-title"><a
@@ -143,7 +165,7 @@
                                                                    class="card-category-link">{{ product.category }}</a>
                                                             </div>
                                                             <div class="card-price d-flex">
-                                                                <span class="card-price-bold me-auto font-bold">${{ product.price|floatformat:2 }}</span>
+                                                                <span class="card-price-bold me-auto font-bold">${{ product.goal|floatformat:2 }}</span>
                                                                 <span class="card-price-percent">{{ product.percent|floatformat:2 }}%</span>
                                                             </div>
                                                             <div class="mb-2 mt-1">
@@ -157,7 +179,7 @@
                                                             </div>
                                                             <div class="card-clock">
                                                                 <span class="card-lock-label"><i
-                                                                        class="bi bi-clock"></i> 26 ngày còn lại</span>
+                                                                        class="bi bi-clock"></i> {{ product.created_at|date:"Y-m-d" }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
