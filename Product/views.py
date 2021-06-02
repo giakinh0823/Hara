@@ -135,8 +135,13 @@ def productDetail(request, slug):
         'comments': comments,
         'profile_user': profile_user,
         'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY,
+        'order': None
     }
     if request.user.is_authenticated:
+        try:
+            order = Order.objects.get(person = request.user, product=product_detail)
+        except:
+            order = None
         notify = Notifications.objects.filter(user=request.user)
         clickNotify = notify.filter(link=product_detail.get_absolute_url())
         for item in clickNotify:
@@ -164,6 +169,7 @@ def productDetail(request, slug):
             'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
             'newNotify': newNotify,
             'notify': notify,
+            'order': order,
         }
     return render(request, 'product/product_detail.html', context)
 
