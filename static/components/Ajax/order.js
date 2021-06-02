@@ -28,7 +28,7 @@ const orderSuccess = (id) => {
             await sendNotify(data.user, data.person, data.product, data.link, status).then(r => {
                 $('#toast-body-text').text(`${data.text} Has been updated`)
                 $('#toast-order-active').css("display", "block");
-                $(`#order-status-${id}`).removeClass().addClass('success').text("Success");
+                $(`#order-status-${id}`).removeClass().addClass('success').text("Hoàn Thành");
             })
             setTimeout(() => {
                 $('#toast-order-active').css("display", "none");
@@ -48,7 +48,7 @@ const orderCancel = (id) => {
             await sendNotify(data.user, data.person, data.product, data.link, status).then(r => {
                 $('#toast-body-text').text(`${data.text} Has been cancel`)
                 $('#toast-order-active').css("display", "block");
-                $(`#order-status-${id}`).removeClass().addClass('cancel').text("Cancel");
+                $(`#order-status-${id}`).removeClass().addClass('cancel').text("Hủy bỏ");
             })
             setTimeout(() => {
                 $('#toast-order-active').css("display", "none");
@@ -67,7 +67,7 @@ const orderAccept = (id) => {
             await sendNotify(data.user, data.person, data.product, data.link, status).then(r => {
                 $('#toast-body-text').text(`Has been accept`)
                 $('#toast-order-active').css("display", "block");
-                $(`#order-status-${id}`).removeClass().addClass('waiting').text("Waiting");
+                $(`#order-status-${id}`).removeClass().addClass('waiting').text("Chấp nhận");
             })
             setTimeout(() => {
                 $('#toast-order-active').css("display", "none");

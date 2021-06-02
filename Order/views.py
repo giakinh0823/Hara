@@ -58,7 +58,7 @@ def success_order(request):
     if request.is_ajax():
         id = request.GET["id"]
         my_order = Order.objects.get(id=id)
-        my_order.state = State.objects.get(name="success")
+        my_order.state = State.objects.get(slug="success")
         my_order.is_complete = True
         my_order.save()
         return JsonResponse({
@@ -74,7 +74,7 @@ def cancel_order(request):
     if request.is_ajax():
         id = request.GET["id"]
         my_order = Order.objects.get(id=id)
-        my_order.state = State.objects.get(name="cancel")
+        my_order.state = State.objects.get(slug="cancel")
         my_order.is_complete = False
         my_order.save()
         return JsonResponse({
@@ -90,7 +90,7 @@ def accept_order(request):
     if request.is_ajax():
         id = request.GET["id"]
         my_order = Order.objects.get(id=id)
-        my_order.state = State.objects.get(name="waiting")
+        my_order.state = State.objects.get(slug="waiting")
         my_order.save()
         return JsonResponse({
             "user": str(my_order.user.username),
