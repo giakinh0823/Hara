@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 
 # Create your views here.
@@ -65,7 +65,7 @@ def success_order(request):
             "user": str(my_order.user.username),
             "person": str(my_order.person.username),
             "product": my_order.product.title,
-            "link": my_order.product.get_absolute_url(),
+            "link": "/invest",
             "text": my_order.product.title,
         })
 
@@ -81,7 +81,7 @@ def cancel_order(request):
             "user": str(my_order.user.username),
             "person": str(my_order.person.username),
             "product": my_order.product.title,
-            "link": my_order.product.get_absolute_url(),
+            "link": "/invest",
             "text": my_order.product.title,
         })
 
@@ -96,7 +96,7 @@ def accept_order(request):
             "user": str(my_order.user.username),
             "person": str(my_order.person.username),
             "product": my_order.product.title,
-            "link": my_order.product.get_absolute_url(),
+            "link": "/invest",
             "text": my_order.product.title,
         })
 
@@ -104,6 +104,11 @@ def accept_order(request):
 def invest(request):
     orders = Order.objects.filter(person=request.user)
     notify = Notifications.objects.filter(user=request.user)
+    notifyOrder = Notifications.objects.filter(user=request.user)
+    for item in notifyOrder:
+        if not item.link.find('invest') == -1:
+            item.new = False
+            item.save()
     newNotify = Notifications.objects.filter(new=True, user=request.user)
     request.session['newNotify'] = len(newNotify)
     notify = notify[:len(notify) - len(newNotify)]

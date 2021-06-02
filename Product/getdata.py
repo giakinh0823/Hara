@@ -17,6 +17,7 @@ from datetime import datetime
 from django.template.defaultfilters import slugify
 
 from .models import Product, Category
+from google_trans_new import google_translator
 
 import random
 
@@ -185,12 +186,13 @@ def data_scrap(request):
 
         percent = str(list_of_percent[i]).replace(',', '.')
         print(percent)
+        translator = google_translator()
         product = Product.objects.create(
             user=request.user,
-            title=str(list_of_title[i]),
+            title=translator.translate(str(list_of_title[i]), lang_src='en', lang_tgt='vi'),
             category=category,
             goal=decimal,
-            caption=str(list_of_caption[i]),
+            caption=translator.translate(str(list_of_caption[i]), lang_src='en', lang_tgt='vi'),
             like=random.randint(50, 1000),
             percent=float(percent),
             img=image,

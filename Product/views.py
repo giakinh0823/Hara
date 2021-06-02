@@ -20,20 +20,15 @@ from django.views import View
 from django.conf import settings
 from django.http import JsonResponse
 from .getdata import data_scrap
-
 import random
-
 from django.contrib.auth.models import User
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
-
-
 # Create your views here.
 
 def getData(request):
     data_scrap(request)
     return HttpResponse('done')
-
 
 def products(request):
     group_category = CategoryGroup.objects.all()
@@ -53,11 +48,13 @@ def products(request):
         'category_list': list_category
     }
     if request.user.is_authenticated:
+
         notify = Notifications.objects.filter(user=request.user)
         newNotify = Notifications.objects.filter(new=True, user=request.user)
         favorites = Favorite.objects.filter(user=request.user)
         for product in list_product:
             product.favorite = False
+            product.save()
             for favorite in favorites:
                 if product == favorite.product:
                     product.favorite = True

@@ -28,7 +28,7 @@ const orderSuccess = (id) => {
             await sendNotify(data.user, data.person, data.product, data.link, status).then(r => {
                 $('#toast-body-text').text(`${data.text} Has been updated`)
                 $('#toast-order-active').css("display", "block");
-                $(`#order-status-${id}`).removeClass().addClass('success').text("Hoàn Thành");
+                $(`#order-status-${id}`).removeClass().addClass('success').text("Hoàn thành");
             })
             setTimeout(() => {
                 $('#toast-order-active').css("display", "none");
