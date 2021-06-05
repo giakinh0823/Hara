@@ -1,0 +1,52 @@
+{% extends "base/index.html" %}
+{% load static %}
+{% load account %}
+{% load socialaccount %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block body_not_nav %}
+    <div class="w-100 d-flex justify-content-center align-items-center position-relative"
+         style="min-height: 100vh; padding: 100px 0">
+        <div class="w-100 h-100 position-absolute"
+             style="
+                     background-image: url('{% static "img/blog7.png" %}');
+                     background-size: cover;
+                     ">
+        </div>
+        <div class="col-10 col-md-6 col-lg-4" style="background-color: #fff; padding: 60px 40px; z-index: 1">
+            <div class="mb-4">
+                <h1 class="display-6">{% trans "Xác minh địa chỉ email" %}</h1>
+                {% if confirmation %}
+
+                    {% user_display confirmation.email_address.user as user_display %}
+
+                    <p>{% blocktrans with confirmation.email_address.email as email %}Vui lòng xác nhận rằng
+                        <a href="mailto:{{ email }}">{{ email }}</a> là một địa chỉ e-mail cho người dùng {{ user_display }}
+                        .{% endblocktrans %}</p>
+
+                    <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                        {% csrf_token %}
+                        <button class="button-secondary" type="submit">{% trans 'Xá nhận' %}</button>
+                    </form>
+
+                {% else %}
+
+                    {% url 'account_email' as email_url %}
+
+                    <p>{% blocktrans %}Liên kết xác nhận e-mail này đã hết hạn hoặc không hợp lệ. Xin vui lòng
+                        <a href="{{ email_url }}">đưa ra một yêu cầu xác nhận e-mail mới</a>.{% endblocktrans %}</p>
+                {% endif %}
+            </div>
+            <form class="w-100" method="post" enctype="multipart/form-data" id="signup-form">
+                <div class="w-100 mb-2 mt-4">
+                    <a type="button" href="{% provider_login_url 'google' %}" class="button-secondary w-100 mt-3">
+                        <i class="bi bi-google"></i> <span>Google</span>
+                    </a>
+                    <a type="button" href="{% url 'register:login' %}" class="button-secondary w-100 mt-3">Đăng nhập</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
