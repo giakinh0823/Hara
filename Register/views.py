@@ -1,3 +1,4 @@
+from allauth.account.utils import send_email_confirmation
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -40,6 +41,11 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid() and form.cleaned_data.get('password1') == form.cleaned_data.get('password2'):
             form.save()
+            # user = form.save(commit=False)
+            # user.is_active = False
+            # user.save()
+            # send_email_confirmation(request, user, True)
+            # return render(request, 'account/verification_sent.html')
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)

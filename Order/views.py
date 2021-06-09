@@ -13,8 +13,8 @@ from Register.models import Notifications, Profile
 def order(request):
     productFavorites = Product.objects.filter(user=request.user)
     profile = Profile.objects.get(user=request.user)
-    if productFavorites:
-        productFavorites = productFavorites[len(productFavorites) - 7:]
+    # if productFavorites:
+    #     productFavorites = productFavorites[len(productFavorites) - 7:]
     orders = Order.objects.filter(user=request.user)
     notifyOrder = Notifications.objects.filter(user=request.user)
     for item in notifyOrder:

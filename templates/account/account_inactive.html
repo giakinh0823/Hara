@@ -1,6 +1,5 @@
 {% extends "base/index.html" %}
 {% load static %}
-{% load account %}
 {% load socialaccount %}
 {% load i18n %}
 
@@ -17,27 +16,8 @@
         </div>
         <div class="col-10 col-md-6 col-lg-4" style="background-color: #fff; padding: 60px 40px; z-index: 1">
             <div class="mb-4">
-                <h1 class="display-6">{% trans "Xác minh địa chỉ email" %}</h1>
-                {% if confirmation %}
-
-                    {% user_display confirmation.email_address.user as user_display %}
-
-                    <p>{% blocktrans with confirmation.email_address.email as email %}Vui lòng xác nhận rằng
-                        <a href="mailto:{{ email }}">{{ email }}</a> là một địa chỉ e-mail cho người dùng {{ user_display }}
-                        .{% endblocktrans %}</p>
-
-                    <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
-                        {% csrf_token %}
-                        <button class="button-secondary" type="submit">{% trans 'Xác nhận' %}</button>
-                    </form>
-
-                {% else %}
-
-                    {% url 'account_email' as email_url %}
-
-                    <p>{% blocktrans %}Liên kết xác nhận e-mail này đã hết hạn hoặc không hợp lệ. Xin vui lòng
-                        <a href="{{ email_url }}">đưa ra một yêu cầu xác nhận e-mail mới</a>.{% endblocktrans %}</p>
-                {% endif %}
+                <h1 class="display-6">{% trans "Tài khoản chưa được xác minh" %}</h1>
+                <p class="mt-3">{% blocktrans %}Chúng tôi đã gửi e-mail cho bạn để xác minh. Nhấp vào liên kết được cung cấp để hoàn tất quá trình đăng ký. Vui lòng liên hệ với chúng tôi nếu bạn không nhận được nó.{% endblocktrans %}</p>
             </div>
             <form class="w-100" method="post" enctype="multipart/form-data" id="signup-form">
                 <div class="w-100 mb-2 mt-4">
